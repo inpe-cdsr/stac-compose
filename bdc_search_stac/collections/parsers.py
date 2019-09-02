@@ -31,7 +31,7 @@ def search():
     base = {
         'collections': {"type": "string", "coerce": validate_collections, "empty": False, "required": True},
         'bbox': {"type": "list", "coerce": validate_bbox, "empty": False, "required": True},
-        'cloud': {"type": "number", "coerce": validate_cloud, "empty": True, "required": False},
+        'cloud_cover': {"type": "number", "coerce": validate_cloud, "empty": True, "required": False},
         'time': {"type": "string", "coerce": validate_date, "empty": True, "required": False},
         'limit': {"type": "number", "coerce": validate_limit, "empty": True, "required": False}
     }
