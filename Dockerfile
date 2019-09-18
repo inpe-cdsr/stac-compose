@@ -14,7 +14,6 @@ ENV LANGUAGE pt_BR.UTF-8
 COPY . ${APP_DIR}
 WORKDIR ${APP_DIR}
 
-EXPOSE 5000
 
 RUN pip3 install -r requirements.txt
 

@@ -35,7 +35,7 @@ class CollectionsBusiness():
             data['query']['eo:cloud_cover'] = { "lt": cloud_cover }
         if time:
             # range temporal
-            data['query']['time'] = time
+            data['time'] = time
         if limit:
             # limit
             data['limit'] = limit if int(limit) <= 1000 else 1000
