@@ -4,7 +4,7 @@
     "type":"stac"
   },
   "BDC_STAC": {
-    "url": "http://cbers1.dpi.inpe.br:5051",
+    "url": "http://datacube-001.dpi.inpe.br:5026",
     "type":"stac"
   }
 }
