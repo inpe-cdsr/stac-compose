@@ -6,5 +6,9 @@
   "BDC_STAC": {
     "url": "http://datacube-001.dpi.inpe.br:5026",
     "type":"stac"
+  },
+  "KEPLER_STAC": {
+    "url": "https://stac.amskepler.com/v07",
+    "type":"stac"
   }
 }

@@ -27,7 +27,9 @@ class CollectionsBusiness():
     def search_development_seed(cls, url, collection, bbox, cloud_cover=False, time=False, limit=100):
         data = {
             'bbox': bbox.split(','),
-            'query': {}
+            'query': {
+                'collection': { 'eq': collection }
+            }
         }
 
         if cloud_cover:
@@ -35,12 +37,12 @@ class CollectionsBusiness():
             data['query']['eo:cloud_cover'] = { "lt": cloud_cover }
         if time:
             # range temporal
-            data['time'] = time
+            data['query']['datetime'] = time
         if limit:
             # limit
             data['limit'] = limit if int(limit) <= 1000 else 1000
 
-        response = CollectionsServices.search_items_post(url, collection, data)
+        response = CollectionsServices.search_post(url, data)
         if not response:
             return []
 
@@ -54,7 +56,7 @@ class CollectionsBusiness():
             qnt_all_features = response['meta']['found']
             for x in range(0, int(qnt_all_features/1000)+1):
                 data['page'] = x+1
-                response_by_page = CollectionsServices.search_items_post(url, collection, data)
+                response_by_page = CollectionsServices.search_post(url, data)
                 if response_by_page:
                     result_features += response_by_page['features']
 
@@ -80,6 +82,20 @@ class CollectionsBusiness():
 
 
     @classmethod
+    def search_kepler_stac(cls, url, collection, bbox, time=False):
+        query = 'bbox={}'.format(bbox)
+        query += '&limit={}'.format(300)
+        if time:
+            # range temporal
+            query += '&time={}'.format(time)
+
+        response = CollectionsServices.search_items(url, collection.upper(), query)
+        if not response:
+            return []
+        return response['features'] if response.get('features') else [response]
+
+
+    @classmethod
     def search(cls, collections, bbox, cloud_cover=False, time=False, limit=100):
 
         result_features = []
@@ -95,5 +111,9 @@ class CollectionsBusiness():
             elif provider == 'BDC_STAC':
                 result_features += cls.search_bdc_stac(ProvidersBusiness.get_providers()[provider],
                                                 collection, cp[2], bbox, cloud_cover, time, limit)
+
+            elif provider == 'KEPLER_STAC':
+                result_features += cls.search_kepler_stac(ProvidersBusiness.get_providers()[provider],
+                                                collection, bbox, time)
 
         return result_features
