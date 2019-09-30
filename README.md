@@ -1,4 +1,5 @@
 # Search STAC - Brazil Data Cube
+
 API to search surface reflectance by STAC
 
 ## Structure
@@ -15,16 +16,35 @@ Make sure you have the following libraries installed:
 
 - [`Python 3`](https://www.python.org/)
 
-After that, install Python dependencies with the following command:
+Install [`pyenv`](https://github.com/pyenv/pyenv#basic-github-checkout) and [`pyenv-virtualenv`](https://github.com/pyenv/pyenv-virtualenv#installing-as-a-pyenv-plugin). After that, install Python 3.6.8 using pyenv:
 
-```bash
-pip3 install -r requirements.txt
+```
+pyenv install 3.6.8
+```
+
+Create a Python environment with the Python version above through pyenv-virtualenv:
+
+```
+pyenv virtualenv 3.6.8 search_stac
+```
+
+Activate the environment:
+
+```
+pyenv activate search_stac
+```
+
+Install the requirements:
+
+```
+pip install -r requirements.txt
 ```
 
 ## Running
 
 ```
-python3 manager.py run
+pyenv activate search_stac
+python manage.py run
 ```
 
 ### Running with docker
