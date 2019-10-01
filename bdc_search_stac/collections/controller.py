@@ -8,13 +8,16 @@ from bdc_search_stac.collections.business import CollectionsBusiness
 from bdc_search_stac.collections.parsers import validate
 from bdc_core.utils.flask import APIResource
 
+
 api = ns
+
 
 @api.route('/')
 class ItemsController(APIResource):
 
     def get(self):
         data, status = validate(request.args.to_dict(flat=True), 'providers')
+
         if status is False:
             raise BadRequest(json.dumps(data))
 
@@ -23,11 +26,13 @@ class ItemsController(APIResource):
         """
         return CollectionsBusiness.get_collections_by_providers(data['providers'])
 
+
 @api.route('/items')
 class CollectionsController(APIResource):
 
     def get(self):
         data, status = validate(request.args.to_dict(flat=True), 'search')
+
         if status is False:
             raise BadRequest(json.dumps(data))
 
