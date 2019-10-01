@@ -16,14 +16,13 @@ api = ns
 class ItemsController(APIResource):
 
     def get(self):
-        data, status = validate(request.args.to_dict(flat=True), 'providers')
+        args = request.args.to_dict(flat=True)
+        data, status = validate(args, 'providers')
 
         if status is False:
             raise BadRequest(json.dumps(data))
 
-        """
-        List of STAC collections by providers
-        """
+        # List of STAC collections by providers
         return CollectionsBusiness.get_collections_by_providers(data['providers'])
 
 
@@ -36,9 +35,7 @@ class CollectionsController(APIResource):
         if status is False:
             raise BadRequest(json.dumps(data))
 
-        """
-        Search RF in STAC's
-        """
+        # Search RF in STAC's
         features = CollectionsBusiness.search(**request.args)
 
         return {

@@ -10,8 +10,10 @@ class CollectionsBusiness():
     @classmethod
     def get_collections_by_providers(cls, providers):
         result_by_provider = {}
+
         for p in providers.split(','):
             response = CollectionsServices.search_collections(ProvidersBusiness.get_providers()[p])
+
             if response.get('collections'):
                 result_by_provider[p] = [c['id'] for c in response['collections']]
             else:
@@ -80,7 +82,6 @@ class CollectionsBusiness():
             return []
         return response['features'] if response.get('features') else [response]
 
-
     @classmethod
     def search_kepler_stac(cls, url, collection, bbox, time=False):
         query = 'bbox={}'.format(bbox)
@@ -93,7 +94,6 @@ class CollectionsBusiness():
         if not response:
             return []
         return response['features'] if response.get('features') else [response]
-
 
     @classmethod
     def search(cls, collections, bbox, cloud_cover=False, time=False, limit=100):
