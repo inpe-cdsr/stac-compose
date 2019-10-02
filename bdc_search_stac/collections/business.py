@@ -45,6 +45,7 @@ class CollectionsBusiness():
             data['limit'] = limit if int(limit) <= 1000 else 1000
 
         response = CollectionsServices.search_post(url, data)
+
         if not response:
             return []
 

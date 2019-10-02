@@ -20,7 +20,7 @@ class ItemsController(APIResource):
         data, status = validate(args, 'providers')
 
         if status is False:
-            raise BadRequest(json.dumps(data))
+            raise BadRequest(json.dumps(data))  # 400 - Bad Request
 
         # List of STAC collections by providers
         return CollectionsBusiness.get_collections_by_providers(data['providers'])
@@ -33,7 +33,7 @@ class CollectionsController(APIResource):
         data, status = validate(request.args.to_dict(flat=True), 'search')
 
         if status is False:
-            raise BadRequest(json.dumps(data))
+            raise BadRequest(json.dumps(data))  # 400 - Bad Request
 
         # Search RF in STAC's
         features = CollectionsBusiness.search(**request.args)

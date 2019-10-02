@@ -29,11 +29,18 @@ class CollectionsServices():
     @classmethod
     def search_post(cls, url, data):
         base_url = '{}/stac/search'.format(url)
-        r = requests.post(base_url, headers={
-            'Content-Type':'application/json'
-        }, data=json.dumps(data))
+
+        r = requests.post(
+            base_url,
+            headers={
+                'Content-Type':'application/json'
+            },
+            data=json.dumps(data)
+        )
+
         if r and r.status_code in (200, 201):
             return json.loads(r.text)
+
         return None
 
     @classmethod
