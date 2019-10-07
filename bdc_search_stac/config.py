@@ -10,7 +10,6 @@ class Config():
     DEBUG = False
     TESTING = False
     DEVELOPMENT = False
-    SECRET_KEY = os.environ.get('KEYSYSTEM', 'bdc_search_stac')
 
 
 class ProductionConfig(Config):
@@ -22,7 +21,4 @@ class DevelopmentConfig(Config):
 
 class TestingConfig(Config):
     TESTING = True
-
-
-key = Config.SECRET_KEY
 
