@@ -4,7 +4,7 @@
     "type":"stac"
   },
   "BDC_STAC": {
-    "url": "http://datacube-001.dpi.inpe.br:5025",
+    "url": "http://brazildatacube.dpi.inpe.br/bdc-stac",
     "type":"stac"
   },
   "KEPLER_STAC": {

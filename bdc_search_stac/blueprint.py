@@ -5,7 +5,7 @@ from bdc_search_stac.collections.controller import api as collections_ns
 from bdc_search_stac.providers.controller import api as providers_ns
 from bdc_search_stac.status.controller import api as status_ns
 
-blueprint = Blueprint('stac_compose', __name__, url_prefix='/stac_compose')
+blueprint = Blueprint('stac_compose', __name__, url_prefix='/stac-compose')
 
 api = Api(blueprint, doc=False)
 
