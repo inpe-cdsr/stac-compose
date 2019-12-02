@@ -4,13 +4,18 @@
     "type":"stac",
     "version": "0.6.0"
   },
+  "BDC_STAC": {
+    "url": "http://brazildatacube.dpi.inpe.br/bdc-stac",
+    "type":"stac",
+    "version": "0.7.0"
+  },
   "KEPLER_STAC": {
     "url": "https://stac.amskepler.com/v07",
     "type":"stac",
     "version": "0.7.0"
   },
   "INPE_STAC": {
-    "url": "http://0.0.0.0:5001",
+    "url": "http://cbers1.dpi.inpe.br:8089/inpe-stac",
     "type":"stac",
     "version": "0.7.0"
   }
