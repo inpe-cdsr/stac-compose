@@ -1,5 +1,5 @@
 
-# from pprint import pprint
+from pprint import pprint
 
 from werkzeug.exceptions import BadRequest
 
@@ -133,6 +133,9 @@ class CollectionsBusiness():
     def search(cls, collections, bbox, cloud_cover=False, time=False, limit=100):
         result_features = []
 
+        # test
+        # limit=10
+
         for cp in collections.split(','):
             cp = cp.split(':')
             provider = cp[0].upper()
@@ -148,7 +151,8 @@ class CollectionsBusiness():
 
             elif provider == 'KEPLER_STAC' or provider == 'INPE_STAC':
                 result_features += cls.search_stac(providers_business.get_providers()[provider],
-                                                   collection, bbox, time)
+                                                   collection, bbox,
+                                                   time=time, limit=limit)
 
             else:
                 raise BadRequest('Unexpected provider: {}'.format(provider))
