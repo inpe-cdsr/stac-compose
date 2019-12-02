@@ -10,11 +10,15 @@ api = ns
 
 @api.route('/')
 class ProviderController(APIResource):
+    """
+    Full route: http://localhost:5000/stac-compose/providers/
+    """
 
     def get(self):
         """
         List of STAC providers
         """
+
         providers = ProvidersBusiness.get_providers()
 
         return {

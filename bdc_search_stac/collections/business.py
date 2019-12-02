@@ -68,6 +68,7 @@ class CollectionsBusiness():
     @classmethod
     def search_bdc_stac(cls, url, collection, composite, bbox, cloud_cover=False, time=False, limit=100):
         query = 'bbox={}&type={}'.format(bbox, composite)
+
         if time:
             # range temporal
             query += '&time={}'.format(time)
@@ -79,27 +80,33 @@ class CollectionsBusiness():
             query += '&limit={}'.format(limit)
 
         response = CollectionsServices.search_items(url, collection, query)
+
         if not response:
             return []
+
         return response['features'] if response.get('features') else [response]
 
     @classmethod
     def search_kepler_stac(cls, url, collection, bbox, time=False):
         query = 'bbox={}'.format(bbox)
         query += '&limit={}'.format(300)
+
         if time:
             # range temporal
             query += '&time={}'.format(time)
 
         response = CollectionsServices.search_items(url, collection.upper(), query)
+
         if not response:
             return []
+
         return response['features'] if response.get('features') else [response]
 
     @classmethod
     def search(cls, collections, bbox, cloud_cover=False, time=False, limit=100):
 
         result_features = []
+
         for cp in collections.split(','):
             cp = cp.split(':')
             provider = cp[0].upper()

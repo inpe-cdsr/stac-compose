@@ -14,6 +14,9 @@ api = ns
 
 @api.route('/')
 class ItemsController(APIResource):
+    """
+    Example of full route: http://localhost:5000/stac-compose/collections?providers=DEVELOPMENT_SEED_STAC,KEPLER_STAC
+    """
 
     def get(self):
         args = request.args.to_dict(flat=True)
@@ -28,6 +31,12 @@ class ItemsController(APIResource):
 
 @api.route('/items')
 class CollectionsController(APIResource):
+    """
+    Example of full route: http://localhost:5000/stac-compose/collections/items? \
+        collections=development_seed_stac:landsat-8-l1,kepler_stac:CBERS4MUX,kepler_stac:CBERS4PAN10M& \
+        bbox=-58.35937500000001,-15.029685756555674,-51.63574218750001,-10.919617760254685& \
+        time=2019-11-02T00:00:00/2019-12-02T23:59:00&limit=10000
+    """
 
     def get(self):
         data, status = validate(request.args.to_dict(flat=True), 'search')

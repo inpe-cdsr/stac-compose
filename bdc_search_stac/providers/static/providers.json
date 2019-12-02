@@ -1,14 +1,22 @@
 {
   "DEVELOPMENT_SEED_STAC": {
     "url": "https://sat-api.developmentseed.org",
-    "type":"stac"
+    "type":"stac",
+    "version": "6"
   },
   "BDC_STAC": {
     "url": "http://brazildatacube.dpi.inpe.br/bdc-stac",
-    "type":"stac"
+    "type":"stac",
+    "version": "7"
   },
   "KEPLER_STAC": {
     "url": "https://stac.amskepler.com/v07",
-    "type":"stac"
+    "type":"stac",
+    "version": "7"
+  },
+  "INPE_STAC": {
+    "url": "http://0.0.0.0:5001",
+    "type":"stac",
+    "version": "7"
   }
 }

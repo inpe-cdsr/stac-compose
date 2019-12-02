@@ -25,13 +25,13 @@ pyenv install 3.6.8
 Create a Python environment with the Python version above through pyenv-virtualenv:
 
 ```
-pyenv virtualenv 3.6.8 search_stac
+pyenv virtualenv 3.6.8 stac_compose
 ```
 
 Activate the environment:
 
 ```
-pyenv activate search_stac
+pyenv activate stac_compose
 ```
 
 Install the requirements:
@@ -43,7 +43,7 @@ pip install -r requirements.txt
 ## Running
 
 ```
-pyenv activate search_stac
+pyenv activate stac_compose
 python manage.py run
 ```
 
