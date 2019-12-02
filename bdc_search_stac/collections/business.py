@@ -1,11 +1,13 @@
-import json
-import os
-from pprint import pprint
+
+# from pprint import pprint
 
 from werkzeug.exceptions import BadRequest
 
 from bdc_search_stac.collections.services import CollectionsServices
 from bdc_search_stac.providers.business import ProvidersBusiness
+
+
+providers_business = ProvidersBusiness()
 
 
 class CollectionsBusiness():
@@ -15,7 +17,7 @@ class CollectionsBusiness():
         result_by_provider = {}
 
         for p in providers.split(','):
-            response = CollectionsServices.search_collections(ProvidersBusiness.get_providers()[p])
+            response = CollectionsServices.search_collections(providers_business.get_providers()[p])
 
             if response.get('collections'):
                 result_by_provider[p] = [c['id'] for c in response['collections']]
@@ -137,15 +139,15 @@ class CollectionsBusiness():
             collection = cp[1]
 
             if provider == 'DEVELOPMENT_SEED_STAC':
-                result_features += cls.search_development_seed(ProvidersBusiness.get_providers()[provider],
+                result_features += cls.search_development_seed(providers_business.get_providers()[provider],
                                                                collection, bbox, time, cloud_cover, limit)
 
             # elif provider == 'BDC_STAC':
-            #     result_features += cls.search_bdc_stac(ProvidersBusiness.get_providers()[provider],
+            #     result_features += cls.search_bdc_stac(providers_business.get_providers()[provider],
             #                                    collection, cp[2], bbox, time, cloud_cover, limit)
 
-            elif provider == 'KEPLER_STAC':
-                result_features += cls.search_stac(ProvidersBusiness.get_providers()[provider],
+            elif provider == 'KEPLER_STAC' or provider == 'INPE_STAC':
+                result_features += cls.search_stac(providers_business.get_providers()[provider],
                                                    collection, bbox, time)
 
             else:

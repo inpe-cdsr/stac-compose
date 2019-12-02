@@ -14,13 +14,15 @@ class ProviderController(APIResource):
     Full route: http://localhost:5000/stac-compose/providers/
     """
 
+    providers_business = ProvidersBusiness()
+
     def get(self):
         """
         List of STAC providers
         """
 
-        providers = ProvidersBusiness.get_providers()
-
-        return {
-            "providers": providers
+        providers = {
+            "providers": self.providers_business.get_providers()
         }
+
+        return providers
