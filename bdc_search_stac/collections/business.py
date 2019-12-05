@@ -134,7 +134,7 @@ class CollectionsBusiness():
         result_features = []
 
         # test
-        # limit=10
+        # limit=1
 
         for cp in collections.split(','):
             cp = cp.split(':')
@@ -157,4 +157,5 @@ class CollectionsBusiness():
             else:
                 raise BadRequest('Unexpected provider: {}'.format(provider))
 
+        # pprint(result_features)
         return result_features
