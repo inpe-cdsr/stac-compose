@@ -15,6 +15,6 @@ IMAGE_API_STAC_COMPOSE="registry.dpi.inpe.br/brazildatacube/stac_compose"
 
 IMAGE_API_STAC_COMPOSE_FULL="${IMAGE_API_STAC_COMPOSE}:${API_STAC_COMPOSE_TAG}"
 
-docker build -t ${IMAGE_API_STAC_COMPOSE_FULL} -f docker/Dockerfile .
+docker build -t ${IMAGE_API_STAC_COMPOSE_FULL} -f docker/prod.Dockerfile .
 
 docker push ${IMAGE_API_STAC_COMPOSE_FULL}

@@ -2,11 +2,13 @@
 
 API to search surface reflectance by STAC
 
+
 ## Structure
 
 - [`bdc_search_stac`](./bdc_search_stac) python scripts to search surface reflectance by STAC
 - [`spec`](./spec) Spec of API bdc_search_stac
 - [`docs`](./docs) Documentation of bdc_search_stac
+
 
 ## Installation
 
@@ -40,6 +42,7 @@ Install the requirements:
 pip install -r requirements.txt
 ```
 
+
 ## Running
 
 ```
@@ -47,8 +50,16 @@ pyenv activate stac_compose
 python manage.py run
 ```
 
+
 ### Running with docker
+
 ```
 docker-compose build
 docker-compose up -d
+```
+
+Build image:
+
+```
+docker build -t stac_compose_dev:0.0.6 -f docker/dev.Dockerfile . --no-cache
 ```
