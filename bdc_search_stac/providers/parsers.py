@@ -12,7 +12,7 @@ def validate_providers(providers):
     bdc_providers = providers_business.get_providers().keys()
 
     for p in providers.split(','):
-        if p.upper() not in bdc_providers:
+        if p not in bdc_providers:
             return None
 
     return providers.split(',')
