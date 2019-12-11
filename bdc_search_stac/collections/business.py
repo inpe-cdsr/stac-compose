@@ -82,7 +82,7 @@ class CollectionsBusiness():
             # cloud cover
             query += '&eo:cloud_cover=0/{}'.format(cloud_cover)
 
-        response = CollectionsServices.search_items(url, collection.upper(), query)
+        response = CollectionsServices.search_items(url, collection, query)
 
         if not response:
             return []
@@ -95,7 +95,7 @@ class CollectionsBusiness():
 
         for cp in collections.split(','):
             cp = cp.split(':')
-            provider = cp[0].upper()
+            provider = cp[0]
             collection = cp[1]
             method = providers_business.get_providers_methods()[provider]
 
