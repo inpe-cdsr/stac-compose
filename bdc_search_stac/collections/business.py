@@ -31,7 +31,7 @@ class CollectionsBusiness():
         return result_by_provider
 
     @classmethod
-    def search_development_seed(cls, url, collection, bbox, time=False, cloud_cover=False, limit=100):
+    def search_post(cls, url, collection, bbox, time=False, cloud_cover=False, limit=100):
         data = {
             'bbox': bbox.split(','),
             'query': {
@@ -70,45 +70,8 @@ class CollectionsBusiness():
 
         return result_features
 
-    # @classmethod
-    # def search_bdc_stac(cls, url, collection, composite, bbox, time=False, cloud_cover=False, limit=100):
-    #     query = 'bbox={}&type={}'.format(bbox, composite)
-
-    #     if time:
-    #         # range temporal
-    #         query += '&time={}'.format(time)
-    #     if cloud_cover:
-    #         # cloud cover
-    #         query += '&eo:cloud_cover=0/{}'.format(cloud_cover)
-    #     if limit:
-    #         # limit
-    #         query += '&limit={}'.format(limit)
-
-    #     response = CollectionsServices.search_items(url, collection, query)
-
-    #     if not response:
-    #         return []
-
-    #     return response['features'] if response.get('features') else [response]
-
-    # @classmethod
-    # def search_kepler_stac(cls, url, collection, bbox, time=False):
-    #     query = 'bbox={}'.format(bbox)
-    #     query += '&limit={}'.format(300)
-
-    #     if time:
-    #         # range temporal
-    #         query += '&time={}'.format(time)
-
-    #     response = CollectionsServices.search_items(url, collection.upper(), query)
-
-    #     if not response:
-    #         return []
-
-    #     return response['features'] if response.get('features') else [response]
-
     @classmethod
-    def search_stac(cls, url, collection, bbox, time=None, cloud_cover=None, limit=300):
+    def search_get(cls, url, collection, bbox, time=None, cloud_cover=None, limit=300):
         query = 'bbox={}'.format(bbox)
         query += '&limit={}'.format(limit)
 
@@ -118,11 +81,8 @@ class CollectionsBusiness():
         if cloud_cover:
             # cloud cover
             query += '&eo:cloud_cover=0/{}'.format(cloud_cover)
-        # if limit:
-        #     # limit
-        #     query += '&limit={}'.format(limit)
 
-        response = CollectionsServices.search_items(url, collection.upper(), query)
+        response = CollectionsServices.search_items(url, collection, query)
 
         if not response:
             return []
@@ -133,29 +93,20 @@ class CollectionsBusiness():
     def search(cls, collections, bbox, cloud_cover=False, time=False, limit=100):
         result_features = []
 
-        # test
-        # limit=1
-
         for cp in collections.split(','):
             cp = cp.split(':')
-            provider = cp[0].upper()
+            provider = cp[0]
             collection = cp[1]
+            method = providers_business.get_providers_methods()[provider]
 
-            if provider == 'DEVELOPMENT_SEED_STAC':
-                result_features += cls.search_development_seed(providers_business.get_providers()[provider],
+            if method == 'POST':
+                result_features += cls.search_post(providers_business.get_providers()[provider],
                                                                collection, bbox, time, cloud_cover, limit)
-
-            # elif provider == 'BDC_STAC':
-            #     result_features += cls.search_bdc_stac(providers_business.get_providers()[provider],
-            #                                    collection, cp[2], bbox, time, cloud_cover, limit)
-
-            elif provider == 'KEPLER_STAC' or provider == 'INPE_STAC':
-                result_features += cls.search_stac(providers_business.get_providers()[provider],
+            elif method == 'GET':
+                result_features += cls.search_get(providers_business.get_providers()[provider],
                                                    collection, bbox,
                                                    time=time, limit=limit)
-
             else:
                 raise BadRequest('Unexpected provider: {}'.format(provider))
 
-        # pprint(result_features)
         return result_features

@@ -61,5 +61,5 @@ docker-compose up -d
 Build image:
 
 ```
-docker build -t stac_compose_dev:0.0.6 -f docker/dev.Dockerfile . --no-cache
+docker build -t stac_compose -f docker/dev.Dockerfile . --no-cache
 ```
