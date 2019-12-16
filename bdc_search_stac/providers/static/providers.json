@@ -3,18 +3,24 @@
     "url": "https://sat-api.developmentseed.org",
     "type":"stac",
     "version": "0.6.0",
-    "method": "POST"
+    "method": "POST",
+    "require_credentials": 0,
+    "downloadable": 0
   },
   "KEPLER_STAC": {
     "url": "https://stac.amskepler.com/v07",
     "type":"stac",
     "version": "0.7.0",
-    "method": "GET"
+    "method": "GET",
+    "require_credentials": 0,
+    "downloadable": 0
   },
   "INPE_STAC": {
     "url": "http://cbers1.dpi.inpe.br:8089/inpe-stac",
     "type":"stac",
     "version": "0.7.0",
-    "method": "GET"
+    "method": "GET",
+    "require_credentials": 1,
+    "downloadable": 1
   }
 }

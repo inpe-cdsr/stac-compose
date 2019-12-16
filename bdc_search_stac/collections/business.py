@@ -17,7 +17,7 @@ class CollectionsBusiness():
         result_by_provider = {}
 
         for p in providers.split(','):
-            response = CollectionsServices.search_collections(providers_business.get_providers()[p])
+            response = CollectionsServices.search_collections(providers_business.get_providers()[p]['url'])
 
             if response.get('collections'):
                 result_by_provider[p] = [c['id'] for c in response['collections']]
@@ -100,10 +100,10 @@ class CollectionsBusiness():
             method = providers_business.get_providers_methods()[provider]
 
             if method == 'POST':
-                result_features += cls.search_post(providers_business.get_providers()[provider],
+                result_features += cls.search_post(providers_business.get_providers()[provider]['url'],
                                                                collection, bbox, time, cloud_cover, limit)
             elif method == 'GET':
-                result_features += cls.search_get(providers_business.get_providers()[provider],
+                result_features += cls.search_get(providers_business.get_providers()[provider]['url'],
                                                    collection, bbox,
                                                    time=time, limit=limit)
             else:
