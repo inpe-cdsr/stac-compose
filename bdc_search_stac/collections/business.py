@@ -48,27 +48,31 @@ class CollectionsBusiness():
         if limit:
             # limit
             data['limit'] = limit if int(limit) <= 1000 else 1000
+        
+        try:
+            response = CollectionsServices.search_post(url, data)
+            if not response:
+                return []
 
-        response = CollectionsServices.search_post(url, data)
+            result_features = []
+            # get all features
+            if int(limit) <= 1000 or int(response['meta']['found']) <= 1000:
+                result_features += response['features']
 
-        if not response:
+            # get 1000 features at a time
+            else:
+                qnt_all_features = response['meta']['found']
+                for x in range(0, int(qnt_all_features/1000)+1):
+                    data['page'] = x+1
+                    response_by_page = CollectionsServices.search_post(url, data)
+                    if response_by_page:
+                        result_features += response_by_page['features']
+
+            return result_features
+            
+        except Exception as e:
             return []
-
-        result_features = []
-        # get all features
-        if int(limit) <= 1000 or int(response['meta']['found']) <= 1000:
-            result_features += response['features']
-
-        # get 1000 features at a time
-        else:
-            qnt_all_features = response['meta']['found']
-            for x in range(0, int(qnt_all_features/1000)+1):
-                data['page'] = x+1
-                response_by_page = CollectionsServices.search_post(url, data)
-                if response_by_page:
-                    result_features += response_by_page['features']
-
-        return result_features
+        
 
     @classmethod
     def search_get(cls, url, collection, bbox, time=None, cloud_cover=None, limit=300):
@@ -82,12 +86,14 @@ class CollectionsBusiness():
             # cloud cover
             query += '&eo:cloud_cover=0/{}'.format(cloud_cover)
 
-        response = CollectionsServices.search_items(url, collection, query)
+        try:
+            response = CollectionsServices.search_items(url, collection, query)
+            if not response:
+                return []
 
-        if not response:
+            return response['features'] if response.get('features') else [response]
+        except Exception as e:
             return []
-
-        return response['features'] if response.get('features') else [response]
 
     @classmethod
     def search(cls, collections, bbox, cloud_cover=False, time=False, limit=100):
