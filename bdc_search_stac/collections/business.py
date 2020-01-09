@@ -31,53 +31,53 @@ class CollectionsBusiness():
         return result_by_provider
 
     @classmethod
-    def search_post(cls, url, collection, bbox, time=False, cloud_cover=False, limit=100):
-        data = {
-            'bbox': bbox.split(','),
-            'query': {
-                'collection': { 'eq': collection }
+    def search_post(cls, url, collections, bbox, time=False, cloud_cover=False, limit=100):
+        result_features = []
+        for collection in collections:
+            data = {
+                'bbox': bbox.split(','),
+                'query': {
+                    'collections': { 'eq': collection }
+                }
             }
-        }
 
-        if cloud_cover:
-            # cloud cover
-            data['query']['eo:cloud_cover'] = { "lt": cloud_cover }
-        if time:
-            # range temporal
-            data['time'] = time
-        if limit:
-            # limit
-            data['limit'] = limit if int(limit) <= 1000 else 1000
-        
-        try:
-            response = CollectionsServices.search_post(url, data)
-            if not response:
-                return []
-
-            result_features = []
-            # get all features
-            if int(limit) <= 1000 or int(response['meta']['found']) <= 1000:
-                result_features += response['features']
-
-            # get 1000 features at a time
-            else:
-                qnt_all_features = response['meta']['found']
-                for x in range(0, int(qnt_all_features/1000)+1):
-                    data['page'] = x+1
-                    response_by_page = CollectionsServices.search_post(url, data)
-                    if response_by_page:
-                        result_features += response_by_page['features']
-
-            return result_features
+            if cloud_cover:
+                # cloud cover
+                data['query']['eo:cloud_cover'] = { "lt": cloud_cover }
+            if time:
+                # range temporal
+                data['time'] = time
+            if limit:
+                # limit
+                data['limit'] = limit if int(limit) <= 1000 else 1000
             
-        except Exception as e:
-            return []
-        
+            try:
+                response = CollectionsServices.search_post(url, data)
+                if not response:
+                    continue
+
+                # get all features
+                if int(limit) <= 1000 or int(response['meta']['found']) <= 1000:
+                    result_features += response['features']
+
+                # get 1000 features at a time
+                else:
+                    qnt_all_features = response['meta']['found']
+                    for x in range(0, int(qnt_all_features/1000)+1):
+                        data['page'] = x+1
+                        response_by_page = CollectionsServices.search_post(url, data)
+                        if response_by_page:
+                            result_features += response_by_page['features']
+
+            except Exception as e:
+                continue
+        return result_features
 
     @classmethod
-    def search_get(cls, url, collection, bbox, time=None, cloud_cover=None, limit=300):
+    def search_get(cls, url, collections, bbox, time=None, cloud_cover=None, limit=300):
         query = 'bbox={}'.format(bbox)
         query += '&limit={}'.format(limit)
+        query += '&collections={}'.format(','.join(collections))
 
         if time:
             # range temporal
@@ -87,7 +87,7 @@ class CollectionsBusiness():
             query += '&eo:cloud_cover=0/{}'.format(cloud_cover)
 
         try:
-            response = CollectionsServices.search_items(url, collection, query)
+            response = CollectionsServices.search_get(url, query)
             if not response:
                 return []
 
@@ -99,20 +99,18 @@ class CollectionsBusiness():
     def search(cls, collections, bbox, cloud_cover=False, time=False, limit=100):
         result_features = []
 
-        for cp in collections.split(','):
-            cp = cp.split(':')
-            provider = cp[0]
-            collection = cp[1]
-            method = providers_business.get_providers_methods()[provider]
+        providers = list(set([p.split(':')[0] for p in collections.split(',')]))
+        for p in providers:
+            cs = [c.split(':')[1] for c in collections.split(',') if c.split(':')[0] == p]
+            method = providers_business.get_providers_methods()[p]
 
             if method == 'POST':
-                result_features += cls.search_post(providers_business.get_providers()[provider]['url'],
-                                                               collection, bbox, time, cloud_cover, limit)
+                result_features += cls.search_post(providers_business.get_providers()[p]['url'],
+                                                               cs, bbox, time, cloud_cover, limit)
             elif method == 'GET':
-                result_features += cls.search_get(providers_business.get_providers()[provider]['url'],
-                                                   collection, bbox,
-                                                   time=time, limit=limit)
+                result_features += cls.search_get(providers_business.get_providers()[p]['url'],
+                                                   cs, bbox, time=time, limit=limit)
             else:
-                raise BadRequest('Unexpected provider: {}'.format(provider))
+                raise BadRequest('Unexpected provider: {}'.format(p))
 
         return result_features

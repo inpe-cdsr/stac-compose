@@ -27,6 +27,15 @@ class CollectionsServices():
         return None
 
     @classmethod
+    def search_get(cls, url, query):
+        base_url = '{}/stac/search?{}'.format(url, query)
+
+        r = requests.get(base_url, headers={})
+        if r and r.status_code in (200, 201):
+            return json.loads(r.text)
+        return None
+
+    @classmethod
     def search_post(cls, url, data):
         base_url = '{}/stac/search'.format(url)
 
