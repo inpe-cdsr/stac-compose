@@ -1,5 +1,14 @@
 {
-  "DEVELOPMENT_SEED_STAC": {
+  "INPE-CDSR": {
+    "url": "http://dgi_catalog_nginx:8089/inpe-stac",
+    "type":"stac",
+    "version": "0.7.0",
+    "method": "GET",
+    "filter_mult_collection": 1,
+    "require_credentials": 1,
+    "downloadable": 1
+  },
+  "LANDAST8-SENTINEL2-AWS": {
     "url": "https://sat-api.developmentseed.org",
     "type":"stac",
     "version": "0.6.0",
@@ -8,7 +17,7 @@
     "require_credentials": 0,
     "downloadable": 0
   },
-  "KEPLER_STAC": {
+  "CBERS4-AWS": {
     "url": "https://stac.amskepler.com/v07",
     "type":"stac",
     "version": "0.7.0",
@@ -16,14 +25,5 @@
     "filter_mult_collection": 0,
     "require_credentials": 0,
     "downloadable": 0
-  },
-  "INPE_STAC": {
-    "url": "http://cdsr.dpi.inpe.br/inpe-stac",
-    "type":"stac",
-    "version": "0.7.0",
-    "method": "GET",
-    "filter_mult_collection": 1,
-    "require_credentials": 1,
-    "downloadable": 1
   }
 }

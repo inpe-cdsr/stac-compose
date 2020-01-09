@@ -62,4 +62,5 @@ Build image:
 
 ```
 docker build -t stac_compose -f docker/dev.Dockerfile . --no-cache
+docker build -t registry.dpi.inpe.br/dgi/stac_compose:0.1.2 -f docker/prod.Dockerfile . --no-cache
 ```
