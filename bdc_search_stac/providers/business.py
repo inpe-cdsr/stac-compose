@@ -18,6 +18,7 @@ class ProvidersBusiness():
         self.__method__ = {}
         self.__require_credentials__ = {}
         self.__downloadable__ = {}
+        self.__filter_mult_collection__ = {}
 
         self.__objs__ = {}
 
@@ -27,6 +28,7 @@ class ProvidersBusiness():
             self.__method__[key] = data[key]['method']
             self.__require_credentials__[key] = data[key]['require_credentials']
             self.__downloadable__[key] = data[key]['downloadable']
+            self.__filter_mult_collection__[key] = data[key]['filter_mult_collection']
 
             self.__objs__[key] = {
                 "url": data[key]['url'],
@@ -48,3 +50,6 @@ class ProvidersBusiness():
 
     def get_downloadable(self):
         return self.__downloadable__
+
+    def get_filter_mult_collection(self):
+        return self.__filter_mult_collection__
