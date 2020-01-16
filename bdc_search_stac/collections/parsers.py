@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from cerberus import Validator
 from datetime import datetime
 

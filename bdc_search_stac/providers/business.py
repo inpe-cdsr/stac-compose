@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 
 from json import load
 # from pprint import pprint
@@ -41,7 +42,7 @@ class ProvidersBusiness():
 
     def get_providers_version(self):
         return self.__versions__
-    
+
     def get_providers_methods(self):
         return self.__method__
 

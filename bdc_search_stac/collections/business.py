@@ -1,4 +1,6 @@
 
+#!/usr/bin/env python3
+
 from pprint import pprint
 
 from werkzeug.exceptions import BadRequest
@@ -50,7 +52,7 @@ class CollectionsBusiness():
             if limit:
                 # limit
                 data['limit'] = limit if int(limit) <= 1000 else 1000
-            
+
             try:
                 response = CollectionsServices.search_post(url, data)
                 if not response:
