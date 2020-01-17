@@ -8,12 +8,12 @@ os_environ_get = environ.get
 
 FLASK_ENV = os_environ_get('FLASK_ENV', 'production')
 
-HOST = os_environ_get('SERVER_HOST', '0.0.0.0')
+SERVER_HOST = os_environ_get('SERVER_HOST', '0.0.0.0')
 
 try:
-    PORT = int(os_environ_get('PORT', '5000'))
+    SERVER_PORT = int(os_environ_get('SERVER_PORT', '5000'))
 except ValueError:
-    PORT = 5000
+    SERVER_PORT = 5000
 
 # default logging level in production server
 LOGGING_LEVEL = INFO
