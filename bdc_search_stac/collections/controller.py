@@ -10,7 +10,7 @@ from bdc_search_stac.collections.business import CollectionsBusiness
 from bdc_search_stac.collections.parsers import validate
 from bdc_core.utils.flask import APIResource
 
-from bdc_search_stac.util import logging
+from bdc_search_stac.log import logging
 
 
 api = ns
@@ -41,10 +41,9 @@ class ItemsController(APIResource):
 @api.route('/items')
 class CollectionsController(APIResource):
     """
-    Example of full route: http://localhost:8089/stac-compose/collections/items? \
-        collections=development_seed_stac:landsat-8-l1,kepler_stac:CBERS4MUX,kepler_stac:CBERS4PAN10M& \
-        bbox=-58.35937500000001,-15.029685756555674,-51.63574218750001,-10.919617760254685& \
-        time=2019-11-02T00:00:00/2019-12-02T23:59:00&limit=10000
+    Example of full route:
+        - http://localhost:8089/stac-compose/collections/items?collections=INPE-CDSR:CB4A_MUX_L2_DN,INPE-CDSR:CB4A_WFI_L2_DN,LANDAST8-SENTINEL2-AWS:landsat-8-l1,CBERS4-AWS:CBERS4AWFI,BRAZILDATACUBE:C64mMEDIAN&bbox=-72.1114203679271,-28.76765910569124,-37.911404889445116,0.6591651462894632&time=2019-09-07T00:00:00/2020-01-21T23:59:00&limit=10000
+        - http://localhost:8089/stac-compose/collections/items?collections=CBERS4-AWS:CBERS4AWFI,BRAZILDATACUBE:C64mMEDIAN&bbox=-72.1114203679271,-28.76765910569124,-37.911404889445116,0.6591651462894632&time=2019-09-07T00:00:00/2020-01-21T23:59:00&limit=10000
     """
 
     def get(self):

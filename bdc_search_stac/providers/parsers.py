@@ -6,10 +6,9 @@ from datetime import datetime
 from bdc_search_stac.providers.business import ProvidersBusiness
 
 
-providers_business = ProvidersBusiness()
-
-
 def validate_providers(providers):
+    providers_business = ProvidersBusiness()
+
     bdc_providers = providers_business.get_providers().keys()
 
     for p in providers.split(','):

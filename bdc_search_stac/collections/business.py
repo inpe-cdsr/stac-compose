@@ -9,17 +9,15 @@ from bdc_search_stac.collections.services import CollectionsServices
 from bdc_search_stac.providers.business import ProvidersBusiness
 
 
-providers_business = ProvidersBusiness()
-
-
 class CollectionsBusiness():
+    providers_business = ProvidersBusiness()
 
     @classmethod
     def get_collections_by_providers(cls, providers):
         result_by_provider = {}
 
         for p in providers.split(','):
-            response = CollectionsServices.search_collections(providers_business.get_providers()[p]['url'])
+            response = CollectionsServices.search_collections(cls.providers_business.get_providers()[p]['url'])
 
             if response.get('collections'):
                 result_by_provider[p] = [c['id'] for c in response['collections']]
@@ -35,6 +33,7 @@ class CollectionsBusiness():
     @classmethod
     def search_post(cls, url, collections, bbox, time=False, cloud_cover=False, limit=100):
         result_features = []
+
         for collection in collections:
             data = {
                 'bbox': bbox.split(','),
@@ -74,6 +73,7 @@ class CollectionsBusiness():
             except Exception as e:
                 continue
         return result_features
+
 
     @classmethod
     def search_get(cls, url, collections, bbox, time=None, cloud_cover=None, limit=300):
@@ -126,21 +126,19 @@ class CollectionsBusiness():
 
         providers = list(set([p.split(':')[0] for p in collections.split(',')]))
         for p in providers:
+            url = cls.providers_business.get_providers()[p]['url']
             cs = [c.split(':')[1] for c in collections.split(',') if c.split(':')[0] == p]
-            method = providers_business.get_providers_methods()[p]
-            filter_mult = providers_business.get_filter_mult_collection()[p]
+            method = cls.providers_business.get_providers_methods()[p]
+            filter_mult = cls.providers_business.get_filter_mult_collection()[p]
 
             if method == 'POST':
-                result_features += cls.search_post(providers_business.get_providers()[p]['url'],
-                                                               cs, bbox, time, cloud_cover, limit)
+                result_features += cls.search_post(url, cs, bbox, time, cloud_cover, limit)
             elif method == 'GET':
                 if filter_mult:
-                    result_features += cls.search_get(providers_business.get_providers()[p]['url'],
-                                                    cs, bbox, time=time, limit=limit)
+                    result_features += cls.search_get(url, cs, bbox, time=time, limit=limit)
                 else:
                     for c in cs:
-                        result_features += cls.search_get_items(providers_business.get_providers()[p]['url'],
-                                                        c, bbox, time=time, limit=limit)
+                        result_features += cls.search_get_items(url, c, bbox, time=time, limit=limit)
             else:
                 raise BadRequest('Unexpected provider: {}'.format(p))
 
