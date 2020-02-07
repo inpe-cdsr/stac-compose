@@ -1,12 +1,16 @@
 
 #!/usr/bin/env python3
 
-from pprint import pprint
+from pprint import PrettyPrinter
 
 from werkzeug.exceptions import BadRequest
 
 from bdc_search_stac.collections.services import CollectionsServices
 from bdc_search_stac.providers.business import ProvidersBusiness
+from bdc_search_stac.log import logging
+
+
+pp = PrettyPrinter(indent=4)
 
 
 class CollectionsBusiness():
@@ -31,65 +35,59 @@ class CollectionsBusiness():
         return result_by_provider
 
     @classmethod
-    def search_post(cls, url, collections, bbox, time=False, cloud_cover=False, limit=100):
-        result_features = []
+    def search_post(cls, url, collection, bbox, time=False, cloud_cover=False, limit=100):
+        logging.info('CollectionsBusiness.search_post()')
 
-        for collection in collections:
-            data = {
-                'bbox': bbox.split(','),
-                'query': {
-                    'collection': { 'eq': collection }
-                }
-            }
+        logging.info('CollectionsBusiness.search_post() - url: %s', url)
+        logging.info('CollectionsBusiness.search_post() - collection: %s', collection)
 
-            if cloud_cover:
-                # cloud cover
-                data['query']['eo:cloud_cover'] = { "lt": cloud_cover }
-            if time:
-                # range temporal
-                data['time'] = time
-            if limit:
-                # limit
-                data['limit'] = limit if int(limit) <= 1000 else 1000
+        data = {
+            'bbox': bbox.split(','),
+            'query': {
+                'collection': { 'eq': collection }
+            },
+            'limit': limit if int(limit) <= 1000 else 1000
+        }
 
-            try:
-                response = CollectionsServices.search_post(url, data)
-                if not response:
-                    continue
+        if cloud_cover:
+            data['query']['eo:cloud_cover'] = { "lt": cloud_cover }
+        if time:
+            data['time'] = time
 
-                # get all features
-                if int(limit) <= 1000 or int(response['meta']['found']) <= 1000:
-                    result_features += response['features']
+        logging.info('CollectionsBusiness.search_post() - data: %s', data)
 
-                # get 1000 features at a time
-                else:
-                    qnt_all_features = response['meta']['found']
-                    for x in range(0, int(qnt_all_features/1000)+1):
-                        data['page'] = x+1
-                        response_by_page = CollectionsServices.search_post(url, data)
-                        if response_by_page:
-                            result_features += response_by_page['features']
+        try:
+            response = CollectionsServices.search_post(url, data)
 
-            except Exception as e:
-                continue
-        return result_features
+            # logging.debug('CollectionsBusiness.search_post() - response: %s', response)
 
+            return CollectionsServices.search_post(url, data)
+        except Exception as e:
+            return None
 
     @classmethod
     def search_get(cls, url, collections, bbox, time=None, cloud_cover=None, limit=300):
+        logging.info('CollectionsBusiness.search_get()')
+
+        logging.info('CollectionsBusiness.search_get() - url: %s', url)
+        logging.info('CollectionsBusiness.search_get() - collections: %s', collections)
+
         query = 'bbox={}'.format(bbox)
         query += '&limit={}'.format(limit)
         query += '&collections={}'.format(','.join(collections))
 
         if time:
-            # range temporal
             query += '&time={}'.format(time)
         if cloud_cover:
-            # cloud cover
             query += '&eo:cloud_cover=0/{}'.format(cloud_cover)
+
+        logging.info('CollectionsBusiness.search_get() - query: %s', query)
 
         try:
             response = CollectionsServices.search_get(url, query)
+
+            logging.info('CollectionsBusiness.search_get() - response: %s', response)
+
             if not response:
                 return []
 
@@ -97,49 +95,78 @@ class CollectionsBusiness():
         except Exception as e:
             return []
 
-
     @classmethod
     def search_get_items(cls, url, collection, bbox, time=None, cloud_cover=None, limit=300):
+        logging.info('CollectionsBusiness.search_get_items()')
+
+        logging.info('CollectionsBusiness.search_get_items() - url: %s', url)
+        logging.info('CollectionsBusiness.search_get_items() - collection: %s', collection)
+
         query = 'bbox={}'.format(bbox)
         query += '&limit={}'.format(limit)
 
         if time:
-            # range temporal
             query += '&time={}'.format(time)
         if cloud_cover:
-            # cloud cover
             query += '&eo:cloud_cover=0/{}'.format(cloud_cover)
+
+        logging.info('CollectionsBusiness.search_get_items() - query: %s', query)
 
         try:
             response = CollectionsServices.search_items(url, collection, query)
-            if not response:
-                return []
 
-            return response['features'] if response.get('features') else [response]
+            # logging.debug('CollectionsBusiness.search_get_items() - response: %s', response)
+
+            return response
         except Exception as e:
-            return []
-
+            return None
 
     @classmethod
     def search(cls, collections, bbox, cloud_cover=False, time=False, limit=100):
-        result_features = []
+        logging.info('CollectionsBusiness.search()')
 
+        result_dict = {}
         providers = list(set([p.split(':')[0] for p in collections.split(',')]))
-        for p in providers:
-            url = cls.providers_business.get_providers()[p]['url']
-            cs = [c.split(':')[1] for c in collections.split(',') if c.split(':')[0] == p]
-            method = cls.providers_business.get_providers_methods()[p]
-            filter_mult = cls.providers_business.get_filter_mult_collection()[p]
+
+        logging.info('CollectionsBusiness.search() - providers: %s', providers)
+
+        for provider in providers:
+            logging.info('CollectionsBusiness.search() - provider: %s', provider)
+
+            url = cls.providers_business.get_providers()[provider]['url']
+            cs = [c.split(':')[1] for c in collections.split(',') if c.split(':')[0] == provider]
+            method = cls.providers_business.get_providers_methods()[provider]
+            filter_mult = cls.providers_business.get_filter_mult_collection()[provider]
+
+            logging.info('CollectionsBusiness.search() - url: %s', url)
+            logging.info('CollectionsBusiness.search() - cs: %s', cs)
+            logging.info('CollectionsBusiness.search() - method: %s', method)
+            logging.info('CollectionsBusiness.search() - filter_mult: %s', filter_mult)
+
+            # if there is not a provider inside the dict, then initialize it
+            if provider not in result_dict:
+                result_dict[provider] = {}
 
             if method == 'POST':
-                result_features += cls.search_post(url, cs, bbox, time, cloud_cover, limit)
+                for collection in cs:
+                    result = cls.search_post(url, collection, bbox, time, cloud_cover, limit)
+
+                    # add the result to the corresponding collection
+                    result_dict[provider][collection] = result
+
             elif method == 'GET':
                 if filter_mult:
-                    result_features += cls.search_get(url, cs, bbox, time=time, limit=limit)
-                else:
-                    for c in cs:
-                        result_features += cls.search_get_items(url, c, bbox, time=time, limit=limit)
-            else:
-                raise BadRequest('Unexpected provider: {}'.format(p))
+                    # TODO: fixing this line to return separate by collection and not just by provider (like the other ones)
+                    result = cls.search_get(url, cs, bbox, time=time, limit=limit)
 
-        return result_features
+                    result_dict[provider] = result
+                else:
+                    for collection in cs:
+                        result = cls.search_get_items(url, collection, bbox, time=time, limit=limit)
+
+                        # add the result to the corresponding collection
+                        result_dict[provider][collection] = result
+            else:
+                raise BadRequest('Unexpected provider: {}'.format(provider))
+
+        return result_dict

@@ -1,19 +1,22 @@
 #!/usr/bin/env python3
 
 import os, json
+
 from flask import request
 from werkzeug.exceptions import InternalServerError, BadRequest
 from werkzeug.datastructures import ImmutableMultiDict
+from pprint import PrettyPrinter
 
 from bdc_search_stac.collections import ns
 from bdc_search_stac.collections.business import CollectionsBusiness
 from bdc_search_stac.collections.parsers import validate
 from bdc_core.utils.flask import APIResource
-
 from bdc_search_stac.log import logging
 
 
 api = ns
+
+pp = PrettyPrinter(indent=4)
 
 
 @api.route('/')
@@ -52,12 +55,11 @@ class CollectionsController(APIResource):
         if status is False:
             raise BadRequest(json.dumps(data))  # 400 - Bad Request
 
-        # Search RF in STAC's
+        logging.warning('CollectionsController.get() - data: %s', data)
+
         features = CollectionsBusiness.search(**request.args)
 
-        return {
-            "meta": {
-                "found": len(features)
-            },
-            "features": features
-        }
+        # logging.debug('\nCollectionsController.get() - features: %s \n\n', features)
+        # pp.pprint(features)
+
+        return features
