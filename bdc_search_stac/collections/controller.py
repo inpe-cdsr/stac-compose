@@ -45,8 +45,14 @@ class ItemsController(APIResource):
 class CollectionsController(APIResource):
     """
     Example of full route:
-        - http://localhost:8089/stac-compose/collections/items?collections=INPE-CDSR:CB4A_MUX_L2_DN,INPE-CDSR:CB4A_WFI_L2_DN,LANDAST8-SENTINEL2-AWS:landsat-8-l1,CBERS4-AWS:CBERS4AWFI,BRAZILDATACUBE:C64mMEDIAN&bbox=-72.1114203679271,-28.76765910569124,-37.911404889445116,0.6591651462894632&time=2019-09-07T00:00:00/2020-01-21T23:59:00&limit=10000
-        - http://localhost:8089/stac-compose/collections/items?collections=CBERS4-AWS:CBERS4AWFI,BRAZILDATACUBE:C64mMEDIAN&bbox=-72.1114203679271,-28.76765910569124,-37.911404889445116,0.6591651462894632&time=2019-09-07T00:00:00/2020-01-21T23:59:00&limit=10000
+        - collections=LANDAST8-SENTINEL2-AWS:landsat-8-l1,LANDAST8-SENTINEL2-AWS:sentinel-2-l1c and limit=10:
+            http://localhost:8089/stac-compose/collections/items?collections=LANDAST8-SENTINEL2-AWS:landsat-8-l1,LANDAST8-SENTINEL2-AWS:sentinel-2-l1c&bbox=-68.0273437,-25.0059726,-34.9365234,0.3515602&time=2020-01-13T00:00:00/2020-02-13T23:59:00&limit=10
+
+        - collections=LANDAST8-SENTINEL2-AWS:sentinel-2-l1 and limit=10:
+            http://localhost:8089/stac-compose/collections/items?collections=LANDAST8-SENTINEL2-AWS:sentinel-2-l1c&bbox=-68.0273437,-25.0059726,-34.9365234,0.3515602&time=2020-01-13T00:00:00/2020-02-13T23:59:00&limit=10
+
+        - collections=LANDAST8-SENTINEL2-AWS:sentinel-2-l1 and limit=2000
+            http://localhost:8089/stac-compose/collections/items?collections=LANDAST8-SENTINEL2-AWS:sentinel-2-l1c&bbox=-68.0273437,-25.0059726,-34.9365234,0.3515602&time=2020-01-13T00:00:00/2020-02-13T23:59:00&limit=2000
     """
 
     def get(self):

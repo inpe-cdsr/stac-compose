@@ -12,6 +12,8 @@ from bdc_search_stac.log import logging
 
 pp = PrettyPrinter(indent=4)
 
+MAX_LIMIT_DEV_SEED = 1000
+
 
 class CollectionsBusiness():
     providers_business = ProvidersBusiness()
@@ -35,7 +37,7 @@ class CollectionsBusiness():
         return result_by_provider
 
     @classmethod
-    def search_post(cls, url, collection, bbox, time=False, cloud_cover=False, limit=100):
+    def search_post(cls, url, collection, bbox, time=False, cloud_cover=False, page=1, limit=100):
         logging.info('CollectionsBusiness.search_post()')
 
         logging.info('CollectionsBusiness.search_post() - url: %s', url)
@@ -46,11 +48,12 @@ class CollectionsBusiness():
             'query': {
                 'collection': { 'eq': collection }
             },
-            'limit': limit if int(limit) <= 1000 else 1000
+            'page': page,
+            'limit': limit
         }
 
         if cloud_cover:
-            data['query']['eo:cloud_cover'] = { "lt": cloud_cover }
+            data['query']['eo:cloud_cover'] = { 'lt': cloud_cover }
         if time:
             data['time'] = time
 
@@ -61,7 +64,7 @@ class CollectionsBusiness():
 
             # logging.debug('CollectionsBusiness.search_post() - response: %s', response)
 
-            return CollectionsServices.search_post(url, data)
+            return response
         except Exception as e:
             return None
 
@@ -125,6 +128,15 @@ class CollectionsBusiness():
     def search(cls, collections, bbox, cloud_cover=False, time=False, limit=100):
         logging.info('CollectionsBusiness.search()')
 
+        # limit is a string, then I need to convert it
+        limit = int(limit)
+
+        logging.info('CollectionsBusiness.search() - collections: %s', collections)
+        logging.info('CollectionsBusiness.search() - bbox: %s', bbox)
+        logging.info('CollectionsBusiness.search() - cloud_cover: %s', cloud_cover)
+        logging.info('CollectionsBusiness.search() - time: %s', time)
+        logging.info('CollectionsBusiness.search() - limit: %s', limit)
+
         result_dict = {}
         providers = list(set([p.split(':')[0] for p in collections.split(',')]))
 
@@ -149,10 +161,67 @@ class CollectionsBusiness():
 
             if method == 'POST':
                 for collection in cs:
-                    result = cls.search_post(url, collection, bbox, time, cloud_cover, limit)
+                    logging.info('CollectionsBusiness.search() - collection: %s', collection)
+                    logging.info('CollectionsBusiness.search() - MAX_LIMIT_DEV_SEED: %s', MAX_LIMIT_DEV_SEED)
 
-                    # add the result to the corresponding collection
+                    # initialize collection
+                    result_dict[provider][collection] = None
+
+                    # if 'limit' is less than the maximum I can search, then I can use 'limit' to search my features just one time
+                    if limit <= MAX_LIMIT_DEV_SEED:
+                        limit_to_search = limit
+                    # if 'limit' is greater than the maximum I can search, then I use the maximum number and I search by pages
+                    else:
+                        limit_to_search = MAX_LIMIT_DEV_SEED
+
+                    # if I'm searching by the first, and only one, page [...]
+                    result = cls.search_post(url, collection, bbox, time, cloud_cover, 1, limit_to_search)
+
+                    # logging.debug('CollectionsBusiness.search() - result: %s', result)
+
+                    # [...] then I add it to the dict directly
                     result_dict[provider][collection] = result
+
+                    found = int(result['meta']['found'])
+
+                    logging.debug('CollectionsBusiness.search() - found: %s', found)
+
+                    # if I've already got all features, then I go out of the loop
+                    if limit <= MAX_LIMIT_DEV_SEED or found <= MAX_LIMIT_DEV_SEED:
+                        logging.debug('CollectionsBusiness.search() - just one result was found')
+                        continue
+                    else:
+                        logging.debug('CollectionsBusiness.search() - more than one result was found')
+
+                        # if there is more results to get, I'm going to search them by pagination
+                        for page in range(2, int(found/MAX_LIMIT_DEV_SEED) + 1):
+                            logging.info('CollectionsBusiness.search() - page: %s', page)
+
+                            result = cls.search_post(url, collection, bbox, time, cloud_cover, page, MAX_LIMIT_DEV_SEED)
+
+                            # logging.debug('CollectionsBusiness.search() - result: %s', result)
+
+                            # if I'm on other page, then I increase the old result
+                            result_dict[provider][collection]['features'] += result['features']
+                            result_dict[provider][collection]['meta']['returned'] += result['meta']['returned']
+
+                            # logging.debug('CollectionsBusiness.search() - result_dict[provider][collection]: %s', result_dict[provider][collection])
+
+                        # get found variable based on 'result_dict[provider][collection]['meta']['found']'
+                        result = result_dict[provider][collection]
+                        # if there is not a '['meta']['found']' key inside 'result_dict[provider][collection]',
+                        # then return 0, in other words, nothing was found
+                        found = int(result['meta']['found']) if 'meta' in result and 'found' in result['meta'] else 0
+
+                        logging.info('CollectionsBusiness.search() - found: %s', found)
+                        logging.info('CollectionsBusiness.search() - returned: %s', result_dict[provider][collection]['meta']['returned'])
+
+                        # if something was found, then fill 'limit' key with the true limit
+                        if found:
+                            result_dict[provider][collection]['meta']['limit'] = limit
+
+                        # logging.debug('CollectionsBusiness.search() - 2 result_dict[provider][collection]: %s', result_dict[provider][collection])
+                        logging.debug('\n\nCollectionsBusiness.search() - the end\n\n')
 
             elif method == 'GET':
                 if filter_mult:
