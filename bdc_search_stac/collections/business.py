@@ -37,7 +37,7 @@ class CollectionsBusiness():
         return result_by_provider
 
     @classmethod
-    def search_post(cls, url, collection, bbox, time=False, cloud_cover=False, page=1, limit=100):
+    def search_post(cls, url, collection, bbox, time=False, cloud_cover=None, page=1, limit=100):
         logging.info('CollectionsBusiness.search_post()')
 
         logging.info('CollectionsBusiness.search_post() - url: %s', url)
@@ -57,7 +57,8 @@ class CollectionsBusiness():
             'limit': limit
         }
 
-        if cloud_cover:
+        # if cloud_cover is a number and not a boolean
+        if isinstance(cloud_cover, (int, float)) and not isinstance(cloud_cover, bool):
             data['query']['eo:cloud_cover'] = { 'lte': cloud_cover }
         if time:
             data['time'] = time

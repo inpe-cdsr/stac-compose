@@ -62,11 +62,11 @@ Build image:
 
 ```
 docker build -t inpe-cdsr-stac_compose -f docker/dev.Dockerfile . --no-cache
-docker build -t registry.dpi.inpe.br/inpe-cdsr/stac-compose:0.0.1 -f docker/prod.Dockerfile . --no-cache
+docker build -t registry.dpi.inpe.br/inpe-cdsr/stac-compose:0.0.2 -f docker/prod.Dockerfile . --no-cache
 ```
 
 Push image to registry:
 
 ```
-docker push registry.dpi.inpe.br/inpe-cdsr/stac-compose:0.0.1
+docker push registry.dpi.inpe.br/inpe-cdsr/stac-compose:0.0.2
 ```
