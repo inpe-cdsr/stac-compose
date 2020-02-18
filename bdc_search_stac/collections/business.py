@@ -194,10 +194,10 @@ class CollectionsBusiness():
                         logging.debug('CollectionsBusiness.search() - more than one result was found')
 
                         # if there is more results to get, I'm going to search them by pagination
-                        for page in range(2, int(found/MAX_LIMIT_DEV_SEED) + 1):
+                        for page in range(2, int(limit/MAX_LIMIT_DEV_SEED) + 1):
                             logging.info('CollectionsBusiness.search() - page: %s', page)
 
-                            result = cls.search_post(url, collection, bbox, time, cloud_cover, page, MAX_LIMIT_DEV_SEED)
+                            result = cls.search_post(url, collection, bbox, time, cloud_cover, page, limit_to_search)
 
                             # logging.debug('CollectionsBusiness.search() - result: %s', result)
 
