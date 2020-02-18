@@ -58,10 +58,11 @@ class CollectionsController(APIResource):
     def get(self):
         data, status = validate(request.args.to_dict(flat=True), 'search')
 
+        logging.info('CollectionsController.get() - data: %s', data)
+        logging.info('CollectionsController.get() - status: %s', status)
+
         if status is False:
             raise BadRequest(json.dumps(data))  # 400 - Bad Request
-
-        logging.warning('CollectionsController.get() - data: %s', data)
 
         features = CollectionsBusiness.search(**request.args)
 

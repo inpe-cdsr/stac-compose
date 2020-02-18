@@ -42,6 +42,11 @@ class CollectionsBusiness():
 
         logging.info('CollectionsBusiness.search_post() - url: %s', url)
         logging.info('CollectionsBusiness.search_post() - collection: %s', collection)
+        logging.info('CollectionsBusiness.search_post() - bbox: %s', bbox)
+        logging.info('CollectionsBusiness.search_post() - time: %s', time)
+        logging.info('CollectionsBusiness.search_post() - cloud_cover: %s', cloud_cover)
+        logging.info('CollectionsBusiness.search_post() - page: %s', page)
+        logging.info('CollectionsBusiness.search_post() - limit: %s', limit)
 
         data = {
             'bbox': bbox.split(','),
@@ -53,7 +58,7 @@ class CollectionsBusiness():
         }
 
         if cloud_cover:
-            data['query']['eo:cloud_cover'] = { 'lt': cloud_cover }
+            data['query']['eo:cloud_cover'] = { 'lte': cloud_cover }
         if time:
             data['time'] = time
 
@@ -130,6 +135,10 @@ class CollectionsBusiness():
 
         # limit is a string, then I need to convert it
         limit = int(limit)
+
+        # if cloud_cover is not False, in other words, it is a string, then I need to convert it
+        if cloud_cover:
+            cloud_cover = float(cloud_cover)
 
         logging.info('CollectionsBusiness.search() - collections: %s', collections)
         logging.info('CollectionsBusiness.search() - bbox: %s', bbox)

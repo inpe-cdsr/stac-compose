@@ -5,6 +5,7 @@ from datetime import datetime
 
 from bdc_search_stac.providers.parsers import validate_providers, providers
 
+
 def validate_date(s):
     dates = s.split("/")
     for date in dates:
@@ -12,22 +13,29 @@ def validate_date(s):
             return None
     return s
 
+
 def validate_collections(collections):
     ps = [p.split(':')[0] for p in collections.split(',')]
     if not validate_providers(','.join(ps)):
         return None
     return collections
 
+
 def validate_bbox(box):
     list_bbox = box.split(',')
     coordinates = [float(b) for b in list_bbox]
     return coordinates if len(coordinates) == 4 else None
 
+
 def validate_cloud(cloud):
-    return float(cloud) if float(cloud) > 0 and float(cloud) <= 100 else None
+    cloud = float(cloud)
+    return cloud if cloud >= 0 and cloud <= 100 else None
+
 
 def validate_limit(limit):
-    return int(limit) if float(limit) > 0 else None
+    limit = int(limit)
+    return limit if limit > 0 else None
+
 
 def search():
     base = {
@@ -38,6 +46,7 @@ def search():
         'limit': {"type": "number", "coerce": validate_limit, "empty": True, "required": False}
     }
     return base
+
 
 def validate(data, type_schema):
     schema = eval('{}()'.format(type_schema))
