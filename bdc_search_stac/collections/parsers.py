@@ -4,6 +4,7 @@ from cerberus import Validator
 from datetime import datetime
 
 from bdc_search_stac.providers.parsers import validate_providers, providers
+from bdc_search_stac.log import logging
 
 
 def validate_date(s):
@@ -22,9 +23,18 @@ def validate_collections(collections):
 
 
 def validate_bbox(box):
-    list_bbox = box.split(',')
-    coordinates = [float(b) for b in list_bbox]
-    return coordinates if len(coordinates) == 4 else None
+    # GET method
+    if isinstance(box, str):
+        list_bbox = box.split(',')
+        coordinates = [float(b) for b in list_bbox]
+        return coordinates if len(coordinates) == 4 else None
+
+    # POST method
+    if isinstance(box, list):
+        coordinates = box
+        return coordinates if len(coordinates) == 4 else None
+
+    return None
 
 
 def validate_cloud(cloud):
@@ -43,7 +53,8 @@ def search():
         'bbox': {"type": "list", "coerce": validate_bbox, "empty": False, "required": True},
         'cloud_cover': {"type": "number", "coerce": validate_cloud, "empty": True, "required": False},
         'time': {"type": "string", "coerce": validate_date, "empty": True, "required": False},
-        'limit': {"type": "number", "coerce": validate_limit, "empty": True, "required": False}
+        'limit': {"type": "number", "coerce": validate_limit, "empty": True, "required": False},
+        'query': {"type": "dict", "required": False}
     }
     return base
 

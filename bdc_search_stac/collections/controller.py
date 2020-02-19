@@ -56,6 +56,8 @@ class CollectionsController(APIResource):
     """
 
     def get(self):
+        logging.info('CollectionsController.get() - request.args: %s', request.args)
+
         data, status = validate(request.args.to_dict(flat=True), 'search')
 
         logging.info('CollectionsController.get() - data: %s', data)
@@ -70,3 +72,26 @@ class CollectionsController(APIResource):
         # pp.pprint(features)
 
         return features
+
+    # def post(self):
+    #     if request.is_json:
+    #         request_json = request.get_json()
+
+    #         logging.info('CollectionsController.post() - request_json: %s', request_json)
+
+    #         data, status = validate(request_json, 'search')
+
+    #         logging.info('CollectionsController.post() - data: %s', data)
+    #         logging.info('CollectionsController.post() - status: %s', status)
+
+    #         if status is False:
+    #             raise BadRequest(json.dumps(data))  # 400 - Bad Request
+
+    #         features = CollectionsBusiness.search(**request_json)
+
+    #         # logging.debug('\nCollectionsController.post() - features: %s \n\n', features)
+    #         # pp.pprint(features)
+
+    #         return features
+    #     else:
+    #         raise BadRequest("POST Request must be an application/json")

@@ -51,7 +51,9 @@ class CollectionsBusiness():
         data = {
             'bbox': bbox.split(','),
             'query': {
-                'collection': { 'eq': collection }
+                'collection': {
+                    'eq': collection
+                }
             },
             'page': page,
             'limit': limit
@@ -131,7 +133,7 @@ class CollectionsBusiness():
             return None
 
     @classmethod
-    def search(cls, collections, bbox, cloud_cover=False, time=False, limit=100):
+    def search(cls, collections, bbox, cloud_cover=False, time=False, limit=100, query=None):
         logging.info('CollectionsBusiness.search()')
 
         # limit is a string, then I need to convert it
@@ -146,6 +148,7 @@ class CollectionsBusiness():
         logging.info('CollectionsBusiness.search() - cloud_cover: %s', cloud_cover)
         logging.info('CollectionsBusiness.search() - time: %s', time)
         logging.info('CollectionsBusiness.search() - limit: %s', limit)
+        logging.info('CollectionsBusiness.search() - query: %s', query)
 
         result_dict = {}
         providers = list(set([p.split(':')[0] for p in collections.split(',')]))
