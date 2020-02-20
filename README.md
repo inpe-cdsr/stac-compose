@@ -21,52 +21,66 @@ Make sure you have the following libraries installed:
 Install [`pyenv`](https://github.com/pyenv/pyenv#basic-github-checkout) and [`pyenv-virtualenv`](https://github.com/pyenv/pyenv-virtualenv#installing-as-a-pyenv-plugin). After that, install Python 3.6.8 using pyenv:
 
 ```
-pyenv install 3.6.8
+$ pyenv install 3.6.8
 ```
 
 Create a Python environment with the Python version above through pyenv-virtualenv:
 
 ```
-pyenv virtualenv 3.6.8 inpe-cdsr-stac-compose
+$ pyenv virtualenv 3.6.8 inpe-cdsr-stac-compose
 ```
 
 Activate the environment:
 
 ```
-pyenv activate inpe-cdsr-stac-compose
+$ pyenv activate inpe-cdsr-stac-compose
 ```
 
 Install the requirements:
 
 ```
-pip install -r requirements.txt
+$ pip install -r requirements.txt
 ```
 
 
 ## Running
 
+Running the application:
+
 ```
-pyenv activate inpe-cdsr-stac-compose
-python manage.py run
+$ pyenv activate inpe-cdsr-stac-compose
+$ set -a && source environment.dev.env && set +a
+$ python manage.py run
+```
+
+Running the tests:
+
+```
+$ pyenv activate inpe-cdsr-stac-compose
+$ set -a && source environment.dev.env && set +a
+
+$ pytest
+or
+$ python -m pytest tests
 ```
 
 
 ### Running with docker
 
 ```
-docker-compose build
-docker-compose up -d
+$ docker-compose build
+$ docker-compose up -d
 ```
 
 Build image:
 
 ```
-docker build -t inpe-cdsr-stac-compose -f docker/dev.Dockerfile . --no-cache
-docker build -t registry.dpi.inpe.br/inpe-cdsr/stac-compose:0.0.2 -f docker/prod.Dockerfile . --no-cache
+$ docker build -t inpe-cdsr-stac-compose -f docker/dev.Dockerfile . --no-cache
+$ docker build -t registry.dpi.inpe.br/inpe-cdsr/stac-compose:0.0.2 -f docker/prod.Dockerfile . --no-cache
 ```
 
 Push image to registry:
 
 ```
-docker push registry.dpi.inpe.br/inpe-cdsr/stac-compose:0.0.2
+$ docker push registry.dpi.inpe.br/inpe-cdsr/stac-compose:0.0.2
 ```
