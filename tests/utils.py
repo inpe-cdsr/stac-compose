@@ -69,6 +69,11 @@ class StacComposeTester(TestCase):
     def get(self, expected_data={}, query_string={}, expected_status_code=200, expected_content_type='application/json'):
         result = self.__get(query_string)
 
+        # print('\nStacComposeTester.get() - self.get_urn(): ', self.get_urn())
+        # print('\nStacComposeTester.get() - query_string: ', query_string)
+        # print('\nStacComposeTester.get() - result.data: ', result.data)
+        # print('\nStacComposeTester.get() - loads(result.data): ', loads(result.data))
+
         self.assertEqual(expected_status_code, result.status_code)
         self.assertIn(expected_content_type, result.content_type)
         self.assertEqual(expected_data, loads(result.data))

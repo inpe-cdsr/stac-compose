@@ -4,10 +4,9 @@
 
 from tests.utils import StacComposeTester
 
-# - http://localhost:8089/stac-compose/collections?providers=INPE-CDSR
-# - http://localhost:8089/stac-compose/collections?providers=INPE-CDSR,LANDAST8-SENTINEL2-AWS,CBERS4-AWS
 
 URN = '/stac-compose/collections/'
+
 
 class TestStacComposeCollections(StacComposeTester):
 
@@ -36,6 +35,61 @@ class TestStacComposeCollections(StacComposeTester):
         }
 
         self.get(expected, query_string={'providers': 'INPE-CDSR'})
+
+    def test_get_stac_compose_collections__landsat8_sentinel2_aws(self):
+        expected = {
+            "LANDAST8-SENTINEL2-AWS": [
+                "landsat-8-l1",
+                "sentinel-2-l1c"
+            ]
+        }
+
+        self.get(expected, query_string={'providers': 'LANDAST8-SENTINEL2-AWS'})
+
+    def test_get_stac_compose_collections__cbers4_aws(self):
+        expected = {
+            "CBERS4-AWS": [
+                "CBERS4MUX",
+                "CBERS4AWFI",
+                "CBERS4PAN10M",
+                "CBERS4PAN5M"
+            ]
+        }
+
+        self.get(expected, query_string={'providers': 'CBERS4-AWS'})
+
+    def test_get_stac_compose_collections__inpe_cdsr_and_landsat8_sentinel2_aws_and_cbers4_aws(self):
+        expected = {
+            "INPE-CDSR": [
+                "CBERS4A_MUX_L2_DN",
+                "CBERS4A_MUX_L4_DN",
+                "CBERS4A_WFI_L2_DN",
+                "CBERS4A_WFI_L4_DN",
+                "CBERS4A_WPM_L2_DN",
+                "CBERS4_AWFI_L4_DN",
+                "CBERS4_AWFI_L4_SR",
+                "CBERS4_MUX_L2_DN",
+                "CBERS4_MUX_L4_DN",
+                "CBERS4_MUX_L4_SR",
+                "CBERS4_PAN10M_L2_DN",
+                "CBERS4_PAN10M_L4_DN",
+                "CBERS4_PAN5M_L4_DN",
+                "LANDSAT5_TM_L2_DN",
+                "LANDSAT5_TM_L4_DN"
+            ],
+            "LANDAST8-SENTINEL2-AWS": [
+                "landsat-8-l1",
+                "sentinel-2-l1c"
+            ],
+            "CBERS4-AWS": [
+                "CBERS4MUX",
+                "CBERS4AWFI",
+                "CBERS4PAN10M",
+                "CBERS4PAN5M"
+            ]
+        }
+
+        self.get(expected, query_string={'providers': 'INPE-CDSR,LANDAST8-SENTINEL2-AWS,CBERS4-AWS'})
 
 
 class TestStacComposeCollectionsError(StacComposeTester):
