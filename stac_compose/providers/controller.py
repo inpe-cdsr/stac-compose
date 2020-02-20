@@ -22,12 +22,8 @@ class ProviderController(APIResource):
     providers_business = ProvidersBusiness()
 
     def get(self):
-        """
-        List of STAC providers
-        """
+        """List of STAC providers"""
 
-        providers = {
+        return {
             "providers": self.providers_business.get_providers()
         }
-
-        return providers

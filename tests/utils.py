@@ -28,6 +28,9 @@ class StacComposeTester(TestCase):
     ######################################################################
 
     def get_urn(self):
+        if self.__urn__ is None:
+            raise StacComposeTesterException('There is not an available URN. You must set one by using StacComposeTester.set_urn() method.')
+
         return self.__urn__
 
     def set_urn(self, urn):
@@ -61,9 +64,6 @@ class StacComposeTester(TestCase):
     ######################################################################
 
     def __get(self, query_string=''):
-        if self.get_urn() is None:
-            raise StacComposeTesterException('There is not an available URN. You must set one by using StacComposeTester.set_urn() method.')
-
         return self.app.get(self.get_urn(), query_string=query_string, headers=self.__headers__)
 
     def get(self, expected_data, query_string={}, expected_status_code=200, expected_content_type='application/json'):
