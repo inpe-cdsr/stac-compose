@@ -2,16 +2,13 @@
 
 """Unit-test for STAC Compose operations related to /stac-compose/providers/ endpoint."""
 
-from unittest import TestCase
-from json import loads
-
-from stac_compose import app as stac_compose_app
+from tests.utils import StacComposeTester
 
 
-class TestStacComposeProviders(TestCase):
+class TestStacComposeProviders(StacComposeTester):
 
     def setUp(self):
-        self.app = stac_compose_app.test_client()
+        self.set_base_urn('/stac-compose/providers/')
 
     def test_get_stac_compose_providers(self):
         expected = {
@@ -33,8 +30,5 @@ class TestStacComposeProviders(TestCase):
                 }
             }
         }
-        result = self.app.get('/stac-compose/providers/')
 
-        self.assertEqual(200, result.status_code)
-        self.assertIn('application/json', result.content_type)
-        self.assertEqual(expected, loads(result.data))
+        self.get(expected)

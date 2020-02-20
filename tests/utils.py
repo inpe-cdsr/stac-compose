@@ -10,15 +10,110 @@ from stac_compose import app as stac_compose_app
 
 class StacComposeTester(TestCase):
 
-    def setUp(self):
+    def __init__(self, *args, **kwargs):
+        # it is necessary to extend from TestCase and override __init__ correctly
+        TestCase.__init__(self, *args, **kwargs)
+
         self.app = stac_compose_app.test_client()
+        self.__base_urn__ = None
+        self.__headers__ = {}
 
-    def get_stac_compose_providers(self):
-        return self.app.get('/stac-compose/providers/')
+    ######################################################################
+    # GETTERS
+    ######################################################################
 
-    def test_get_stac_compose_providers(self, expected):
-        result = self.get_stac_compose_providers()
+    def get_base_urn(self):
+        return self.__base_urn__
 
-        self.assertEqual(200, result.status_code)
-        self.assertIn('application/json', result.content_type)
-        self.assertEqual(expected, loads(result.data))
+    def set_base_urn(self, base_urn):
+        self.__base_urn__ = base_urn
+
+    def get_headers(self):
+        return self.__headers__
+
+    def set_headers(self, headers):
+        self.__headers__ = headers
+
+    ######################################################################
+    # UTILS
+    ######################################################################
+
+    # def get_headers(self, headers=None):
+    #     # if 'headers' is empty, then add the cached 'self.__headers__'
+    #     if headers is None:
+	#         headers = self.__headers__
+    #     # else it returns the passed 'headers'
+    #     return headers
+
+    # def error_asserts(self, response, status_code, error_message):
+    #     # method to encapsulate the error asserts
+
+    #     self.assertEqual(response.status_code, status_code)
+    #     self.assertEqual(response.data, error_message)
+
+    ######################################################################
+    # GET, POST, DELETE METHODS
+    ######################################################################
+
+    def __get(self, query_string=''):
+        return self.app.get(self.get_base_urn(), query_string=query_string, headers=self.__headers__)
+
+    def get(self, expected_data, query_string={}, expected_status_code=200, expected_content_type='application/json'):
+        result = self.__get(query_string)
+
+        self.assertEqual(expected_status_code, result.status_code)
+        self.assertIn(expected_content_type, result.content_type)
+        self.assertEqual(expected_data, loads(result.data))
+
+    def post(self, body):
+        response = self.app.post(self.get_base_urn(), data=dumps(body), headers=self.__headers__)
+
+        id = int(response.data.decode("utf-8"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(id, b"")
+
+        return id
+
+    def put(self, body):
+        response = self.app.put(self.get_base_urn(), data=dumps(body), headers=self.__headers__)
+
+        self.assertEqual(response.status_code, 200)
+
+    def delete(self, query_string={}):
+        response = self.app.delete(self.get_base_urn(), query_string=query_string, headers=self.__headers__)
+
+        self.assertEqual(response.status_code, 200)
+
+    ######################################################################
+    # GET, POST, DELETE ERROR METHODS
+    ######################################################################
+
+    # def get_error(self, query_string="", status_code=500, error_message="", headers=None):
+    #     headers = self.get_headers(headers=headers)
+
+    #     response = self.app.get(self.get_base_urn(), query_string=query_string, headers=headers)
+
+    #     self.error_asserts(response, status_code, error_message)
+
+    # def post_error(self, body, status_code=500, error_message="", headers=None):
+    #     headers = self.get_headers(headers=headers)
+
+    #     response = self.app.post(self.get_base_urn(), data=dumps(body), headers=headers)
+
+    #     self.error_asserts(response, status_code, error_message)
+
+    # def put_error(self, body, status_code=500, error_message="", headers=None):
+    #     headers = self.get_headers(headers=headers)
+
+    #     response = self.app.put(self.get_base_urn(), data=dumps(body), headers=headers)
+
+    #     self.error_asserts(response, status_code, error_message)
+
+    # def delete_error(self, query_string="", status_code=500, error_message="", headers=None):
+    #     headers = self.get_headers(headers=headers)
+
+    #     response = self.app.delete(self.get_base_urn(), query_string=query_string, headers=headers)
+
+    #     self.error_asserts(response, status_code, error_message)
+
