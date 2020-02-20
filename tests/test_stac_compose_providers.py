@@ -8,7 +8,7 @@ from tests.utils import StacComposeTester
 class TestStacComposeProviders(StacComposeTester):
 
     def setUp(self):
-        self.set_base_urn('/stac-compose/providers/')
+        self.set_urn('/stac-compose/providers/')
 
     def test_get_stac_compose_providers(self):
         expected = {

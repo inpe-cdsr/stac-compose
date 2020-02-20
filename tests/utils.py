@@ -8,6 +8,11 @@ from json import loads
 from stac_compose import app as stac_compose_app
 
 
+class StacComposeTesterException(Exception):
+    def __init__(self, message):
+        super().__init__(message)
+
+
 class StacComposeTester(TestCase):
 
     def __init__(self, *args, **kwargs):
@@ -15,18 +20,18 @@ class StacComposeTester(TestCase):
         TestCase.__init__(self, *args, **kwargs)
 
         self.app = stac_compose_app.test_client()
-        self.__base_urn__ = None
+        self.__urn__ = None
         self.__headers__ = {}
 
     ######################################################################
     # GETTERS
     ######################################################################
 
-    def get_base_urn(self):
-        return self.__base_urn__
+    def get_urn(self):
+        return self.__urn__
 
-    def set_base_urn(self, base_urn):
-        self.__base_urn__ = base_urn
+    def set_urn(self, urn):
+        self.__urn__ = urn
 
     def get_headers(self):
         return self.__headers__
@@ -56,7 +61,10 @@ class StacComposeTester(TestCase):
     ######################################################################
 
     def __get(self, query_string=''):
-        return self.app.get(self.get_base_urn(), query_string=query_string, headers=self.__headers__)
+        if self.get_urn() is None:
+            raise StacComposeTesterException('There is not an available URN. You must set one by using StacComposeTester.set_urn() method.')
+
+        return self.app.get(self.get_urn(), query_string=query_string, headers=self.__headers__)
 
     def get(self, expected_data, query_string={}, expected_status_code=200, expected_content_type='application/json'):
         result = self.__get(query_string)
@@ -66,7 +74,7 @@ class StacComposeTester(TestCase):
         self.assertEqual(expected_data, loads(result.data))
 
     def post(self, body):
-        response = self.app.post(self.get_base_urn(), data=dumps(body), headers=self.__headers__)
+        response = self.app.post(self.get_urn(), data=dumps(body), headers=self.__headers__)
 
         id = int(response.data.decode("utf-8"))
 
@@ -76,12 +84,12 @@ class StacComposeTester(TestCase):
         return id
 
     def put(self, body):
-        response = self.app.put(self.get_base_urn(), data=dumps(body), headers=self.__headers__)
+        response = self.app.put(self.get_urn(), data=dumps(body), headers=self.__headers__)
 
         self.assertEqual(response.status_code, 200)
 
     def delete(self, query_string={}):
-        response = self.app.delete(self.get_base_urn(), query_string=query_string, headers=self.__headers__)
+        response = self.app.delete(self.get_urn(), query_string=query_string, headers=self.__headers__)
 
         self.assertEqual(response.status_code, 200)
 
@@ -92,28 +100,28 @@ class StacComposeTester(TestCase):
     # def get_error(self, query_string="", status_code=500, error_message="", headers=None):
     #     headers = self.get_headers(headers=headers)
 
-    #     response = self.app.get(self.get_base_urn(), query_string=query_string, headers=headers)
+    #     response = self.app.get(self.get_urn(), query_string=query_string, headers=headers)
 
     #     self.error_asserts(response, status_code, error_message)
 
     # def post_error(self, body, status_code=500, error_message="", headers=None):
     #     headers = self.get_headers(headers=headers)
 
-    #     response = self.app.post(self.get_base_urn(), data=dumps(body), headers=headers)
+    #     response = self.app.post(self.get_urn(), data=dumps(body), headers=headers)
 
     #     self.error_asserts(response, status_code, error_message)
 
     # def put_error(self, body, status_code=500, error_message="", headers=None):
     #     headers = self.get_headers(headers=headers)
 
-    #     response = self.app.put(self.get_base_urn(), data=dumps(body), headers=headers)
+    #     response = self.app.put(self.get_urn(), data=dumps(body), headers=headers)
 
     #     self.error_asserts(response, status_code, error_message)
 
     # def delete_error(self, query_string="", status_code=500, error_message="", headers=None):
     #     headers = self.get_headers(headers=headers)
 
-    #     response = self.app.delete(self.get_base_urn(), query_string=query_string, headers=headers)
+    #     response = self.app.delete(self.get_urn(), query_string=query_string, headers=headers)
 
     #     self.error_asserts(response, status_code, error_message)
 
