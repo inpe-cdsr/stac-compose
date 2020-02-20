@@ -1,10 +1,10 @@
 {
-  "name": "bdc-search-stac-spec",
+  "name": "stac-compose-spec",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "redoc-cli bundle api/v1.0/bdc_search_stac.yaml --output dist/index.html"
+    "build": "redoc-cli bundle api/v1.0/stac_compose.yaml --output dist/index.html"
   },
   "author": "",
   "license": "MIT",

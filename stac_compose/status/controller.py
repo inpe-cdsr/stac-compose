@@ -1,12 +1,18 @@
-from bdc_search_stac.status import ns
+
+#!/usr/bin/env python3
+
 from bdc_core.utils.flask import APIResource
 
+from stac_compose.status import ns
+
+
 api = ns
+
 
 @api.route('/')
 class StatusController(APIResource):
     """
-    Full route: http://localhost:5000/stac-compose/status/
+    Full route: http://localhost:8089/stac-compose/status/
     """
 
     def get(self):

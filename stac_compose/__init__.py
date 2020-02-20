@@ -4,8 +4,8 @@ import os
 from flask import Flask
 from flask_cors import CORS
 
-from bdc_search_stac.blueprint import blueprint
-from bdc_search_stac.config import get_settings
+from stac_compose.blueprint import blueprint
+from stac_compose.config import get_settings
 
 def create_app(config):
     app = Flask(__name__)

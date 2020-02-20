@@ -5,9 +5,9 @@ from pprint import PrettyPrinter
 
 from werkzeug.exceptions import BadRequest
 
-from bdc_search_stac.collections.services import CollectionsServices
-from bdc_search_stac.providers.business import ProvidersBusiness
-from bdc_search_stac.log import logging
+from stac_compose.collections.services import CollectionsServices
+from stac_compose.providers.business import ProvidersBusiness
+from stac_compose.log import logging
 
 
 pp = PrettyPrinter(indent=4)

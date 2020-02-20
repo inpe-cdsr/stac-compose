@@ -8,7 +8,7 @@ import requests
 from requests.auth import HTTPBasicAuth
 from werkzeug.exceptions import NotFound
 
-from bdc_search_stac.log import logging
+from stac_compose.log import logging
 
 
 class CollectionsServices():

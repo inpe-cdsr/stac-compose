@@ -3,9 +3,9 @@
 from flask import Blueprint
 from flask_restplus import Api
 
-from bdc_search_stac.collections.controller import api as collections_ns
-from bdc_search_stac.providers.controller import api as providers_ns
-from bdc_search_stac.status.controller import api as status_ns
+from stac_compose.collections.controller import api as collections_ns
+from stac_compose.providers.controller import api as providers_ns
+from stac_compose.status.controller import api as status_ns
 
 blueprint = Blueprint('stac-compose', __name__, url_prefix='/stac-compose')
 

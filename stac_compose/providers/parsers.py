@@ -3,16 +3,16 @@
 from cerberus import Validator
 from datetime import datetime
 
-from bdc_search_stac.providers.business import ProvidersBusiness
+from stac_compose.providers.business import ProvidersBusiness
 
 
 def validate_providers(providers):
     providers_business = ProvidersBusiness()
 
-    bdc_providers = providers_business.get_providers().keys()
+    providers_keys = providers_business.get_providers().keys()
 
     for p in providers.split(','):
-        if p not in bdc_providers:
+        if p not in providers_keys:
             return None
 
     return providers.split(',')

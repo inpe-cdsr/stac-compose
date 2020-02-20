@@ -6,8 +6,8 @@ from requests import get
 from requests.exceptions import ConnectionError
 # from pprint import pprint
 
-from bdc_search_stac.config import BASE_DIR
-from bdc_search_stac.log import logging
+from stac_compose.config import BASE_DIR
+from stac_compose.log import logging
 
 
 def is_url_valid(url):

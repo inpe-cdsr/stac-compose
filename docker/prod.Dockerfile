@@ -2,9 +2,9 @@ FROM brazildatacube/base:0.1
 
 RUN apt-get update && apt-get install -y build-essential
 
-ADD . /bdc-stac-compose
+WORKDIR /app
 
-WORKDIR /bdc-stac-compose
+ADD . /app
 
 RUN pip3 install -r requirements.txt
 

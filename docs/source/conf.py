@@ -18,9 +18,9 @@ sys.setrecursionlimit(1500)
 
 # -- Project information -----------------------------------------------------
 
-project = 'BDC Search STAC'
+project = 'STAC Compose'
 copyright = '2019, National Institute for Space Research'
-author = 'BDC - INPE'
+author = 'INPE'
 
 # The full version, including alpha/beta/rc tags
 release = '1.0'
@@ -69,10 +69,10 @@ latex_elements = {
     'pointsize': '10pt',
     'preamble': '',
     'figure_align': 'htbp'
-} 
+}
 
 #
-# BDC theme configuration
+# theme configuration
 #
 
 import bdc_theme

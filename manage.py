@@ -2,8 +2,8 @@
 
 from flask_script import Manager
 
-from bdc_search_stac import app
-from bdc_search_stac.environment import SERVER_HOST, SERVER_PORT, DEBUG_MODE
+from stac_compose import app
+from stac_compose.environment import SERVER_HOST, SERVER_PORT, DEBUG_MODE
 
 manager = Manager(app)
 

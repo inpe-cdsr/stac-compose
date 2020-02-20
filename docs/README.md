@@ -1,4 +1,4 @@
-# BDC-Search-Stac
+# STAC Compose
 
 ## Documentation
 

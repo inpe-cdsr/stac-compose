@@ -7,11 +7,12 @@ from werkzeug.exceptions import InternalServerError, BadRequest
 from werkzeug.datastructures import ImmutableMultiDict
 from pprint import PrettyPrinter
 
-from bdc_search_stac.collections import ns
-from bdc_search_stac.collections.business import CollectionsBusiness
-from bdc_search_stac.collections.parsers import validate
 from bdc_core.utils.flask import APIResource
-from bdc_search_stac.log import logging
+
+from stac_compose.collections import ns
+from stac_compose.collections.business import CollectionsBusiness
+from stac_compose.collections.parsers import validate
+from stac_compose.log import logging
 
 
 api = ns
@@ -24,7 +25,7 @@ class ItemsController(APIResource):
     """
     Examples of full route:
         - http://localhost:8089/stac-compose/collections?providers=INPE-CDSR
-        - http://localhost:8089/stac-compose/collections?providers=INPE-CDSR,LANDAST8-SENTINEL2-AWS,CBERS4-AWS,BRAZILDATACUBE
+        - http://localhost:8089/stac-compose/collections?providers=INPE-CDSR,LANDAST8-SENTINEL2-AWS,CBERS4-AWS
     """
 
     def get(self):
@@ -74,6 +75,18 @@ class CollectionsController(APIResource):
         return features
 
     # def post(self):
+    # {
+    #     "collections": "INPE-CDSR:CBERS4_AWFI_L4_DN",
+    #     "bbox": [ -68.0273437, -25.0059726, -34.9365234, 0.3515602 ],
+    #     "time": "2019-12-22T00:00:00/2020-01-22T23:59:00",
+    #     "limit": 2,
+    #     "query": {
+    #         "cloud_cover": {
+    #             "gte": 30,
+    #             "lte": 60
+    #         }
+    #     }
+    # }
     #     if request.is_json:
     #         request_json = request.get_json()
 

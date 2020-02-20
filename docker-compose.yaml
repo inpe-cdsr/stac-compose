@@ -1,16 +1,16 @@
 version: '3'
 
 services:
-  bdc-search-stac:
+  stac-compose:
     build: ./
-    container_name: bdc-search-stac
+    container_name: stac-compose
     ports:
       - "5050:5000"
     restart: always
     networks:
-      - bdc_net_search_stac
+      - stac-compose-network
 
 networks:
-  bdc_net_search_stac:
+  stac-compose-network:
     driver: bridge
 

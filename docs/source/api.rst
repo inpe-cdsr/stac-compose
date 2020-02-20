@@ -3,13 +3,13 @@
 API Reference
 =============
 
-bdc_search_stac Controllers
+stac_compose Controllers
 -------------------------
 
 This is documentation of Search STAC controller spec
 
-.. automodule:: bdc_search_stac.coverages.controller
+.. automodule:: stac_compose.coverages.controller
    :members:
 
-.. automodule:: bdc_search_stac.status.controller
+.. automodule:: stac_compose.status.controller
    :members:

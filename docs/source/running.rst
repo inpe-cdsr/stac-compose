@@ -2,7 +2,7 @@
 
 Running
 =======
-In order to run BDC_SEARCH_STAC, you must define variable `ENVIRONMENT`. By default, the application runs on development mode. You can change to
+In order to run stac_compose, you must define variable `ENVIRONMENT`. By default, the application runs on development mode. You can change to
 `ProductionConfig` or `TestingConfig` with the following command:
 
 .. code-block:: sh

@@ -3,17 +3,20 @@
 import os, json
 from flask import request
 
-from bdc_search_stac.providers import ns
-from bdc_search_stac.providers.business import ProvidersBusiness
-from bdc_search_stac.providers.parsers import validate
 from bdc_core.utils.flask import APIResource
 
+from stac_compose.providers import ns
+from stac_compose.providers.business import ProvidersBusiness
+from stac_compose.providers.parsers import validate
+
+
 api = ns
+
 
 @api.route('/')
 class ProviderController(APIResource):
     """
-    Full route: http://localhost:5000/stac-compose/providers/
+    Full route: http://localhost:8089/stac-compose/providers/
     """
 
     providers_business = ProvidersBusiness()

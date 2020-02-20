@@ -1,4 +1,4 @@
-# BDC-Search-STAC-Spec
+# STAC Compose - Spec
 
 ## Build Documentation
 
@@ -14,7 +14,7 @@ Execute the following command to install `node modules` dependencies:
 npm install
 ```
 
-After that, generate bdc_search_stac documentation:
+After that, generate stac-compose documentation:
 
 ```bash
 npm run build
@@ -34,8 +34,8 @@ docker run --interactive \
            --rm \
            --name redoc \
            --publish 8080:80 \
-           --volume $(pwd)/api/v1.0/bdc_search_stac.yaml:/usr/share/nginx/html/bdc_search_stac.yaml \
-           --env SPEC_URL=bdc_search_stac.yaml redocly/redoc
+           --volume $(pwd)/api/v1.0/stac_compose.yaml:/usr/share/nginx/html/stac_compose.yaml \
+           --env SPEC_URL=stac_compose.yaml redocly/redoc
 ```
 
 To generate documentation, you must build `redoc-cli` manually. Open in another terminal and run the following commands:
@@ -54,8 +54,8 @@ docker run --rm \
            --interactive \
            --tty \
            --name redoccli \
-           --volume $(pwd)/api/v1.0/bdc_search_stac.yaml:/bdc_search_stac.yaml \
-           --volume $(pwd)/dist:/dist redoc-cli bundle /bdc_search_stac.yaml --output /dist/index.html
+           --volume $(pwd)/api/v1.0/stac_compose.yaml:/stac_compose.yaml \
+           --volume $(pwd)/dist:/dist redoc-cli bundle /stac_compose.yaml --output /dist/index.html
 ```
 
 **Note** that the generated folder `dist` may have root permission. In order to fix it, use:

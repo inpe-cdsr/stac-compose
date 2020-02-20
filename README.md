@@ -1,13 +1,13 @@
-# Search STAC - Brazil Data Cube
+# STAC Compose
 
 API to search surface reflectance by STAC
 
 
 ## Structure
 
-- [`bdc_search_stac`](./bdc_search_stac) python scripts to search surface reflectance by STAC
-- [`spec`](./spec) Spec of API bdc_search_stac
-- [`docs`](./docs) Documentation of bdc_search_stac
+- [`stac_compose`](./stac_compose) python scripts to search surface reflectance by STAC
+- [`spec`](./spec) Spec of API stac_compose
+- [`docs`](./docs) Documentation of stac_compose
 
 
 ## Installation
@@ -27,13 +27,13 @@ pyenv install 3.6.8
 Create a Python environment with the Python version above through pyenv-virtualenv:
 
 ```
-pyenv virtualenv 3.6.8 stac_compose
+pyenv virtualenv 3.6.8 inpe-cdsr-stac-compose
 ```
 
 Activate the environment:
 
 ```
-pyenv activate stac_compose
+pyenv activate inpe-cdsr-stac-compose
 ```
 
 Install the requirements:
@@ -46,7 +46,7 @@ pip install -r requirements.txt
 ## Running
 
 ```
-pyenv activate stac_compose
+pyenv activate inpe-cdsr-stac-compose
 python manage.py run
 ```
 
@@ -61,7 +61,7 @@ docker-compose up -d
 Build image:
 
 ```
-docker build -t inpe-cdsr-stac_compose -f docker/dev.Dockerfile . --no-cache
+docker build -t inpe-cdsr-stac-compose -f docker/dev.Dockerfile . --no-cache
 docker build -t registry.dpi.inpe.br/inpe-cdsr/stac-compose:0.0.2 -f docker/prod.Dockerfile . --no-cache
 ```
 

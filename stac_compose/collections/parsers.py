@@ -3,8 +3,8 @@
 from cerberus import Validator
 from datetime import datetime
 
-from bdc_search_stac.providers.parsers import validate_providers, providers
-from bdc_search_stac.log import logging
+from stac_compose.providers.parsers import validate_providers, providers
+from stac_compose.log import logging
 
 
 def validate_date(s):
