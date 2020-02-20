@@ -21,29 +21,28 @@ pp = PrettyPrinter(indent=4)
 
 
 @api.route('/')
-class ItemsController(APIResource):
-    """
-    Examples of full route:
-        - http://localhost:8089/stac-compose/collections?providers=INPE-CDSR
-        - http://localhost:8089/stac-compose/collections?providers=INPE-CDSR,LANDAST8-SENTINEL2-AWS,CBERS4-AWS
-    """
+class CollectionsController(APIResource):
+    """CollectionsController"""
 
     def get(self):
         args = request.args.to_dict(flat=True)
 
-        logging.info('ItemsController.get() - args: %s', args)
+        logging.info('CollectionsController.get() - args: %s', args)
 
         data, status = validate(args, 'providers')
+
+        logging.info('CollectionsController.get() - data: %s', data)
+        logging.info('CollectionsController.get() - status: %s', status)
 
         if status is False:
             raise BadRequest(json.dumps(data))  # 400 - Bad Request
 
         # List of STAC collections by providers
-        return CollectionsBusiness.get_collections_by_providers(data['providers'])
+        return CollectionsBusiness.get_collections_by_providers(args['providers'])
 
 
 @api.route('/items')
-class CollectionsController(APIResource):
+class CollectionsItemsController(APIResource):
     """
     Example of full route:
         - collections=LANDAST8-SENTINEL2-AWS:landsat-8-l1,LANDAST8-SENTINEL2-AWS:sentinel-2-l1c and limit=10:

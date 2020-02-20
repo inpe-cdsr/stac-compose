@@ -11,6 +11,8 @@ class TestStacComposeProviders(StacComposeTester):
         self.set_urn('/stac-compose/providers/')
 
     def test_get_stac_compose_providers(self):
+        """http://localhost:8089/stac-compose/providers/"""
+
         expected = {
             "providers": {
                 "INPE-CDSR": {

@@ -14,6 +14,8 @@ class TestStacComposeCollections(StacComposeTester):
         self.set_urn(URN)
 
     def test_get_stac_compose_collections__inpe_cdsr(self):
+        """http://localhost:8089/stac-compose/collections/?providers=INPE-CDSR"""
+
         expected = {
             "INPE-CDSR": [
                 "CBERS4A_MUX_L2_DN",
@@ -37,6 +39,8 @@ class TestStacComposeCollections(StacComposeTester):
         self.get(expected, query_string={'providers': 'INPE-CDSR'})
 
     def test_get_stac_compose_collections__landsat8_sentinel2_aws(self):
+        """http://localhost:8089/stac-compose/collections/?providers=LANDAST8-SENTINEL2-AWS"""
+
         expected = {
             "LANDAST8-SENTINEL2-AWS": [
                 "landsat-8-l1",
@@ -47,6 +51,8 @@ class TestStacComposeCollections(StacComposeTester):
         self.get(expected, query_string={'providers': 'LANDAST8-SENTINEL2-AWS'})
 
     def test_get_stac_compose_collections__cbers4_aws(self):
+        """http://localhost:8089/stac-compose/collections/?providers=CBERS4-AWS"""
+
         expected = {
             "CBERS4-AWS": [
                 "CBERS4MUX",
@@ -59,6 +65,8 @@ class TestStacComposeCollections(StacComposeTester):
         self.get(expected, query_string={'providers': 'CBERS4-AWS'})
 
     def test_get_stac_compose_collections__inpe_cdsr_and_landsat8_sentinel2_aws_and_cbers4_aws(self):
+        """http://localhost:8089/stac-compose/collections/?providers=INPE-CDSR,LANDAST8-SENTINEL2-AWS,CBERS4-AWS"""
+
         expected = {
             "INPE-CDSR": [
                 "CBERS4A_MUX_L2_DN",
@@ -98,6 +106,8 @@ class TestStacComposeCollectionsError(StacComposeTester):
         self.set_urn(URN)
 
     def test_get_stac_compose_collections__400_bad_request__provider_required_field(self):
+        """http://localhost:8089/stac-compose/collections/"""
+
         expected = {
             'code': 400,
             'message': '{"providers": ["required field"]}'

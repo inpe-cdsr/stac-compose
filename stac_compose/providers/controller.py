@@ -1,13 +1,10 @@
 #!/usr/bin/env python3
 
-import os, json
-from flask import request
-
 from bdc_core.utils.flask import APIResource
 
 from stac_compose.providers import ns
 from stac_compose.providers.business import ProvidersBusiness
-from stac_compose.providers.parsers import validate
+# from stac_compose.providers.parsers import validate
 
 
 api = ns
@@ -15,9 +12,7 @@ api = ns
 
 @api.route('/')
 class ProviderController(APIResource):
-    """
-    Full route: http://localhost:8089/stac-compose/providers/
-    """
+    """ProviderController"""
 
     providers_business = ProvidersBusiness()
 
