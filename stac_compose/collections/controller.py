@@ -31,7 +31,7 @@ class ItemsController(APIResource):
     def get(self):
         args = request.args.to_dict(flat=True)
 
-        # logging.debug('logging debug: args: %s', args)
+        logging.info('ItemsController.get() - args: %s', args)
 
         data, status = validate(args, 'providers')
 

@@ -1,41 +1,52 @@
 #!/usr/bin/env python3
 
 """Unit-test for STAC Compose operations related to /stac-compose/collections/ endpoint."""
-'''
-from unittest import TestCase
-from json import loads
 
-from stac_compose import app as stac_compose_app
+from tests.utils import StacComposeTester
 
+# - http://localhost:8089/stac-compose/collections?providers=INPE-CDSR
+# - http://localhost:8089/stac-compose/collections?providers=INPE-CDSR,LANDAST8-SENTINEL2-AWS,CBERS4-AWS
 
-class TestStacComposeProviders(TestCase):
+URN = '/stac-compose/collections/'
+
+class TestStacComposeCollections(StacComposeTester):
 
     def setUp(self):
-        self.app = stac_compose_app.test_client()
+        self.set_urn(URN)
 
-    def test_get_stac_compose_providers(self):
+    def test_get_stac_compose_collections__inpe_cdsr(self):
         expected = {
-            "providers": {
-                "INPE-CDSR": {
-                    "url": "http://localhost:8089/inpe-stac",
-                    "require_credentials": 1,
-                    "downloadable": 1
-                },
-                "LANDAST8-SENTINEL2-AWS": {
-                    "url": "https://sat-api.developmentseed.org",
-                    "require_credentials": 0,
-                    "downloadable": 0
-                },
-                "CBERS4-AWS": {
-                    "url": "https://stac.amskepler.com/v07",
-                    "require_credentials": 0,
-                    "downloadable": 0
-                }
-            }
+            "INPE-CDSR": [
+                "CBERS4A_MUX_L2_DN",
+                "CBERS4A_MUX_L4_DN",
+                "CBERS4A_WFI_L2_DN",
+                "CBERS4A_WFI_L4_DN",
+                "CBERS4A_WPM_L2_DN",
+                "CBERS4_AWFI_L4_DN",
+                "CBERS4_AWFI_L4_SR",
+                "CBERS4_MUX_L2_DN",
+                "CBERS4_MUX_L4_DN",
+                "CBERS4_MUX_L4_SR",
+                "CBERS4_PAN10M_L2_DN",
+                "CBERS4_PAN10M_L4_DN",
+                "CBERS4_PAN5M_L4_DN",
+                "LANDSAT5_TM_L2_DN",
+                "LANDSAT5_TM_L4_DN"
+            ]
         }
-        result = self.app.get('/stac-compose/providers/')
 
-        self.assertEqual(200, result.status_code)
-        self.assertIn('application/json', result.content_type)
-        self.assertEqual(expected, loads(result.data))
-'''
+        self.get(expected, query_string={'providers': 'INPE-CDSR'})
+
+
+class TestStacComposeCollectionsError(StacComposeTester):
+
+    def setUp(self):
+        self.set_urn(URN)
+
+    def test_get_stac_compose_collections__400_bad_request__provider_required_field(self):
+        expected = {
+            'code': 400,
+            'message': '{"providers": ["required field"]}'
+        }
+
+        self.get(expected, expected_status_code=400)

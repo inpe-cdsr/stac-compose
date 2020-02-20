@@ -66,7 +66,7 @@ class StacComposeTester(TestCase):
     def __get(self, query_string=''):
         return self.app.get(self.get_urn(), query_string=query_string, headers=self.__headers__)
 
-    def get(self, expected_data, query_string={}, expected_status_code=200, expected_content_type='application/json'):
+    def get(self, expected_data={}, query_string={}, expected_status_code=200, expected_content_type='application/json'):
         result = self.__get(query_string)
 
         self.assertEqual(expected_status_code, result.status_code)
