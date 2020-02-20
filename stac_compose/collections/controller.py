@@ -41,19 +41,9 @@ class CollectionsController(APIResource):
         return CollectionsBusiness.get_collections_by_providers(args['providers'])
 
 
-@api.route('/items')
+@api.route('/items/')
 class CollectionsItemsController(APIResource):
-    """
-    Example of full route:
-        - collections=LANDAST8-SENTINEL2-AWS:landsat-8-l1,LANDAST8-SENTINEL2-AWS:sentinel-2-l1c and limit=10:
-            http://localhost:8089/stac-compose/collections/items?collections=LANDAST8-SENTINEL2-AWS:landsat-8-l1,LANDAST8-SENTINEL2-AWS:sentinel-2-l1c&bbox=-68.0273437,-25.0059726,-34.9365234,0.3515602&time=2020-01-13T00:00:00/2020-02-13T23:59:00&limit=10
-
-        - collections=LANDAST8-SENTINEL2-AWS:sentinel-2-l1 and limit=10:
-            http://localhost:8089/stac-compose/collections/items?collections=LANDAST8-SENTINEL2-AWS:sentinel-2-l1c&bbox=-68.0273437,-25.0059726,-34.9365234,0.3515602&time=2020-01-13T00:00:00/2020-02-13T23:59:00&limit=10
-
-        - collections=LANDAST8-SENTINEL2-AWS:sentinel-2-l1 and limit=2000
-            http://localhost:8089/stac-compose/collections/items?collections=LANDAST8-SENTINEL2-AWS:sentinel-2-l1c&bbox=-68.0273437,-25.0059726,-34.9365234,0.3515602&time=2020-01-13T00:00:00/2020-02-13T23:59:00&limit=2000
-    """
+    """CollectionsItemsController"""
 
     def get(self):
         logging.info('CollectionsController.get() - request.args: %s', request.args)

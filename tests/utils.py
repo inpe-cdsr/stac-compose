@@ -71,12 +71,18 @@ class StacComposeTester(TestCase):
 
         # print('\nStacComposeTester.get() - self.get_urn(): ', self.get_urn())
         # print('\nStacComposeTester.get() - query_string: ', query_string)
-        # print('\nStacComposeTester.get() - result.data: ', result.data)
-        # print('\nStacComposeTester.get() - loads(result.data): ', loads(result.data))
 
         self.assertEqual(expected_status_code, result.status_code)
         self.assertIn(expected_content_type, result.content_type)
-        self.assertEqual(expected_data, loads(result.data))
+
+        # get the JSON in dict form
+        data = loads(result.data)
+
+        # print('\nStacComposeTester.get() - data: ', data)
+
+        self.assertEqual(expected_data, data)
+
+        return data
 
     def post(self, body):
         response = self.app.post(self.get_urn(), data=dumps(body), headers=self.__headers__)
