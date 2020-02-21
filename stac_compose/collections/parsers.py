@@ -2,6 +2,7 @@
 
 from cerberus import Validator
 from datetime import datetime
+from werkzeug.exceptions import BadRequest
 
 from stac_compose.providers.parsers import validate_providers, providers
 from stac_compose.log import logging
@@ -37,50 +38,78 @@ def validate_bbox(box):
     return None
 
 
-def validate_cloud(cloud):
-    cloud = float(cloud)
-    return cloud if cloud >= 0 and cloud <= 100 else None
+convert_string_to_datetime = lambda date: datetime.strptime(date, '%Y-%m-%dT%H:%M:%S')
 
 
-def validate_limit(limit):
-    limit = int(limit)
-    return limit if limit > 0 else None
+convert_string_to_int = lambda string: int(string)
 
 
 def search_get():
-    base = {
-        'collections': {'type': 'string', 'coerce': validate_collections, 'empty': False, 'required': True},
-        'bbox': {'type': 'list', 'coerce': validate_bbox, 'empty': False, 'required': True},
-        'time': {'type': 'string', 'coerce': validate_date, 'empty': False, 'required': True},
-        'limit': {'type': 'number', 'coerce': validate_limit, 'empty': False, 'required': True},
-        'cloud_cover': {'type': 'number', 'coerce': validate_cloud, 'empty': False, 'required': False},
-        'query': {'type': 'dict', 'required': False}
+    return {
+        'collections': {
+            'type': 'string', 'empty': False, 'required': True,
+            'coerce': validate_collections
+        },
+        'bbox': {
+            'type': 'list', 'empty': False, 'required': True,
+            'coerce': validate_bbox
+        },
+        'time': {
+            'type': 'string', 'empty': False, 'required': True,
+            'coerce': validate_date
+        },
+        'limit': {
+            'type': 'integer', 'empty': False, 'required': True,
+            'minlength': 1, 'maxlength': 1000,
+            'coerce': convert_string_to_int
+        },
+        'cloud_cover': {
+            'type': 'number', 'empty': False, 'required': False,
+            'min': 0, 'max': 100
+        },
+        'query': {
+            'type': 'dict', 'required': False
+        }
     }
-    return base
 
 
 def search_post():
-    base = {
+    return {
         'providers': {
-            'type': 'list',
+            'type': 'list', 'empty': False, 'required': True,
             'schema': {
-                'type': 'dict',
+                'type': 'dict', 'empty': False, 'required': True,
                 'schema': {
                     'name': {'type': 'string', 'empty': False, 'required': True},
                     'collections': {'type': 'list', 'empty': False, 'required': True},
                     'query': {'type': 'dict', 'required': False}
-                },
+                }
+            }
+        },
+        'bbox': {
+            'type': 'list', 'empty': False, 'required': True,
+            'minlength': 4, 'maxlength': 4,
+            'schema': {
+                'type': 'float',
                 'empty': False,
                 'required': True
-            },
-            'empty': False,
-            'required': True
+            }
         },
-        'bbox': {'type': 'list', 'coerce': validate_bbox, 'empty': False, 'required': True},
-        'time': {'type': 'string', 'coerce': validate_date, 'empty': False, 'required': True},
-        'limit': {'type': 'number', 'coerce': validate_limit, 'empty': False, 'required': True}
+        'time': {
+            'type': 'list', 'empty': False, 'required': True,
+            'minlength': 2, 'maxlength': 2,
+            'schema': {
+                'type': 'datetime',
+                'empty': False,
+                'required': True,
+                'coerce': convert_string_to_datetime
+            },
+        },
+        'limit': {
+            'type': 'number', 'empty': False, 'required': True,
+            'minlength': 1, 'maxlength': 1000
+        }
     }
-    return base
 
 
 def validate(data, type_schema):
@@ -91,4 +120,4 @@ def validate(data, type_schema):
     if not v.validate(data):
         return v.errors, False
 
-    return data, True
+    return v.document, True

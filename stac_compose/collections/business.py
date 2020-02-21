@@ -2,7 +2,7 @@
 #!/usr/bin/env python3
 
 from pprint import PrettyPrinter
-
+from operator import itemgetter
 from werkzeug.exceptions import BadRequest
 
 from stac_compose.collections.services import CollectionsServices
@@ -147,7 +147,7 @@ class CollectionsBusiness():
             return None
 
     @classmethod
-    def search_get(cls, collections, bbox, cloud_cover=False, time=False, limit=100, query=None):
+    def search_get(cls, collections, bbox, cloud_cover=False, time=False, limit=300, query=None):
         logging.info('CollectionsBusiness.search()')
 
         # limit is a string, then I need to convert it
@@ -268,3 +268,47 @@ class CollectionsBusiness():
                 raise BadRequest('Unexpected provider: {}'.format(provider))
 
         return result_dict
+
+    @classmethod
+    def search_post(cls, providers, bbox, time, limit=300):
+        logging.info('CollectionsBusiness.search_post()\n')
+
+        logging.info('CollectionsBusiness.search_post() - providers: %s', providers)
+        logging.info('CollectionsBusiness.search_post() - bbox: %s', bbox)
+        logging.info('CollectionsBusiness.search_post() - time: %s', time)
+        logging.info('CollectionsBusiness.search_post() - limit: %s\n', limit)
+
+        for provider in providers:
+            # destructuring dictionary contents into variables
+            name, collections, query = itemgetter('name', 'collections', 'query')(provider)
+
+            logging.info('CollectionsBusiness.search_post() - provider[name]: %s', name)
+            logging.info('CollectionsBusiness.search_post() - provider[collections]: %s', collections)
+            logging.info('CollectionsBusiness.search_post() - provider[query]: %s\n', query)
+
+            for collection in collections:
+                logging.info('CollectionsBusiness.search_post() - collection: %s', collection)
+
+        # {
+        #     'providers': [
+                # {
+                #     'name': 'INPE-CDSR',
+                #     'collections': [
+                #         {'name': 'CBERS4_AWFI_L4_DN'},
+                #         {'name': 'CBERS4A_WFI_L4_DN'},
+                #         {'name': 'CBERS4A_WPM_L2_DN'}
+                #     ],
+                #     'query': {
+                #         'cloud_cover': {
+                #             "gte": 0,
+                #             "lte": 10
+                #         },
+                #     }
+                # }
+        #     ],
+        #     'bbox': [-68.0273437, -25.0059726, -34.9365234, 0.3515602],
+        #     'time': ['2019-12-01T00:00:00', '2020-02-13T23:59:00'],
+        #     'limit': 1
+        # }
+
+        return True

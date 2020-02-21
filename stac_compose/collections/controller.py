@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 
-import os, json
+from json import dumps
 
 from flask import request
-from werkzeug.exceptions import InternalServerError, BadRequest
-from werkzeug.datastructures import ImmutableMultiDict
+from werkzeug.exceptions import BadRequest
 from pprint import PrettyPrinter
 
 from bdc_core.utils.flask import APIResource
@@ -35,7 +34,7 @@ class CollectionsController(APIResource):
         logging.info('CollectionsController.get() - status: %s', status)
 
         if status is False:
-            raise BadRequest(json.dumps(data))  # 400 - Bad Request
+            raise BadRequest(dumps(data))  # 400 - Bad Request
 
         # List of STAC collections by providers
         return CollectionsBusiness.get_collections_by_providers(args['providers'])
@@ -48,42 +47,44 @@ class CollectionsItemsController(APIResource):
     def get(self):
         args = request.args.to_dict(flat=True)
 
-        logging.info('CollectionsController.get() - args: %s', args)
+        logging.info('CollectionsItemsController.get() - args: %s', args)
 
         data, status = validate(args, 'search_get')
 
-        logging.info('CollectionsController.get() - data: %s', data)
-        logging.info('CollectionsController.get() - status: %s', status)
+        logging.info('CollectionsItemsController.get() - data: %s', data)
+        logging.info('CollectionsItemsController.get() - status: %s', status)
 
         if status is False:
-            raise BadRequest(json.dumps(data))  # 400 - Bad Request
+            raise BadRequest(dumps(data))  # 400 - Bad Request
 
         features = CollectionsBusiness.search_get(**request.args)
 
-        # logging.debug('\nCollectionsController.get() - features: %s \n\n', features)
+        # logging.debug('\n\nCollectionsItemsController.get() - features: %s \n\n', features)
         # pp.pprint(features)
 
         return features
 
-    # def post(self):
-    #     if request.is_json:
-    #         body = request.get_json()
+    def post(self):
+        logging.info('CollectionsItemsController.post()\n')
 
-    #         logging.info('CollectionsController.post() - body: %s', body)
+        if request.is_json:
+            body = request.get_json()
 
-    #         data, status = validate(body, 'search')
+            logging.info('CollectionsItemsController.post() - body: %s', body)
 
-    #         logging.info('CollectionsController.post() - data: %s', data)
-    #         logging.info('CollectionsController.post() - status: %s', status)
+            data, status = validate(body, 'search_post')
 
-    #         if status is False:
-    #             raise BadRequest(json.dumps(data))  # 400 - Bad Request
+            logging.info('CollectionsItemsController.post() - data: %s', data)
+            logging.info('CollectionsItemsController.post() - status: %s', status)
 
-    #         features = CollectionsBusiness.search(**body)
+            if status is False:
+                raise BadRequest(dumps(data))  # 400 - Bad Request
 
-    #         # logging.debug('\nCollectionsController.post() - features: %s \n\n', features)
-    #         # pp.pprint(features)
+            features = CollectionsBusiness.search_post(**data)
 
-    #         return features
-    #     else:
-    #         raise BadRequest("POST Request must be an application/json")
+            # logging.debug('\n\n CollectionsItemsController.post() - features: %s \n\n', features)
+            # pp.pprint(features)
+
+            return features
+        else:
+            raise BadRequest("POST Request must be an application/json")

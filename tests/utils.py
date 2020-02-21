@@ -4,6 +4,7 @@
 
 from unittest import TestCase
 from json import loads, dumps
+from copy import deepcopy
 
 from stac_compose import app as stac_compose_app
 
@@ -37,7 +38,7 @@ class StacComposeTester(TestCase):
         self.__urn__ = urn
 
     def get_headers(self):
-        return self.__headers__
+        return deepcopy(self.__headers__)
 
     def set_headers(self, headers):
         self.__headers__ = headers
@@ -85,7 +86,12 @@ class StacComposeTester(TestCase):
         return data
 
     def _post(self, body):
-        return self.app.post(self.get_urn(), data=dumps(body), headers=self.__headers__)
+        # get the available default headers and add more one to POST method
+        # add a header to indicate that my data is a JSON
+        headers = self.get_headers()
+        headers['content-type'] = 'application/json'
+
+        return self.app.post(self.get_urn(), data=dumps(body), headers=headers)
 
     def post(self, expected_data={}, body={}, expected_status_code=200, expected_content_type='application/json'):
         response = self._post(body)
