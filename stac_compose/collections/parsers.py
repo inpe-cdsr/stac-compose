@@ -8,7 +8,7 @@ from stac_compose.log import logging
 
 
 def validate_date(s):
-    dates = s.split("/")
+    dates = s.split('/')
     for date in dates:
         if date.split('T')[0] and not datetime.strptime(date.split('T')[0], '%Y-%m-%d'):
             return None
@@ -47,14 +47,38 @@ def validate_limit(limit):
     return limit if limit > 0 else None
 
 
-def search():
+def search_get():
     base = {
-        'collections': {"type": "string", "coerce": validate_collections, "empty": False, "required": True},
-        'bbox': {"type": "list", "coerce": validate_bbox, "empty": False, "required": True},
-        'time': {"type": "string", "coerce": validate_date, "empty": False, "required": True},
-        'limit': {"type": "number", "coerce": validate_limit, "empty": False, "required": True},
-        'cloud_cover': {"type": "number", "coerce": validate_cloud, "empty": False, "required": False},
-        'query': {"type": "dict", "required": False}
+        'collections': {'type': 'string', 'coerce': validate_collections, 'empty': False, 'required': True},
+        'bbox': {'type': 'list', 'coerce': validate_bbox, 'empty': False, 'required': True},
+        'time': {'type': 'string', 'coerce': validate_date, 'empty': False, 'required': True},
+        'limit': {'type': 'number', 'coerce': validate_limit, 'empty': False, 'required': True},
+        'cloud_cover': {'type': 'number', 'coerce': validate_cloud, 'empty': False, 'required': False},
+        'query': {'type': 'dict', 'required': False}
+    }
+    return base
+
+
+def search_post():
+    base = {
+        'providers': {
+            'type': 'list',
+            'schema': {
+                'type': 'dict',
+                'schema': {
+                    'name': {'type': 'string', 'empty': False, 'required': True},
+                    'collections': {'type': 'list', 'empty': False, 'required': True},
+                    'query': {'type': 'dict', 'required': False}
+                },
+                'empty': False,
+                'required': True
+            },
+            'empty': False,
+            'required': True
+        },
+        'bbox': {'type': 'list', 'coerce': validate_bbox, 'empty': False, 'required': True},
+        'time': {'type': 'string', 'coerce': validate_date, 'empty': False, 'required': True},
+        'limit': {'type': 'number', 'coerce': validate_limit, 'empty': False, 'required': True}
     }
     return base
 

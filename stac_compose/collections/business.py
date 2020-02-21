@@ -15,18 +15,18 @@ pp = PrettyPrinter(indent=4)
 MAX_LIMIT_DEV_SEED = 1000
 
 
-def rename_result(result):
-    """This function renames result keys to leave it according to STAC 9.0"""
+def rename_feature_collection(feature_collection):
+    """This function renames feature collection keys to leave it according to STAC 9.0 and it is returned"""
 
-    if 'meta' in result:
+    if 'meta' in feature_collection:
         # rename 'meta' key to 'context'
-        result['context'] = result.pop('meta')
+        feature_collection['context'] = feature_collection.pop('meta')
 
-    if 'found' in result['context']:
+    if 'found' in feature_collection['context']:
         # rename 'found' key to 'matched'
-        result['context']['matched'] = result['context'].pop('found')
+        feature_collection['context']['matched'] = feature_collection['context'].pop('found')
 
-    return result
+    return feature_collection
 
 
 class CollectionsBusiness():
@@ -51,16 +51,16 @@ class CollectionsBusiness():
         return result_by_provider
 
     @classmethod
-    def search_post(cls, url, collection, bbox, time=False, cloud_cover=None, page=1, limit=100):
-        logging.info('CollectionsBusiness.search_post()')
+    def stac_post(cls, url, collection, bbox, time=False, cloud_cover=None, page=1, limit=100):
+        logging.info('CollectionsBusiness.stac_post()')
 
-        logging.info('CollectionsBusiness.search_post() - url: %s', url)
-        logging.info('CollectionsBusiness.search_post() - collection: %s', collection)
-        logging.info('CollectionsBusiness.search_post() - bbox: %s', bbox)
-        logging.info('CollectionsBusiness.search_post() - time: %s', time)
-        logging.info('CollectionsBusiness.search_post() - cloud_cover: %s', cloud_cover)
-        logging.info('CollectionsBusiness.search_post() - page: %s', page)
-        logging.info('CollectionsBusiness.search_post() - limit: %s', limit)
+        logging.info('CollectionsBusiness.stac_post() - url: %s', url)
+        logging.info('CollectionsBusiness.stac_post() - collection: %s', collection)
+        logging.info('CollectionsBusiness.stac_post() - bbox: %s', bbox)
+        logging.info('CollectionsBusiness.stac_post() - time: %s', time)
+        logging.info('CollectionsBusiness.stac_post() - cloud_cover: %s', cloud_cover)
+        logging.info('CollectionsBusiness.stac_post() - page: %s', page)
+        logging.info('CollectionsBusiness.stac_post() - limit: %s', limit)
 
         data = {
             'bbox': bbox.split(','),
@@ -79,23 +79,23 @@ class CollectionsBusiness():
         if time:
             data['time'] = time
 
-        logging.info('CollectionsBusiness.search_post() - data: %s', data)
+        logging.info('CollectionsBusiness.stac_post() - data: %s', data)
 
         try:
             response = CollectionsServices.search_post(url, data)
 
-            # logging.debug('CollectionsBusiness.search_post() - response: %s', response)
+            # logging.debug('CollectionsBusiness.sta_post() - response: %s', response)
 
             return response
         except Exception as e:
             return None
 
     @classmethod
-    def search_get(cls, url, collections, bbox, time=None, cloud_cover=None, limit=300):
-        logging.info('CollectionsBusiness.search_get()')
+    def stac_get(cls, url, collections, bbox, time=None, cloud_cover=None, limit=300):
+        logging.info('CollectionsBusiness.stac_get()')
 
-        logging.info('CollectionsBusiness.search_get() - url: %s', url)
-        logging.info('CollectionsBusiness.search_get() - collections: %s', collections)
+        logging.info('CollectionsBusiness.stac_get() - url: %s', url)
+        logging.info('CollectionsBusiness.stac_get() - collections: %s', collections)
 
         query = 'bbox={}'.format(bbox)
         query += '&limit={}'.format(limit)
@@ -106,12 +106,12 @@ class CollectionsBusiness():
         if cloud_cover:
             query += '&eo:cloud_cover=0/{}'.format(cloud_cover)
 
-        logging.info('CollectionsBusiness.search_get() - query: %s', query)
+        logging.info('CollectionsBusiness.stac_get() - query: %s', query)
 
         try:
             response = CollectionsServices.search_get(url, query)
 
-            # logging.info('CollectionsBusiness.search_get() - response: %s', response)
+            # logging.info('CollectionsBusiness.stac_get() - response: %s', response)
 
             if not response:
                 return []
@@ -121,11 +121,11 @@ class CollectionsBusiness():
             return []
 
     @classmethod
-    def search_get_items(cls, url, collection, bbox, time=None, cloud_cover=None, limit=300):
-        logging.info('CollectionsBusiness.search_get_items()')
+    def stac_get_items(cls, url, collection, bbox, time=None, cloud_cover=None, limit=300):
+        logging.info('CollectionsBusiness.stac_get_items()')
 
-        logging.info('CollectionsBusiness.search_get_items() - url: %s', url)
-        logging.info('CollectionsBusiness.search_get_items() - collection: %s', collection)
+        logging.info('CollectionsBusiness.stac_get_items() - url: %s', url)
+        logging.info('CollectionsBusiness.stac_get_items() - collection: %s', collection)
 
         query = 'bbox={}'.format(bbox)
         query += '&limit={}'.format(limit)
@@ -135,19 +135,19 @@ class CollectionsBusiness():
         if cloud_cover:
             query += '&eo:cloud_cover=0/{}'.format(cloud_cover)
 
-        logging.info('CollectionsBusiness.search_get_items() - query: %s', query)
+        logging.info('CollectionsBusiness.stac_get_items() - query: %s', query)
 
         try:
             response = CollectionsServices.search_items(url, collection, query)
 
-            # logging.debug('CollectionsBusiness.search_get_items() - response: %s', response)
+            # logging.debug('CollectionsBusiness.stac_get_items() - response: %s', response)
 
             return response
         except Exception as e:
             return None
 
     @classmethod
-    def search(cls, collections, bbox, cloud_cover=False, time=False, limit=100, query=None):
+    def search_get(cls, collections, bbox, cloud_cover=False, time=False, limit=100, query=None):
         logging.info('CollectionsBusiness.search()')
 
         # limit is a string, then I need to convert it
@@ -202,14 +202,14 @@ class CollectionsBusiness():
                         limit_to_search = MAX_LIMIT_DEV_SEED
 
                     # if I'm searching by the first, and only one, page [...]
-                    result = cls.search_post(url, collection, bbox, time, cloud_cover, 1, limit_to_search)
+                    result = cls.stac_post(url, collection, bbox, time, cloud_cover, 1, limit_to_search)
 
                     # logging.debug('CollectionsBusiness.search() - result: %s', result)
 
                     # [...] then I add it to the dict directly
                     result_dict[provider][collection] = result
 
-                    result = rename_result(result)
+                    result = rename_feature_collection(result)
 
                     found = int(result['context']['matched'])
 
@@ -226,11 +226,11 @@ class CollectionsBusiness():
                         for page in range(2, int(limit/MAX_LIMIT_DEV_SEED) + 1):
                             logging.info('CollectionsBusiness.search() - page: %s', page)
 
-                            result = cls.search_post(url, collection, bbox, time, cloud_cover, page, limit_to_search)
+                            result = cls.stac_post(url, collection, bbox, time, cloud_cover, page, limit_to_search)
 
                             # logging.debug('CollectionsBusiness.search() - result: %s', result)
 
-                            result = rename_result(result)
+                            result = rename_feature_collection(result)
 
                             # if I'm on other page, then I increase the old result
                             result_dict[provider][collection]['features'] += result['features']
@@ -255,12 +255,12 @@ class CollectionsBusiness():
             elif method == 'GET':
                 if filter_mult:
                     # TODO: fixing this line to return separate by collection and not just by provider (like the other ones)
-                    result = cls.search_get(url, cs, bbox, time=time, limit=limit)
+                    result = cls.stac_get(url, cs, bbox, time=time, limit=limit)
 
                     result_dict[provider] = result
                 else:
                     for collection in cs:
-                        result = cls.search_get_items(url, collection, bbox, time=time, limit=limit)
+                        result = cls.stac_get_items(url, collection, bbox, time=time, limit=limit)
 
                         # add the result to the corresponding collection
                         result_dict[provider][collection] = result

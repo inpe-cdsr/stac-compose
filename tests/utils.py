@@ -3,7 +3,7 @@
 """Unit-test for STAC Compose operations related to /stac-compose/providers/ endpoint."""
 
 from unittest import TestCase
-from json import loads
+from json import loads, dumps
 
 from stac_compose import app as stac_compose_app
 
@@ -67,16 +67,16 @@ class StacComposeTester(TestCase):
         return self.app.get(self.get_urn(), query_string=query_string, headers=self.__headers__)
 
     def get(self, expected_data={}, query_string={}, expected_status_code=200, expected_content_type='application/json'):
-        result = self.__get(query_string)
+        response = self.__get(query_string)
 
         # print('\nStacComposeTester.get() - self.get_urn(): ', self.get_urn())
         # print('\nStacComposeTester.get() - query_string: ', query_string)
 
-        self.assertEqual(expected_status_code, result.status_code)
-        self.assertIn(expected_content_type, result.content_type)
+        self.assertEqual(expected_status_code, response.status_code)
+        self.assertIn(expected_content_type, response.content_type)
 
         # get the JSON in dict form
-        data = loads(result.data)
+        data = loads(response.data)
 
         # print('\nStacComposeTester.get() - data: ', data)
 
@@ -84,15 +84,26 @@ class StacComposeTester(TestCase):
 
         return data
 
-    def post(self, body):
-        response = self.app.post(self.get_urn(), data=dumps(body), headers=self.__headers__)
+    def _post(self, body):
+        return self.app.post(self.get_urn(), data=dumps(body), headers=self.__headers__)
 
-        id = int(response.data.decode("utf-8"))
+    def post(self, expected_data={}, body={}, expected_status_code=200, expected_content_type='application/json'):
+        response = self._post(body)
 
-        self.assertEqual(response.status_code, 200)
-        self.assertNotEqual(id, b"")
+        # print('\nStacComposeTester.post() - self.get_urn(): ', self.get_urn())
+        # print('\nStacComposeTester.post() - query_string: ', query_string)
 
-        return id
+        self.assertEqual(expected_status_code, response.status_code)
+        self.assertIn(expected_content_type, response.content_type)
+
+        # get the JSON in dict form
+        data = loads(response.data)
+
+        # print('\nStacComposeTester.post() - data: ', data)
+
+        self.assertEqual(expected_data, data)
+
+        return data
 
     def put(self, body):
         response = self.app.put(self.get_urn(), data=dumps(body), headers=self.__headers__)

@@ -46,9 +46,11 @@ class CollectionsItemsController(APIResource):
     """CollectionsItemsController"""
 
     def get(self):
-        logging.info('CollectionsController.get() - request.args: %s', request.args)
+        args = request.args.to_dict(flat=True)
 
-        data, status = validate(request.args.to_dict(flat=True), 'search')
+        logging.info('CollectionsController.get() - args: %s', args)
+
+        data, status = validate(args, 'search_get')
 
         logging.info('CollectionsController.get() - data: %s', data)
         logging.info('CollectionsController.get() - status: %s', status)
@@ -56,7 +58,7 @@ class CollectionsItemsController(APIResource):
         if status is False:
             raise BadRequest(json.dumps(data))  # 400 - Bad Request
 
-        features = CollectionsBusiness.search(**request.args)
+        features = CollectionsBusiness.search_get(**request.args)
 
         # logging.debug('\nCollectionsController.get() - features: %s \n\n', features)
         # pp.pprint(features)
@@ -64,24 +66,12 @@ class CollectionsItemsController(APIResource):
         return features
 
     # def post(self):
-    # {
-    #     "collections": "INPE-CDSR:CBERS4_AWFI_L4_DN",
-    #     "bbox": [ -68.0273437, -25.0059726, -34.9365234, 0.3515602 ],
-    #     "time": "2019-12-22T00:00:00/2020-01-22T23:59:00",
-    #     "limit": 2,
-    #     "query": {
-    #         "cloud_cover": {
-    #             "gte": 30,
-    #             "lte": 60
-    #         }
-    #     }
-    # }
     #     if request.is_json:
-    #         request_json = request.get_json()
+    #         body = request.get_json()
 
-    #         logging.info('CollectionsController.post() - request_json: %s', request_json)
+    #         logging.info('CollectionsController.post() - body: %s', body)
 
-    #         data, status = validate(request_json, 'search')
+    #         data, status = validate(body, 'search')
 
     #         logging.info('CollectionsController.post() - data: %s', data)
     #         logging.info('CollectionsController.post() - status: %s', status)
@@ -89,7 +79,7 @@ class CollectionsItemsController(APIResource):
     #         if status is False:
     #             raise BadRequest(json.dumps(data))  # 400 - Bad Request
 
-    #         features = CollectionsBusiness.search(**request_json)
+    #         features = CollectionsBusiness.search(**body)
 
     #         # logging.debug('\nCollectionsController.post() - features: %s \n\n', features)
     #         # pp.pprint(features)
