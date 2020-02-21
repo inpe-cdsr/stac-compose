@@ -97,7 +97,7 @@ class CollectionsBusiness():
         try:
             response = CollectionsServices.search_get(url, query)
 
-            logging.info('CollectionsBusiness.search_get() - response: %s', response)
+            # logging.info('CollectionsBusiness.search_get() - response: %s', response)
 
             if not response:
                 return []

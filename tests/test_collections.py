@@ -124,20 +124,306 @@ class TestStacComposeCollectionsItems(StacComposeTester):
     def setUp(self):
         self.set_urn(URN_collections_items)
 
-    def test_get_stac_compose_collections_items__landsat8_sentinel2_aws_sentinel_2_l1c_limit_2(self):
+    def test_get_stac_compose_collections_items__landsat8_sentinel2_aws_landsat_8_l1_and_sentinel_2_l1c_limit_1(self):
         """
-        http://localhost:8089/stac-compose/collections/items?collections=LANDAST8-SENTINEL2-AWS:sentinel-2-l1c&bbox=-68.0273437,-25.0059726,-34.9365234,0.3515602&time=2020-01-13T00:00:00/2020-02-13T23:59:00&limit=2
+        http://localhost:8089/stac-compose/collections/items?collections=LANDAST8-SENTINEL2-AWS:landsat-8-l1,LANDAST8-SENTINEL2-AWS:sentinel-2-l1c&bbox=-68.0273437,-25.0059726,-34.9365234,0.3515602&time=2020-01-13T00:00:00/2020-02-13T23:59:00&limit=1
         """
 
         expected = {
             "LANDAST8-SENTINEL2-AWS": {
+                "landsat-8-l1": {
+                    "type": "FeatureCollection",
+                    "meta": {
+                        "page": 1,
+                        "limit": 1,
+                        "found": 748,
+                        "returned": 1
+                    },
+                    "features": [
+                        {
+                            "type": "Feature",
+                            "id": "LC82310782020044",
+                            "bbox": [
+                                -66.88899,
+                                -27.05112,
+                                -64.56824,
+                                -24.93065
+                            ],
+                            "geometry": {
+                                "type": "Polygon",
+                                "coordinates": [
+                                    [
+                                        [
+                                            -66.49304305702688,
+                                            -24.932756418193854
+                                        ],
+                                        [
+                                            -64.57098632376038,
+                                            -25.28391152003526
+                                        ],
+                                        [
+                                            -64.96363270562209,
+                                            -27.049545312089084
+                                        ],
+                                        [
+                                            -66.88818548270888,
+                                            -26.700636378760883
+                                        ],
+                                        [
+                                            -66.49304305702688,
+                                            -24.932756418193854
+                                        ]
+                                    ]
+                                ]
+                            },
+                            "properties": {
+                                "collection": "landsat-8-l1",
+                                "eo:gsd": 15,
+                                "eo:platform": "landsat-8",
+                                "eo:instrument": "OLI_TIRS",
+                                "eo:off_nadir": 0,
+                                "eo:bands": [
+                                    {
+                                        "name": "B1",
+                                        "common_name": "coastal",
+                                        "gsd": 30,
+                                        "center_wavelength": 0.44,
+                                        "full_width_half_max": 0.02
+                                    },
+                                    {
+                                        "name": "B2",
+                                        "common_name": "blue",
+                                        "gsd": 30,
+                                        "center_wavelength": 0.48,
+                                        "full_width_half_max": 0.06
+                                    },
+                                    {
+                                        "name": "B3",
+                                        "common_name": "green",
+                                        "gsd": 30,
+                                        "center_wavelength": 0.56,
+                                        "full_width_half_max": 0.06
+                                    },
+                                    {
+                                        "name": "B4",
+                                        "common_name": "red",
+                                        "gsd": 30,
+                                        "center_wavelength": 0.65,
+                                        "full_width_half_max": 0.04
+                                    },
+                                    {
+                                        "name": "B5",
+                                        "common_name": "nir",
+                                        "gsd": 30,
+                                        "center_wavelength": 0.86,
+                                        "full_width_half_max": 0.03
+                                    },
+                                    {
+                                        "name": "B6",
+                                        "common_name": "swir16",
+                                        "gsd": 30,
+                                        "center_wavelength": 1.6,
+                                        "full_width_half_max": 0.08
+                                    },
+                                    {
+                                        "name": "B7",
+                                        "common_name": "swir22",
+                                        "gsd": 30,
+                                        "center_wavelength": 2.2,
+                                        "full_width_half_max": 0.2
+                                    },
+                                    {
+                                        "name": "B8",
+                                        "common_name": "pan",
+                                        "gsd": 15,
+                                        "center_wavelength": 0.59,
+                                        "full_width_half_max": 0.18
+                                    },
+                                    {
+                                        "name": "B9",
+                                        "common_name": "cirrus",
+                                        "gsd": 30,
+                                        "center_wavelength": 1.37,
+                                        "full_width_half_max": 0.02
+                                    },
+                                    {
+                                        "name": "B10",
+                                        "common_name": "lwir11",
+                                        "gsd": 100,
+                                        "center_wavelength": 10.9,
+                                        "full_width_half_max": 0.8
+                                    },
+                                    {
+                                        "name": "B11",
+                                        "common_name": "lwir12",
+                                        "gsd": 100,
+                                        "center_wavelength": 12,
+                                        "full_width_half_max": 1
+                                    }
+                                ],
+                                "datetime": "2020-02-13T14:19:21.483266+00:00",
+                                "eo:sun_azimuth": 75.40561993,
+                                "eo:sun_elevation": 55.36817654,
+                                "eo:cloud_cover": 26,
+                                "eo:row": "078",
+                                "eo:column": "231",
+                                "landsat:product_id": "LC08_L1TP_231078_20200213_20200213_01_RT",
+                                "landsat:scene_id": "LC82310782020044LGN00",
+                                "landsat:processing_level": "L1TP",
+                                "landsat:tier": "RT",
+                                "landsat:revision": "00",
+                                "eo:epsg": 32720
+                            },
+                            "assets": {
+                                "index": {
+                                    "type": "text/html",
+                                    "title": "HTML index page",
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200213_01_RT/LC08_L1TP_231078_20200213_20200213_01_RT_MTL.txt"
+                                },
+                                "thumbnail": {
+                                    "title": "Thumbnail image",
+                                    "type": "image/jpeg",
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200213_01_RT/LC08_L1TP_231078_20200213_20200213_01_RT_thumb_large.jpg"
+                                },
+                                "B1": {
+                                    "type": "image/x.geotiff",
+                                    "eo:bands": [
+                                        0
+                                    ],
+                                    "title": "Band 1 (coastal)",
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200213_01_RT/LC08_L1TP_231078_20200213_20200213_01_RT_B1.TIF"
+                                },
+                                "B2": {
+                                    "type": "image/x.geotiff",
+                                    "eo:bands": [
+                                        1
+                                    ],
+                                    "title": "Band 2 (blue)",
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200213_01_RT/LC08_L1TP_231078_20200213_20200213_01_RT_B2.TIF"
+                                },
+                                "B3": {
+                                    "type": "image/x.geotiff",
+                                    "eo:bands": [
+                                        2
+                                    ],
+                                    "title": "Band 3 (green)",
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200213_01_RT/LC08_L1TP_231078_20200213_20200213_01_RT_B3.TIF"
+                                },
+                                "B4": {
+                                    "type": "image/x.geotiff",
+                                    "eo:bands": [
+                                        3
+                                    ],
+                                    "title": "Band 4 (red)",
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200213_01_RT/LC08_L1TP_231078_20200213_20200213_01_RT_B4.TIF"
+                                },
+                                "B5": {
+                                    "type": "image/x.geotiff",
+                                    "eo:bands": [
+                                        4
+                                    ],
+                                    "title": "Band 5 (nir)",
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200213_01_RT/LC08_L1TP_231078_20200213_20200213_01_RT_B5.TIF"
+                                },
+                                "B6": {
+                                    "type": "image/x.geotiff",
+                                    "eo:bands": [
+                                        5
+                                    ],
+                                    "title": "Band 6 (swir16)",
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200213_01_RT/LC08_L1TP_231078_20200213_20200213_01_RT_B6.TIF"
+                                },
+                                "B7": {
+                                    "type": "image/x.geotiff",
+                                    "eo:bands": [
+                                        6
+                                    ],
+                                    "title": "Band 7 (swir22)",
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200213_01_RT/LC08_L1TP_231078_20200213_20200213_01_RT_B7.TIF"
+                                },
+                                "B8": {
+                                    "type": "image/x.geotiff",
+                                    "eo:bands": [
+                                        7
+                                    ],
+                                    "title": "Band 8 (pan)",
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200213_01_RT/LC08_L1TP_231078_20200213_20200213_01_RT_B8.TIF"
+                                },
+                                "B9": {
+                                    "type": "image/x.geotiff",
+                                    "eo:bands": [
+                                        8
+                                    ],
+                                    "title": "Band 9 (cirrus)",
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200213_01_RT/LC08_L1TP_231078_20200213_20200213_01_RT_B9.TIF"
+                                },
+                                "B10": {
+                                    "type": "image/x.geotiff",
+                                    "eo:bands": [
+                                        9
+                                    ],
+                                    "title": "Band 10 (lwir)",
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200213_01_RT/LC08_L1TP_231078_20200213_20200213_01_RT_B10.TIF"
+                                },
+                                "B11": {
+                                    "type": "image/x.geotiff",
+                                    "eo:bands": [
+                                        10
+                                    ],
+                                    "title": "Band 11 (lwir)",
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200213_01_RT/LC08_L1TP_231078_20200213_20200213_01_RT_B11.TIF"
+                                },
+                                "ANG": {
+                                    "title": "Angle coefficients file",
+                                    "type": "text/plain",
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200213_01_RT/LC08_L1TP_231078_20200213_20200213_01_RT_ANG.txt"
+                                },
+                                "MTL": {
+                                    "title": "original metadata file",
+                                    "type": "text/plain",
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200213_01_RT/LC08_L1TP_231078_20200213_20200213_01_RT_MTL.txt"
+                                },
+                                "BQA": {
+                                    "title": "Band quality data",
+                                    "type": "image/x.geotiff",
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200213_01_RT/LC08_L1TP_231078_20200213_20200213_01_RT_BQA.TIF"
+                                }
+                            },
+                            "links": [
+                                {
+                                    "rel": "self",
+                                    "href": "https://sat-api.developmentseed.org/collections/landsat-8-l1/items/LC82310782020044"
+                                },
+                                {
+                                    "rel": "parent",
+                                    "href": "https://sat-api.developmentseed.org/collections/landsat-8-l1"
+                                },
+                                {
+                                    "rel": "collection",
+                                    "href": "https://sat-api.developmentseed.org/collections/landsat-8-l1"
+                                },
+                                {
+                                    "rel": "root",
+                                    "href": "https://sat-api.developmentseed.org/stac"
+                                }
+                            ]
+                        }
+                    ],
+                    "links": [
+                        {
+                            "rel": "next",
+                            "title": "Next page of results",
+                            "href": "https://sat-api.developmentseed.org/stac/search?datetime=2020-01-13T00%3A00%3A00%2F2020-02-13T23%3A59%3A00&intersects=%5Bobject%20Object%5D&query=%5Bobject%20Object%5D&page=2&limit=1"
+                        }
+                    ]
+                },
                 "sentinel-2-l1c": {
                     "type": "FeatureCollection",
                     "meta": {
                         "page": 1,
-                        "limit": 2,
+                        "limit": 1,
                         "found": 10675,
-                        "returned": 2
+                        "returned": 1
                     },
                     "features": [
                         {
@@ -424,306 +710,13 @@ class TestStacComposeCollectionsItems(StacComposeTester):
                                     "href": "https://sat-api.developmentseed.org/stac"
                                 }
                             ]
-                        },
-                        {
-                            "type": "Feature",
-                            "id": "S2A_19JFN_20200213_0",
-                            "bbox": [
-                                -68.01369356393954,
-                                -25.401683501450417,
-                                -67.28980250350575,
-                                -24.403777159128175
-                            ],
-                            "geometry": {
-                                "type": "Polygon",
-                                "coordinates": [
-                                    [
-                                        [
-                                            -68.00578012056987,
-                                            -25.401683501450417
-                                        ],
-                                        [
-                                            -68.01369356393954,
-                                            -24.41022403751015
-                                        ],
-                                        [
-                                            -67.28980250350575,
-                                            -24.403777159128175
-                                        ],
-                                        [
-                                            -67.44916956613386,
-                                            -25.074618981435503
-                                        ],
-                                        [
-                                            -67.48916902620348,
-                                            -25.23965943697605
-                                        ],
-                                        [
-                                            -67.5280060914807,
-                                            -25.397676775149883
-                                        ],
-                                        [
-                                            -68.00578012056987,
-                                            -25.401683501450417
-                                        ]
-                                    ]
-                                ]
-                            },
-                            "properties": {
-                                "collection": "sentinel-2-l1c",
-                                "eo:gsd": 10,
-                                "eo:instrument": "MSI",
-                                "eo:off_nadir": 0,
-                                "eo:bands": [
-                                    {
-                                        "full_width_half_max": 0.027,
-                                        "center_wavelength": 0.4439,
-                                        "name": "B01",
-                                        "gsd": 60,
-                                        "common_name": "coastal"
-                                    },
-                                    {
-                                        "full_width_half_max": 0.098,
-                                        "center_wavelength": 0.4966,
-                                        "name": "B02",
-                                        "gsd": 10,
-                                        "common_name": "blue"
-                                    },
-                                    {
-                                        "full_width_half_max": 0.045,
-                                        "center_wavelength": 0.56,
-                                        "name": "B03",
-                                        "gsd": 10,
-                                        "common_name": "green"
-                                    },
-                                    {
-                                        "full_width_half_max": 0.038,
-                                        "center_wavelength": 0.6645,
-                                        "name": "B04",
-                                        "gsd": 10,
-                                        "common_name": "red"
-                                    },
-                                    {
-                                        "full_width_half_max": 0.019,
-                                        "center_wavelength": 0.7039,
-                                        "name": "B05",
-                                        "gsd": 20
-                                    },
-                                    {
-                                        "full_width_half_max": 0.018,
-                                        "center_wavelength": 0.7402,
-                                        "name": "B06",
-                                        "gsd": 20
-                                    },
-                                    {
-                                        "full_width_half_max": 0.028,
-                                        "center_wavelength": 0.7825,
-                                        "name": "B07",
-                                        "gsd": 20
-                                    },
-                                    {
-                                        "full_width_half_max": 0.145,
-                                        "center_wavelength": 0.8351,
-                                        "name": "B08",
-                                        "gsd": 10,
-                                        "common_name": "nir"
-                                    },
-                                    {
-                                        "full_width_half_max": 0.033,
-                                        "center_wavelength": 0.8648,
-                                        "name": "B8A",
-                                        "gsd": 20
-                                    },
-                                    {
-                                        "full_width_half_max": 0.026,
-                                        "center_wavelength": 0.945,
-                                        "name": "B09",
-                                        "gsd": 60
-                                    },
-                                    {
-                                        "full_width_half_max": 0.075,
-                                        "center_wavelength": 1.3735,
-                                        "name": "B10",
-                                        "gsd": 60,
-                                        "common_name": "cirrus"
-                                    },
-                                    {
-                                        "full_width_half_max": 0.143,
-                                        "center_wavelength": 1.6137,
-                                        "name": "B11",
-                                        "gsd": 20,
-                                        "common_name": "swir16"
-                                    },
-                                    {
-                                        "full_width_half_max": 0.242,
-                                        "center_wavelength": 2.22024,
-                                        "name": "B12",
-                                        "gsd": 20,
-                                        "common_name": "swir22"
-                                    }
-                                ],
-                                "datetime": "2020-02-13T14:49:36.500000+00:00",
-                                "eo:platform": "sentinel-2a",
-                                "eo:cloud_cover": 27.66,
-                                "sentinel:utm_zone": 19,
-                                "sentinel:latitude_band": "J",
-                                "sentinel:grid_square": "FN",
-                                "sentinel:sequence": "0",
-                                "sentinel:product_id": "S2A_MSIL1C_20200213T143721_N0209_R096_T19JFN_20200213T180805"
-                            },
-                            "assets": {
-                                "thumbnail": {
-                                    "title": "Thumbnail",
-                                    "href": "https://roda.sentinel-hub.com/sentinel-s2-l1c/tiles/19/J/FN/2020/2/13/0/preview.jpg"
-                                },
-                                "info": {
-                                    "title": "Basic JSON metadata",
-                                    "href": "https://roda.sentinel-hub.com/sentinel-s2-l1c/tiles/19/J/FN/2020/2/13/0/tileInfo.json"
-                                },
-                                "metadata": {
-                                    "title": "Complete XML metadata",
-                                    "href": "https://roda.sentinel-hub.com/sentinel-s2-l1c/tiles/19/J/FN/2020/2/13/0/metadata.xml"
-                                },
-                                "tki": {
-                                    "title": "True color image",
-                                    "type": "image/jp2",
-                                    "eo:bands": [
-                                        3,
-                                        2,
-                                        1
-                                    ],
-                                    "href": "https://sentinel-s2-l1c.s3.amazonaws.com/tiles/19/J/FN/2020/2/13/0/TKI.jp2"
-                                },
-                                "B01": {
-                                    "title": "Band 1 (coastal)",
-                                    "type": "image/jp2",
-                                    "eo:bands": [
-                                        0
-                                    ],
-                                    "href": "https://sentinel-s2-l1c.s3.amazonaws.com/tiles/19/J/FN/2020/2/13/0/B01.jp2"
-                                },
-                                "B02": {
-                                    "title": "Band 2 (blue)",
-                                    "type": "image/jp2",
-                                    "eo:bands": [
-                                        2
-                                    ],
-                                    "href": "https://sentinel-s2-l1c.s3.amazonaws.com/tiles/19/J/FN/2020/2/13/0/B02.jp2"
-                                },
-                                "B03": {
-                                    "title": "Band 3 (green)",
-                                    "type": "image/jp2",
-                                    "eo:bands": [
-                                        2
-                                    ],
-                                    "href": "https://sentinel-s2-l1c.s3.amazonaws.com/tiles/19/J/FN/2020/2/13/0/B03.jp2"
-                                },
-                                "B04": {
-                                    "title": "Band 4 (red)",
-                                    "type": "image/jp2",
-                                    "eo:bands": [
-                                        3
-                                    ],
-                                    "href": "https://sentinel-s2-l1c.s3.amazonaws.com/tiles/19/J/FN/2020/2/13/0/B04.jp2"
-                                },
-                                "B05": {
-                                    "title": "Band 5",
-                                    "type": "image/jp2",
-                                    "eo:bands": [
-                                        4
-                                    ],
-                                    "href": "https://sentinel-s2-l1c.s3.amazonaws.com/tiles/19/J/FN/2020/2/13/0/B05.jp2"
-                                },
-                                "B06": {
-                                    "title": "Band 6",
-                                    "type": "image/jp2",
-                                    "eo:bands": [
-                                        5
-                                    ],
-                                    "href": "https://sentinel-s2-l1c.s3.amazonaws.com/tiles/19/J/FN/2020/2/13/0/B06.jp2"
-                                },
-                                "B07": {
-                                    "title": "Band 7",
-                                    "type": "image/jp2",
-                                    "eo:bands": [
-                                        6
-                                    ],
-                                    "href": "https://sentinel-s2-l1c.s3.amazonaws.com/tiles/19/J/FN/2020/2/13/0/B07.jp2"
-                                },
-                                "B08": {
-                                    "title": "Band 8 (nir)",
-                                    "type": "image/jp2",
-                                    "eo:bands": [
-                                        7
-                                    ],
-                                    "href": "https://sentinel-s2-l1c.s3.amazonaws.com/tiles/19/J/FN/2020/2/13/0/B08.jp2"
-                                },
-                                "B8A": {
-                                    "title": "Band 8A",
-                                    "type": "image/jp2",
-                                    "eo:bands": [
-                                        8
-                                    ],
-                                    "href": "https://sentinel-s2-l1c.s3.amazonaws.com/tiles/19/J/FN/2020/2/13/0/B08.jp2"
-                                },
-                                "B09": {
-                                    "title": "Band 9",
-                                    "type": "image/jp2",
-                                    "eo:bands": [
-                                        9
-                                    ],
-                                    "href": "https://sentinel-s2-l1c.s3.amazonaws.com/tiles/19/J/FN/2020/2/13/0/B09.jp2"
-                                },
-                                "B10": {
-                                    "title": "Band 10 (cirrus)",
-                                    "type": "image/jp2",
-                                    "eo:bands": [
-                                        10
-                                    ],
-                                    "href": "https://sentinel-s2-l1c.s3.amazonaws.com/tiles/19/J/FN/2020/2/13/0/B10.jp2"
-                                },
-                                "B11": {
-                                    "title": "Band 11 (swir16)",
-                                    "type": "image/jp2",
-                                    "eo:bands": [
-                                        11
-                                    ],
-                                    "href": "https://sentinel-s2-l1c.s3.amazonaws.com/tiles/19/J/FN/2020/2/13/0/B11.jp2"
-                                },
-                                "B12": {
-                                    "title": "Band 12 (swir22)",
-                                    "type": "image/jp2",
-                                    "eo:bands": [
-                                        12
-                                    ],
-                                    "href": "https://sentinel-s2-l1c.s3.amazonaws.com/tiles/19/J/FN/2020/2/13/0/B11.jp2"
-                                }
-                            },
-                            "links": [
-                                {
-                                    "rel": "self",
-                                    "href": "https://sat-api.developmentseed.org/collections/sentinel-2-l1c/items/S2A_19JFN_20200213_0"
-                                },
-                                {
-                                    "rel": "parent",
-                                    "href": "https://sat-api.developmentseed.org/collections/sentinel-2-l1c"
-                                },
-                                {
-                                    "rel": "collection",
-                                    "href": "https://sat-api.developmentseed.org/collections/sentinel-2-l1c"
-                                },
-                                {
-                                    "rel": "root",
-                                    "href": "https://sat-api.developmentseed.org/stac"
-                                }
-                            ]
                         }
                     ],
                     "links": [
                         {
                             "rel": "next",
                             "title": "Next page of results",
-                            "href": "https://sat-api.developmentseed.org/stac/search?datetime=2020-01-13T00%3A00%3A00%2F2020-02-13T23%3A59%3A00&intersects=%5Bobject%20Object%5D&query=%5Bobject%20Object%5D&page=2&limit=2"
+                            "href": "https://sat-api.developmentseed.org/stac/search?datetime=2020-01-13T00%3A00%3A00%2F2020-02-13T23%3A59%3A00&intersects=%5Bobject%20Object%5D&query=%5Bobject%20Object%5D&page=2&limit=1"
                         }
                     ]
                 }
@@ -731,10 +724,10 @@ class TestStacComposeCollectionsItems(StacComposeTester):
         }
 
         query_string = {
-            'collections': 'LANDAST8-SENTINEL2-AWS:sentinel-2-l1c',
+            'collections': 'LANDAST8-SENTINEL2-AWS:landsat-8-l1,LANDAST8-SENTINEL2-AWS:sentinel-2-l1c',
             'bbox': '-68.0273437,-25.0059726,-34.9365234,0.3515602',
             'time': '2020-01-13T00:00:00/2020-02-13T23:59:00',
-            'limit': 2
+            'limit': 1
         }
 
         self.get(expected, query_string=query_string)
@@ -770,19 +763,303 @@ class TestStacComposeCollectionsItems(StacComposeTester):
             self.assertEqual(2000, context['returned'])
     '''
 
-    # def test_get_stac_compose_collections_items__landsat8_sentinel2_aws_sentinel_2_l1c_limit_2(self):
-    #     """
-    #     - collections=LANDAST8-SENTINEL2-AWS:landsat-8-l1,LANDAST8-SENTINEL2-AWS:sentinel-2-l1c and limit=10:
-    #         http://localhost:8089/stac-compose/collections/items?collections=LANDAST8-SENTINEL2-AWS:landsat-8-l1,LANDAST8-SENTINEL2-AWS:sentinel-2-l1c&bbox=-68.0273437,-25.0059726,-34.9365234,0.3515602&time=2020-01-13T00:00:00/2020-02-13T23:59:00&limit=10
-    #     """
+    def test_get_stac_compose_collections_items__inpe_cdsr_cbers4_awfi_l4_dn_and_cbers4a_wfi_l4_dn_and_cbers4a_wpm_l2_dn_limit_1(self):
+        """
+        http://localhost:8089/stac-compose/collections/items/?collections=INPE-CDSR:CBERS4_AWFI_L4_DN,INPE-CDSR:CBERS4A_WFI_L4_DN,INPE-CDSR:CBERS4A_WPM_L2_DN&bbox=-68.0273437,-25.0059726,-34.9365234,0.3515602&time=2019-12-01T00:00:00/2020-02-13T23:59:00&limit=1
+        """
 
-    #     expected = {}
+        expected = {
+            "INPE-CDSR": {
+                "CBERS4_AWFI_L4_DN": {
+                    "type": "FeatureCollection",
+                    "features": [
+                        {
+                            "type": "Feature",
+                            "id": "CBERS4_AWFI15010520200120",
+                            "collection": "CBERS4_AWFI_L4_DN",
+                            "geometry": {
+                                "type": "Polygon",
+                                "coordinates": [
+                                    [
+                                        [
+                                            -42.6153,
+                                            -0.285467
+                                        ],
+                                        [
+                                            -42.6546,
+                                            -8.42863
+                                        ],
+                                        [
+                                            -33.1365,
+                                            -8.40183
+                                        ],
+                                        [
+                                            -33.1992,
+                                            -0.284565
+                                        ],
+                                        [
+                                            -42.6153,
+                                            -0.285467
+                                        ]
+                                    ]
+                                ]
+                            },
+                            "bbox": [
+                                -42.6546,
+                                -8.42863,
+                                -33.1365,
+                                -0.284565
+                            ],
+                            "properties": {
+                                "datetime": "2020-01-21T12:16:23",
+                                "path": "150",
+                                "row": "105",
+                                "satellite": "CBERS4",
+                                "sensor": "AWFI",
+                                "cloud_cover": 0,
+                                "sync_loss": 0.0
+                            },
+                            "assets": {
+                                "blue": {
+                                    "href": "http://cdsr.dpi.inpe.br/api/download/TIFF/CBERS4/2020_01/CBERS_4_AWFI_DRD_2020_01_20.12_43_30_CB11/150_105_0/4_NN_UTM_WGS84/CBERS_4_AWFI_20200120_150_105_L4_BAND13.tif"
+                                },
+                                "green": {
+                                    "href": "http://cdsr.dpi.inpe.br/api/download/TIFF/CBERS4/2020_01/CBERS_4_AWFI_DRD_2020_01_20.12_43_30_CB11/150_105_0/4_NN_UTM_WGS84/CBERS_4_AWFI_20200120_150_105_L4_BAND14.tif"
+                                },
+                                "red": {
+                                    "href": "http://cdsr.dpi.inpe.br/api/download/TIFF/CBERS4/2020_01/CBERS_4_AWFI_DRD_2020_01_20.12_43_30_CB11/150_105_0/4_NN_UTM_WGS84/CBERS_4_AWFI_20200120_150_105_L4_BAND15.tif"
+                                },
+                                "nir": {
+                                    "href": "http://cdsr.dpi.inpe.br/api/download/TIFF/CBERS4/2020_01/CBERS_4_AWFI_DRD_2020_01_20.12_43_30_CB11/150_105_0/4_NN_UTM_WGS84/CBERS_4_AWFI_20200120_150_105_L4_BAND16.tif"
+                                },
+                                "thumbnail": {
+                                    "href": "http://cdsr.dpi.inpe.br/datastore/TIFF/CBERS4/2020_01/CBERS_4_AWFI_DRD_2020_01_20.12_43_30_CB11/150_105_0/4_NN_UTM_WGS84/CBERS_4_AWFI_20200120_150_105.png"
+                                }
+                            },
+                            "links": [
+                                {
+                                    "href": "http://localhost:8089/inpe-stac/collections/CBERS4_AWFI_L4_DN/items/CBERS4_AWFI15010520200120",
+                                    "rel": "self"
+                                },
+                                {
+                                    "href": "http://localhost:8089/inpe-stac/collections/CBERS4_AWFI_L4_DN",
+                                    "rel": "parent"
+                                },
+                                {
+                                    "href": "http://localhost:8089/inpe-stac/collections/CBERS4_AWFI_L4_DN",
+                                    "rel": "collection"
+                                },
+                                {
+                                    "href": "http://localhost:8089/inpe-stac/stac",
+                                    "rel": "root"
+                                }
+                            ]
+                        }
+                    ],
+                    "context": {
+                        "page": 1,
+                        "limit": 1,
+                        "matched": 391,
+                        "returned": 1
+                    }
+                },
+                "CBERS4A_WFI_L4_DN": {
+                    "type": "FeatureCollection",
+                    "features": [
+                        {
+                            "type": "Feature",
+                            "id": "CBERS4A_WFI15911720200110",
+                            "collection": "CBERS4A_WFI_L4_DN",
+                            "geometry": {
+                                "type": "Polygon",
+                                "coordinates": [
+                                    [
+                                        [
+                                            -48.864,
+                                            0.75986
+                                        ],
+                                        [
+                                            -48.8923,
+                                            -6.97426
+                                        ],
+                                        [
+                                            -41.1819,
+                                            -6.97487
+                                        ],
+                                        [
+                                            -41.2097,
+                                            0.759925
+                                        ],
+                                        [
+                                            -48.864,
+                                            0.75986
+                                        ]
+                                    ]
+                                ]
+                            },
+                            "bbox": [
+                                -48.8923,
+                                -6.97487,
+                                -41.1819,
+                                0.759925
+                            ],
+                            "properties": {
+                                "datetime": "2020-01-21T12:16:23",
+                                "path": "159",
+                                "row": "117",
+                                "satellite": "CBERS4A",
+                                "sensor": "WFI",
+                                "cloud_cover": 0,
+                                "sync_loss": 0.0
+                            },
+                            "assets": {
+                                "red": {
+                                    "href": "http://cdsr.dpi.inpe.br/api/download/TIFF/CBERS4A/2020_01/CBERS_4A_WFI_RAW_2020_01_10.13_29_00_ETC2/159_117_0/4_NN_LCC_WGS84/CBERS_4A_WFI_20200110_159_117_L4_BAND15.tif"
+                                },
+                                "blue": {
+                                    "href": "http://cdsr.dpi.inpe.br/api/download/TIFF/CBERS4A/2020_01/CBERS_4A_WFI_RAW_2020_01_10.13_29_00_ETC2/159_117_0/4_NN_LCC_WGS84/CBERS_4A_WFI_20200110_159_117_L4_BAND13.tif"
+                                },
+                                "green": {
+                                    "href": "http://cdsr.dpi.inpe.br/api/download/TIFF/CBERS4A/2020_01/CBERS_4A_WFI_RAW_2020_01_10.13_29_00_ETC2/159_117_0/4_NN_LCC_WGS84/CBERS_4A_WFI_20200110_159_117_L4_BAND14.tif"
+                                },
+                                "nir": {
+                                    "href": "http://cdsr.dpi.inpe.br/api/download/TIFF/CBERS4A/2020_01/CBERS_4A_WFI_RAW_2020_01_10.13_29_00_ETC2/159_117_0/4_NN_LCC_WGS84/CBERS_4A_WFI_20200110_159_117_L4_BAND16.tif"
+                                },
+                                "thumbnail": {
+                                    "href": "http://cdsr.dpi.inpe.br/datastore/TIFF/CBERS4A/2020_01/CBERS_4A_WFI_RAW_2020_01_10.13_29_00_ETC2/159_117_0/4_NN_LCC_WGS84/CBERS_4A_WFI_20200110_159_117.png"
+                                }
+                            },
+                            "links": [
+                                {
+                                    "href": "http://localhost:8089/inpe-stac/collections/CBERS4A_WFI_L4_DN/items/CBERS4A_WFI15911720200110",
+                                    "rel": "self"
+                                },
+                                {
+                                    "href": "http://localhost:8089/inpe-stac/collections/CBERS4A_WFI_L4_DN",
+                                    "rel": "parent"
+                                },
+                                {
+                                    "href": "http://localhost:8089/inpe-stac/collections/CBERS4A_WFI_L4_DN",
+                                    "rel": "collection"
+                                },
+                                {
+                                    "href": "http://localhost:8089/inpe-stac/stac",
+                                    "rel": "root"
+                                }
+                            ]
+                        }
+                    ],
+                    "context": {
+                        "page": 1,
+                        "limit": 1,
+                        "matched": 9,
+                        "returned": 1
+                    }
+                },
+                "CBERS4A_WPM_L2_DN": {
+                    "type": "FeatureCollection",
+                    "features": [
+                        {
+                            "type": "Feature",
+                            "id": "CBERS4A_WPM15911220200110",
+                            "collection": "CBERS4A_WPM_L2_DN",
+                            "geometry": {
+                                "type": "Polygon",
+                                "coordinates": [
+                                    [
+                                        [
+                                            -44.7212,
+                                            1.29834
+                                        ],
+                                        [
+                                            -44.7212,
+                                            0.256597
+                                        ],
+                                        [
+                                            -43.7049,
+                                            0.256534
+                                        ],
+                                        [
+                                            -43.7045,
+                                            1.29803
+                                        ],
+                                        [
+                                            -44.7212,
+                                            1.29834
+                                        ]
+                                    ]
+                                ]
+                            },
+                            "bbox": [
+                                -44.7212,
+                                0.256534,
+                                -43.7045,
+                                1.29834
+                            ],
+                            "properties": {
+                                "datetime": "2020-01-21T12:16:23",
+                                "path": "159",
+                                "row": "112",
+                                "satellite": "CBERS4A",
+                                "sensor": "WPM",
+                                "cloud_cover": 0,
+                                "sync_loss": 0.0
+                            },
+                            "assets": {
+                                "green": {
+                                    "href": "http://cdsr.dpi.inpe.br/api/download/TIFF/CBERS4A/2020_01/CBERS_4A_WPM_RAW_2020_01_10.13_29_00_ETC2/159_112_0/2_NN_UTM_WGS84/CBERS_4A_WPM_20200110_159_112_L2_BAND2.tif"
+                                },
+                                "pan": {
+                                    "href": "http://cdsr.dpi.inpe.br/api/download/TIFF/CBERS4A/2020_01/CBERS_4A_WPM_RAW_2020_01_10.13_29_00_ETC2/159_112_0/2_NN_UTM_WGS84/CBERS_4A_WPM_20200110_159_112_L2_BAND0.tif"
+                                },
+                                "nir": {
+                                    "href": "http://cdsr.dpi.inpe.br/api/download/TIFF/CBERS4A/2020_01/CBERS_4A_WPM_RAW_2020_01_10.13_29_00_ETC2/159_112_0/2_NN_UTM_WGS84/CBERS_4A_WPM_20200110_159_112_L2_BAND4.tif"
+                                },
+                                "red": {
+                                    "href": "http://cdsr.dpi.inpe.br/api/download/TIFF/CBERS4A/2020_01/CBERS_4A_WPM_RAW_2020_01_10.13_29_00_ETC2/159_112_0/2_NN_UTM_WGS84/CBERS_4A_WPM_20200110_159_112_L2_BAND3.tif"
+                                },
+                                "blue": {
+                                    "href": "http://cdsr.dpi.inpe.br/api/download/TIFF/CBERS4A/2020_01/CBERS_4A_WPM_RAW_2020_01_10.13_29_00_ETC2/159_112_0/2_NN_UTM_WGS84/CBERS_4A_WPM_20200110_159_112_L2_BAND1.tif"
+                                },
+                                "thumbnail": {
+                                    "href": "http://cdsr.dpi.inpe.br/datastore/TIFF/CBERS4A/2020_01/CBERS_4A_WPM_RAW_2020_01_10.13_29_00_ETC2/159_112_0/2_NN_UTM_WGS84/CBERS_4A_WPM_20200110_159_112.png"
+                                }
+                            },
+                            "links": [
+                                {
+                                    "href": "http://localhost:8089/inpe-stac/collections/CBERS4A_WPM_L2_DN/items/CBERS4A_WPM15911220200110",
+                                    "rel": "self"
+                                },
+                                {
+                                    "href": "http://localhost:8089/inpe-stac/collections/CBERS4A_WPM_L2_DN",
+                                    "rel": "parent"
+                                },
+                                {
+                                    "href": "http://localhost:8089/inpe-stac/collections/CBERS4A_WPM_L2_DN",
+                                    "rel": "collection"
+                                },
+                                {
+                                    "href": "http://localhost:8089/inpe-stac/stac",
+                                    "rel": "root"
+                                }
+                            ]
+                        }
+                    ],
+                    "context": {
+                        "page": 1,
+                        "limit": 1,
+                        "matched": 176,
+                        "returned": 1
+                    }
+                }
+            }
+        }
 
-    #     query_string = {
-    #         'collections': 'LANDAST8-SENTINEL2-AWS:sentinel-2-l1c',
-    #         'bbox': '-68.0273437,-25.0059726,-34.9365234,0.3515602',
-    #         'time': '2020-01-13T00:00:00/2020-02-13T23:59:00',
-    #         'limit': 2
-    #     }
+        query_string = {
+            'collections': 'INPE-CDSR:CBERS4_AWFI_L4_DN,INPE-CDSR:CBERS4A_WFI_L4_DN,INPE-CDSR:CBERS4A_WPM_L2_DN',
+            'bbox': '-68.0273437,-25.0059726,-34.9365234,0.3515602',
+            'time': '2019-12-01T00:00:00/2020-02-13T23:59:00',
+            'limit': 1
+        }
 
-    #     self.get(expected, query_string=query_string)
+        self.get(expected, query_string=query_string)
