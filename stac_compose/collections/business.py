@@ -15,6 +15,20 @@ pp = PrettyPrinter(indent=4)
 MAX_LIMIT_DEV_SEED = 1000
 
 
+def rename_result(result):
+    """This function renames result keys to leave it according to STAC 9.0"""
+
+    if 'meta' in result:
+        # rename 'meta' key to 'context'
+        result['context'] = result.pop('meta')
+
+    if 'found' in result['context']:
+        # rename 'found' key to 'matched'
+        result['context']['matched'] = result['context'].pop('found')
+
+    return result
+
+
 class CollectionsBusiness():
     providers_business = ProvidersBusiness()
 
@@ -195,9 +209,11 @@ class CollectionsBusiness():
                     # [...] then I add it to the dict directly
                     result_dict[provider][collection] = result
 
-                    found = int(result['meta']['found'])
+                    result = rename_result(result)
 
-                    logging.debug('CollectionsBusiness.search() - found: %s', found)
+                    found = int(result['context']['matched'])
+
+                    logging.debug('CollectionsBusiness.search() - matched: %s', found)
 
                     # if I've already got all features, then I go out of the loop
                     if limit <= MAX_LIMIT_DEV_SEED or found <= MAX_LIMIT_DEV_SEED:
@@ -214,24 +230,24 @@ class CollectionsBusiness():
 
                             # logging.debug('CollectionsBusiness.search() - result: %s', result)
 
+                            result = rename_result(result)
+
                             # if I'm on other page, then I increase the old result
                             result_dict[provider][collection]['features'] += result['features']
-                            result_dict[provider][collection]['meta']['returned'] += result['meta']['returned']
+                            result_dict[provider][collection]['context']['returned'] += result['context']['returned']
 
                             # logging.debug('CollectionsBusiness.search() - result_dict[provider][collection]: %s', result_dict[provider][collection])
 
-                        # get found variable based on 'result_dict[provider][collection]['meta']['found']'
-                        result = result_dict[provider][collection]
-                        # if there is not a '['meta']['found']' key inside 'result_dict[provider][collection]',
-                        # then return 0, in other words, nothing was found
-                        found = int(result['meta']['found']) if 'meta' in result and 'found' in result['meta'] else 0
+                        # get matched variable based on 'result_dict[provider][collection]['context']['matched']'
+                        context = result_dict[provider][collection]['context']
+                        matched = int(context['matched'])
 
-                        logging.info('CollectionsBusiness.search() - found: %s', found)
-                        logging.info('CollectionsBusiness.search() - returned: %s', result_dict[provider][collection]['meta']['returned'])
+                        logging.info('CollectionsBusiness.search() - matched: %s', matched)
+                        logging.info('CollectionsBusiness.search() - returned: %s', context['returned'])
 
                         # if something was found, then fill 'limit' key with the true limit
-                        if found:
-                            result_dict[provider][collection]['meta']['limit'] = limit
+                        if matched:
+                            context['limit'] = limit
 
                         # logging.debug('CollectionsBusiness.search() - 2 result_dict[provider][collection]: %s', result_dict[provider][collection])
                         logging.debug('\n\nCollectionsBusiness.search() - the end\n\n')

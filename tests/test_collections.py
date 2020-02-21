@@ -434,14 +434,16 @@ class TestStacComposeCollectionsItems(StacComposeTester):
         http://localhost:8089/stac-compose/collections/items?collections=LANDAST8-SENTINEL2-AWS:landsat-8-l1,LANDAST8-SENTINEL2-AWS:sentinel-2-l1c&bbox=-68.0273437,-25.0059726,-34.9365234,0.3515602&time=2020-01-13T00:00:00/2020-02-13T23:59:00&limit=1
         """
 
+        self.maxDiff = None
+
         expected = {
             "LANDAST8-SENTINEL2-AWS": {
                 "landsat-8-l1": {
                     "type": "FeatureCollection",
-                    "meta": {
+                    "context": {
                         "page": 1,
                         "limit": 1,
-                        "found": 748,
+                        "matched": 748,
                         "returned": 1
                     },
                     "features": [
@@ -724,10 +726,10 @@ class TestStacComposeCollectionsItems(StacComposeTester):
                 },
                 "sentinel-2-l1c": {
                     "type": "FeatureCollection",
-                    "meta": {
+                    "context": {
                         "page": 1,
                         "limit": 1,
-                        "found": 10675,
+                        "matched": 10675,
                         "returned": 1
                     },
                     "features": [
