@@ -16,7 +16,7 @@ class TestStacComposeCollections(StacComposeTester):
     def setUp(self):
         self.set_urn(URN_collections)
 
-    def test_get_stac_compose_collections__inpe_cdsr(self):
+    def test__get__stac_compose_collections__inpe_cdsr(self):
         """http://localhost:8089/stac-compose/collections/?providers=INPE-CDSR"""
 
         expected = {
@@ -41,7 +41,7 @@ class TestStacComposeCollections(StacComposeTester):
 
         self.get(expected, query_string={'providers': 'INPE-CDSR'})
 
-    def test_get_stac_compose_collections__landsat8_sentinel2_aws(self):
+    def test__get__stac_compose_collections__landsat8_sentinel2_aws(self):
         """http://localhost:8089/stac-compose/collections/?providers=LANDAST8-SENTINEL2-AWS"""
 
         expected = {
@@ -53,7 +53,7 @@ class TestStacComposeCollections(StacComposeTester):
 
         self.get(expected, query_string={'providers': 'LANDAST8-SENTINEL2-AWS'})
 
-    def test_get_stac_compose_collections__cbers4_aws(self):
+    def test__get__stac_compose_collections__cbers4_aws(self):
         """http://localhost:8089/stac-compose/collections/?providers=CBERS4-AWS"""
 
         expected = {
@@ -67,7 +67,7 @@ class TestStacComposeCollections(StacComposeTester):
 
         self.get(expected, query_string={'providers': 'CBERS4-AWS'})
 
-    def test_get_stac_compose_collections__inpe_cdsr_and_landsat8_sentinel2_aws_and_cbers4_aws(self):
+    def test__get__stac_compose_collections__inpe_cdsr_and_landsat8_sentinel2_aws_and_cbers4_aws(self):
         """http://localhost:8089/stac-compose/collections/?providers=INPE-CDSR,LANDAST8-SENTINEL2-AWS,CBERS4-AWS"""
 
         expected = {
@@ -108,7 +108,7 @@ class TestStacComposeCollectionsError(StacComposeTester):
     def setUp(self):
         self.set_urn(URN_collections)
 
-    def test_get_stac_compose_collections__400_bad_request__provider_required_field(self):
+    def test__get__stac_compose_collections__400_bad_request__provider_required_field(self):
         """http://localhost:8089/stac-compose/collections/"""
 
         expected = {
@@ -126,7 +126,7 @@ class TestStacComposeCollectionsItems(StacComposeTester):
 
     # Provider: INPE-CDSR
 
-    def test_get_stac_compose_collections_items__inpe_cdsr_cbers4_awfi_l4_dn_and_cbers4a_wfi_l4_dn_and_cbers4a_wpm_l2_dn_limit_1(self):
+    def test__get__stac_compose_collections_items__inpe_cdsr_cbers4_awfi_l4_dn_and_cbers4a_wfi_l4_dn_and_cbers4a_wpm_l2_dn_limit_1(self):
         """
         http://localhost:8089/stac-compose/collections/items/?collections=INPE-CDSR:CBERS4_AWFI_L4_DN,INPE-CDSR:CBERS4A_WFI_L4_DN,INPE-CDSR:CBERS4A_WPM_L2_DN&bbox=-68.0273437,-25.0059726,-34.9365234,0.3515602&time=2019-12-01T00:00:00/2020-02-13T23:59:00&limit=1
         """
@@ -429,7 +429,7 @@ class TestStacComposeCollectionsItems(StacComposeTester):
 
     # Provider: LANDAST8-SENTINEL2-AWS
 
-    def test_get_stac_compose_collections_items__landsat8_sentinel2_aws_landsat_8_l1_and_sentinel_2_l1c_limit_1(self):
+    def test__get__stac_compose_collections_items__landsat8_sentinel2_aws_landsat_8_l1_and_sentinel_2_l1c_limit_1(self):
         """
         http://localhost:8089/stac-compose/collections/items?collections=LANDAST8-SENTINEL2-AWS:landsat-8-l1,LANDAST8-SENTINEL2-AWS:sentinel-2-l1c&bbox=-68.0273437,-25.0059726,-34.9365234,0.3515602&time=2020-01-13T00:00:00/2020-02-13T23:59:00&limit=1
         """
@@ -1037,40 +1037,38 @@ class TestStacComposeCollectionsItems(StacComposeTester):
 
         self.get(expected, query_string=query_string)
 
-    '''
     # this test is commented, because it is slow
-    def test_get_stac_compose_collections_items__landsat8_sentinel2_aws_sentinel_2_l1c_limit_2000(self):
-        """
-        http://localhost:8089/stac-compose/collections/items?collections=LANDAST8-SENTINEL2-AWS:sentinel-2-l1c&bbox=-68.0273437,-25.0059726,-34.9365234,0.3515602&time=2020-01-13T00:00:00/2020-02-13T23:59:00&limit=2000
-        """
+    # def test__get__stac_compose_collections_items__landsat8_sentinel2_aws_sentinel_2_l1c_limit_2000(self):
+    #     """
+    #     http://localhost:8089/stac-compose/collections/items?collections=LANDAST8-SENTINEL2-AWS:sentinel-2-l1c&bbox=-68.0273437,-25.0059726,-34.9365234,0.3515602&time=2020-01-13T00:00:00/2020-02-13T23:59:00&limit=2000
+    #     """
 
-        with open('tests/json/collections_items_landsat8_sentinel2_aws_sentinel_2_l1c_limit_2000.json') as json_file:
-            # this is a big 'expected', then I load it from a file
-            expected = load(json_file)
+    #     with open('tests/json/collections_items_landsat8_sentinel2_aws_sentinel_2_l1c_limit_2000.json') as json_file:
+    #         # this is a big 'expected', then I load it from a file
+    #         expected = load(json_file)
 
-            query_string = {
-                'collections': 'LANDAST8-SENTINEL2-AWS:sentinel-2-l1c',
-                'bbox': '-68.0273437,-25.0059726,-34.9365234,0.3515602',
-                'time': '2020-01-13T00:00:00/2020-02-13T23:59:00',
-                'limit': 2000
-            }
+    #         query_string = {
+    #             'collections': 'LANDAST8-SENTINEL2-AWS:sentinel-2-l1c',
+    #             'bbox': '-68.0273437,-25.0059726,-34.9365234,0.3515602',
+    #             'time': '2020-01-13T00:00:00/2020-02-13T23:59:00',
+    #             'limit': 2000
+    #         }
 
-            data = self.get(expected, query_string=query_string)
+    #         data = self.get(expected, query_string=query_string)
 
-            self.assertIn('LANDAST8-SENTINEL2-AWS', data)
-            self.assertIn('sentinel-2-l1c', data['LANDAST8-SENTINEL2-AWS'])
-            self.assertIn('meta', data['LANDAST8-SENTINEL2-AWS']['sentinel-2-l1c'])
+    #         self.assertIn('LANDAST8-SENTINEL2-AWS', data)
+    #         self.assertIn('sentinel-2-l1c', data['LANDAST8-SENTINEL2-AWS'])
+    #         self.assertIn('meta', data['LANDAST8-SENTINEL2-AWS']['sentinel-2-l1c'])
 
-            context = data['LANDAST8-SENTINEL2-AWS']['sentinel-2-l1c']['meta']
+    #         context = data['LANDAST8-SENTINEL2-AWS']['sentinel-2-l1c']['meta']
 
-            self.assertEqual(1, context['page'])
-            self.assertEqual(2000, context['limit'])
-            self.assertEqual(2000, context['returned'])
-    '''
+    #         self.assertEqual(1, context['page'])
+    #         self.assertEqual(2000, context['limit'])
+    #         self.assertEqual(2000, context['returned'])
 
     # Provider: CBERS4-AWS
 
-    def test_get_stac_compose_collections_items__cbers4_aws_cbers4mux_cbers4awfi_limit_1(self):
+    def test__get__stac_compose_collections_items__cbers4_aws_cbers4mux_cbers4awfi_limit_1(self):
         """
         http://localhost:8089/stac-compose/collections/items?collections=LANDAST8-SENTINEL2-AWS:landsat-8-l1,LANDAST8-SENTINEL2-AWS:sentinel-2-l1c&bbox=-68.0273437,-25.0059726,-34.9365234,0.3515602&time=2020-01-13T00:00:00/2020-02-13T23:59:00&limit=1
         """
@@ -1306,3 +1304,64 @@ class TestStacComposeCollectionsItems(StacComposeTester):
         }
 
         self.get(expected, query_string=query_string)
+
+
+class TestStacComposeCollectionsItemsError(StacComposeTester):
+
+    def setUp(self):
+        self.set_urn(URN_collections_items)
+
+    def test__get__stac_compose_collections_items__400_bad_request__required_fields(self):
+        test_cases = [
+            {
+                'url': 'http://localhost:8089/stac-compose/collections/items/?bbox=-68.0273437,-25.0059726,-34.9365234,0.3515602&time=2019-12-01T00:00:00/2020-02-13T23:59:00&limit=1',
+                'expected': {
+                    'code': 400,
+                    'message': '{"collections": ["required field"]}'
+                },
+                'query_string': {
+                    'bbox': '-68.0273437,-25.0059726,-34.9365234,0.3515602',
+                    'time': '2019-12-01T00:00:00/2020-02-13T23:59:00',
+                    'limit': 1
+                }
+            },
+            {
+                'url': 'http://localhost:8089/stac-compose/collections/items/?collections=INPE-CDSR:CBERS4_AWFI_L4_DN,INPE-CDSR:CBERS4A_WFI_L4_DN,INPE-CDSR:CBERS4A_WPM_L2_DN&time=2019-12-01T00:00:00/2020-02-13T23:59:00&limit=1',
+                'expected': {
+                    'code': 400,
+                    'message': '{"bbox": ["required field"]}'
+                },
+                'query_string': {
+                    'collections': 'INPE-CDSR:CBERS4_AWFI_L4_DN,INPE-CDSR:CBERS4A_WFI_L4_DN,INPE-CDSR:CBERS4A_WPM_L2_DN',
+                    'time': '2019-12-01T00:00:00/2020-02-13T23:59:00',
+                    'limit': 1
+                }
+            },
+            {
+                'url': 'http://localhost:8089/stac-compose/collections/items/?collections=INPE-CDSR:CBERS4_AWFI_L4_DN,INPE-CDSR:CBERS4A_WFI_L4_DN,INPE-CDSR:CBERS4A_WPM_L2_DN&bbox=-68.0273437,-25.0059726,-34.9365234,0.3515602&limit=1',
+                'expected': {
+                    'code': 400,
+                    'message': '{"time": ["required field"]}'
+                },
+                'query_string': {
+                    'collections': 'INPE-CDSR:CBERS4_AWFI_L4_DN,INPE-CDSR:CBERS4A_WFI_L4_DN,INPE-CDSR:CBERS4A_WPM_L2_DN',
+                    'bbox': '-68.0273437,-25.0059726,-34.9365234,0.3515602',
+                    'limit': 1
+                }
+            },
+            {
+                'url': 'http://localhost:8089/stac-compose/collections/items/?collections=INPE-CDSR:CBERS4_AWFI_L4_DN,INPE-CDSR:CBERS4A_WFI_L4_DN,INPE-CDSR:CBERS4A_WPM_L2_DN&bbox=-68.0273437,-25.0059726,-34.9365234,0.3515602&time=2019-12-01T00:00:00/2020-02-13T23:59:00',
+                'expected': {
+                    'code': 400,
+                    'message': '{"limit": ["required field"]}'
+                },
+                'query_string': {
+                    'collections': 'INPE-CDSR:CBERS4_AWFI_L4_DN,INPE-CDSR:CBERS4A_WFI_L4_DN,INPE-CDSR:CBERS4A_WPM_L2_DN',
+                    'bbox': '-68.0273437,-25.0059726,-34.9365234,0.3515602',
+                    'time': '2019-12-01T00:00:00/2020-02-13T23:59:00'
+                }
+            }
+        ]
+
+        for test_case in test_cases:
+            self.get(test_case['expected'], query_string=test_case['query_string'], expected_status_code=400)
