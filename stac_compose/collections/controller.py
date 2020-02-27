@@ -87,4 +87,4 @@ class CollectionsItemsController(APIResource):
 
             return features
         else:
-            raise BadRequest("POST Request must be an application/json")
+            raise BadRequest("mimetype must indicate JSON data, in other words, mimetype must be equals to `application/json`")

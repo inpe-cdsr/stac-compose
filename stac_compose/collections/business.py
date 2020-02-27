@@ -2,7 +2,6 @@
 #!/usr/bin/env python3
 
 from pprint import PrettyPrinter
-from operator import itemgetter
 from werkzeug.exceptions import BadRequest
 
 from stac_compose.collections.services import CollectionsServices
@@ -12,7 +11,7 @@ from stac_compose.log import logging
 
 pp = PrettyPrinter(indent=4)
 
-MAX_LIMIT_DEV_SEED = 1000
+MAX_LIMIT = 1000
 
 
 def rename_feature_collection(feature_collection):
@@ -27,6 +26,20 @@ def rename_feature_collection(feature_collection):
         feature_collection['context']['matched'] = feature_collection['context'].pop('found')
 
     return feature_collection
+
+
+def destructuring_dict(d, *args):
+    """
+    Destructuring a dictionary (i.e. d) into variables
+
+    d (dict): dictionary to destructure
+    *args (list): list of arguments to remove from d
+    """
+    result = [d[arg] if arg in d else None for arg in args]
+    if len(result) == 1:
+        return result[0]
+    else:
+        return result
 
 
 class CollectionsBusiness():
@@ -189,17 +202,17 @@ class CollectionsBusiness():
             if method == 'POST':
                 for collection in cs:
                     logging.info('CollectionsBusiness.search() - collection: %s', collection)
-                    logging.info('CollectionsBusiness.search() - MAX_LIMIT_DEV_SEED: %s', MAX_LIMIT_DEV_SEED)
+                    logging.info('CollectionsBusiness.search() - MAX_LIMIT: %s', MAX_LIMIT)
 
                     # initialize collection
                     result_dict[provider][collection] = None
 
                     # if 'limit' is less than the maximum I can search, then I can use 'limit' to search my features just one time
-                    if limit <= MAX_LIMIT_DEV_SEED:
+                    if limit <= MAX_LIMIT:
                         limit_to_search = limit
                     # if 'limit' is greater than the maximum I can search, then I use the maximum number and I search by pages
                     else:
-                        limit_to_search = MAX_LIMIT_DEV_SEED
+                        limit_to_search = MAX_LIMIT
 
                     # if I'm searching by the first, and only one, page [...]
                     result = cls.stac_post(url, collection, bbox, time, cloud_cover, 1, limit_to_search)
@@ -216,14 +229,14 @@ class CollectionsBusiness():
                     logging.debug('CollectionsBusiness.search() - matched: %s', found)
 
                     # if I've already got all features, then I go out of the loop
-                    if limit <= MAX_LIMIT_DEV_SEED or found <= MAX_LIMIT_DEV_SEED:
+                    if limit <= MAX_LIMIT or found <= MAX_LIMIT:
                         logging.debug('CollectionsBusiness.search() - just one result was found')
                         continue
                     else:
                         logging.debug('CollectionsBusiness.search() - more than one result was found')
 
                         # if there is more results to get, I'm going to search them by pagination
-                        for page in range(2, int(limit/MAX_LIMIT_DEV_SEED) + 1):
+                        for page in range(2, int(limit/MAX_LIMIT) + 1):
                             logging.info('CollectionsBusiness.search() - page: %s', page)
 
                             result = cls.stac_post(url, collection, bbox, time, cloud_cover, page, limit_to_search)
@@ -270,45 +283,132 @@ class CollectionsBusiness():
         return result_dict
 
     @classmethod
+    def stac_post_02(cls, url, collection, bbox, time=False, query=None, page=1, limit=100):
+        logging.info('CollectionsBusiness.stac_post_02()')
+
+        logging.info('CollectionsBusiness.stac_post_02() - url: %s', url)
+        logging.info('CollectionsBusiness.stac_post_02() - collection: %s', collection)
+        logging.info('CollectionsBusiness.stac_post_02() - bbox: %s', bbox)
+        logging.info('CollectionsBusiness.stac_post_02() - time: %s', time)
+        logging.info('CollectionsBusiness.stac_post_02() - query: %s', query)
+        logging.info('CollectionsBusiness.stac_post_02() - page: %s', page)
+        logging.info('CollectionsBusiness.stac_post_02() - limit: %s', limit)
+
+        data = {
+            "collections": [collection],
+            'bbox': bbox,
+            'time': time,
+            'page': page,
+            'limit': limit
+        }
+
+        if query is not None:
+            data['query'] = query
+
+        logging.info('CollectionsBusiness.stac_post_02() - data: %s', data)
+
+        response = CollectionsServices.search_post(url, data)
+
+        # logging.debug('CollectionsBusiness.stac_post_02() - response: %s', response)
+
+        return response
+
+    @classmethod
     def search_post(cls, providers, bbox, time, limit=300):
         logging.info('CollectionsBusiness.search_post()\n')
+
+        logging.info('CollectionsBusiness.search_post() - MAX_LIMIT: %s\n', MAX_LIMIT)
 
         logging.info('CollectionsBusiness.search_post() - providers: %s', providers)
         logging.info('CollectionsBusiness.search_post() - bbox: %s', bbox)
         logging.info('CollectionsBusiness.search_post() - time: %s', time)
         logging.info('CollectionsBusiness.search_post() - limit: %s\n', limit)
 
-        for provider in providers:
-            # destructuring dictionary contents into variables
-            name, collections, query = itemgetter('name', 'collections', 'query')(provider)
+        result_dict = {}
 
-            logging.info('CollectionsBusiness.search_post() - provider[name]: %s', name)
-            logging.info('CollectionsBusiness.search_post() - provider[collections]: %s', collections)
-            logging.info('CollectionsBusiness.search_post() - provider[query]: %s\n', query)
+        for provider in providers:
+            logging.info('CollectionsBusiness.search_post() - provider:')
+
+            # destructuring dictionary contents into variables
+            provider_name, collections, query = destructuring_dict(provider, 'name', 'collections', 'query')
+            url = cls.providers_business.get_providers()[provider_name]['url']
+
+            logging.info('CollectionsBusiness.search_post() -   provider_name: %s', provider_name)
+            logging.info('CollectionsBusiness.search_post() -   collections: %s', collections)
+            logging.info('CollectionsBusiness.search_post() -   query: %s', query)
+            logging.info('CollectionsBusiness.search_post() -   url: %s\n', url)
+
+            # if there is not a provider inside the dict, then initialize it
+            if provider_name not in result_dict:
+                result_dict[provider_name] = {}
 
             for collection in collections:
-                logging.info('CollectionsBusiness.search_post() - collection: %s', collection)
+                logging.info('CollectionsBusiness.search_post() - collection:')
 
-        # {
-        #     'providers': [
-                # {
-                #     'name': 'INPE-CDSR',
-                #     'collections': [
-                #         {'name': 'CBERS4_AWFI_L4_DN'},
-                #         {'name': 'CBERS4A_WFI_L4_DN'},
-                #         {'name': 'CBERS4A_WPM_L2_DN'}
-                #     ],
-                #     'query': {
-                #         'cloud_cover': {
-                #             "gte": 0,
-                #             "lte": 10
-                #         },
-                #     }
-                # }
-        #     ],
-        #     'bbox': [-68.0273437, -25.0059726, -34.9365234, 0.3515602],
-        #     'time': ['2019-12-01T00:00:00', '2020-02-13T23:59:00'],
-        #     'limit': 1
-        # }
+                collection_name = collection['name']
 
-        return True
+                logging.info('CollectionsBusiness.search_post() - collection_name: %s', collection_name)
+
+                # initialize collection
+                result_dict[provider_name][collection_name] = None
+
+                # if 'limit' is less than the maximum I can search, then I can use 'limit' to search my features just one time
+                if limit <= MAX_LIMIT:
+                    limit_to_search = limit
+                # if 'limit' is greater than the maximum I can search, then I use the maximum number and I search by pages
+                else:
+                    limit_to_search = MAX_LIMIT
+
+                # if I'm searching by the first, and only one, page [...]
+                result = cls.stac_post_02(url, collection_name, bbox, time, query, 1, limit_to_search)
+
+                # logging.debug('CollectionsBusiness.search_post() - result: %s', result)
+
+                # [...] then I add it to the dict directly
+                result_dict[provider_name][collection_name] = result
+
+                # if there is fields to rename, then this function does it
+                result = rename_feature_collection(result)
+
+                matched = int(result['context']['matched'])
+
+                logging.debug('CollectionsBusiness.search_post() - matched: %s', matched)
+
+                # if I've already got all features, then I go out of the loop
+                if limit <= MAX_LIMIT or matched <= MAX_LIMIT:
+                    logging.debug('CollectionsBusiness.search_post() - just one result was found')
+                    continue
+                else:
+                    logging.debug('CollectionsBusiness.search_post() - more than one result was found')
+
+                    # if there is more results to get, I'm going to search them by pagination
+                    for page in range(2, int(limit/MAX_LIMIT) + 1):
+                        logging.info('CollectionsBusiness.search_post() - page: %s', page)
+
+                        result = cls.stac_post_02(url, collection_name, bbox, time, query, page, limit_to_search)
+
+                        # logging.debug('CollectionsBusiness.search_post() - result: %s', result)
+
+                        result = rename_feature_collection(result)
+
+                        # if I'm on other page, then I increase the old result
+                        result_dict[provider_name][collection_name]['features'] += result['features']
+                        result_dict[provider_name][collection_name]['context']['returned'] += result['context']['returned']
+
+                        # logging.debug('CollectionsBusiness.search_post() - result_dict[provider][collection_name]: %s', result_dict[provider][collection_name])
+
+                    # get matched variable based on 'result_dict[provider][collection_name]['context']['matched']'
+                    context = result_dict[provider_name][collection_name]['context']
+                    matched = int(context['matched'])
+
+                    logging.info('CollectionsBusiness.search_post() - matched: %s', matched)
+                    logging.info('CollectionsBusiness.search_post() - returned: %s', context['returned'])
+
+                    # if something was found, then fill 'limit' key with the true limit
+                    if matched:
+                        context['limit'] = limit
+
+                    # logging.debug('CollectionsBusiness.search_post() - 2 result_dict[provider][collection_name]: %s', result_dict[provider][collection_name])
+                    logging.debug('\n\nCollectionsBusiness.search_post() - the end\n\n')
+
+        return result_dict

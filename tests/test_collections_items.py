@@ -318,10 +318,9 @@ class TestStacComposeCollectionsItems(StacComposeTester):
 
         self.get(expected, query_string=query_string)
 
-    '''
     def test__post__stac_compose_collections_items__inpe_cdsr_cbers4_awfi_l4_dn_and_cbers4a_wfi_l4_dn_and_cbers4a_wpm_l2_dn_limit_1_query(self):
         """
-        http://localhost:8089/stac-compose/collections/items/?collections=INPE-CDSR:CBERS4_AWFI_L4_DN,INPE-CDSR:CBERS4A_WFI_L4_DN,INPE-CDSR:CBERS4A_WPM_L2_DN&bbox=-68.0273437,-25.0059726,-34.9365234,0.3515602&time=2019-12-01T00:00:00/2020-02-13T23:59:00&limit=1
+        POST http://localhost:8089/stac-compose/collections/items/
         """
 
         expected = {
@@ -415,7 +414,7 @@ class TestStacComposeCollectionsItems(StacComposeTester):
                     "context": {
                         "page": 1,
                         "limit": 1,
-                        "matched": 391,
+                        "matched": 369,
                         "returned": 1
                     }
                 },
@@ -612,29 +611,29 @@ class TestStacComposeCollectionsItems(StacComposeTester):
         }
 
         body = {
-            'providers': [
+            "providers": [
                 {
-                    'name': 'INPE-CDSR',
-                    'collections': [
-                        {'name': 'CBERS4_AWFI_L4_DN'},
-                        {'name': 'CBERS4A_WFI_L4_DN'},
-                        {'name': 'CBERS4A_WPM_L2_DN'}
+                    "name": "INPE-CDSR",
+                    "collections": [
+                        {"name": "CBERS4_AWFI_L4_DN"},
+                        {"name": "CBERS4A_WFI_L4_DN"},
+                        {"name": "CBERS4A_WPM_L2_DN"}
                     ],
-                    'query': {
-                        'cloud_cover': {
+                    "query": {
+                        "cloud_cover": {
                             "gte": 0,
                             "lte": 10
-                        },
+                        }
                     }
                 }
             ],
-            'bbox': [-68.0273437, -25.0059726, -34.9365234, 0.3515602],
-            'time': ['2019-12-01T00:00:00', '2020-02-13T23:59:59'],
-            'limit': 1
+            "bbox": [-68.0273437, -25.0059726, -34.9365234, 0.3515602],
+            "time": ["2019-12-01T00:00:00", "2020-02-13T23:59:59"],
+            "limit": 1
         }
 
         self.post(expected, body=body)
-    '''
+
     # Provider: LANDAST8-SENTINEL2-AWS
 
     def test__get__stac_compose_collections_items__landsat8_sentinel2_aws_landsat_8_l1_and_sentinel_2_l1c_limit_1(self):

@@ -1,14 +1,19 @@
 #!/usr/bin/env python3
 
-import os
-import re
-import json
-
-import requests
+from json import dumps, loads
+from datetime import date, datetime
+from requests import get, post
 from requests.auth import HTTPBasicAuth
 from werkzeug.exceptions import NotFound
 
 from stac_compose.log import logging
+
+
+def default(obj):
+    # Source: https://stackoverflow.com/a/11875813/8447990
+    # if the object is a date or datetime, then get the iso format to put inside JSON
+    if isinstance(obj, (date, datetime)):
+        return obj.isoformat()
 
 
 class CollectionsServices():
@@ -19,10 +24,10 @@ class CollectionsServices():
 
         logging.warning('CollectionsServices.search_items() - base_url: \'GET {}\''.format(base_url))
 
-        r = requests.get(base_url, headers={})
+        r = get(base_url, headers={})
 
         if r and r.status_code in (200, 201):
-            return json.loads(r.text)
+            return loads(r.text)
 
         return None
 
@@ -32,12 +37,16 @@ class CollectionsServices():
 
         logging.warning('CollectionsServices.search_items_post() - base_url: \'POST {}\''.format(base_url))
 
-        r = requests.post(base_url, headers={
-            'Content-Type':'application/json'
-        }, data=json.dumps(data))
+        r = post(
+            base_url,
+            headers={
+                'Content-Type': 'application/json'
+            },
+            data=dumps(data)
+        )
 
         if r and r.status_code in (200, 201):
-            return json.loads(r.text)
+            return loads(r.text)
 
         return None
 
@@ -47,10 +56,10 @@ class CollectionsServices():
 
         logging.warning('CollectionsServices.search_get() - base_url: \'GET {}\''.format(base_url))
 
-        r = requests.get(base_url, headers={})
+        r = get(base_url, headers={})
 
         if r and r.status_code in (200, 201):
-            return json.loads(r.text)
+            return loads(r.text)
 
         return None
 
@@ -60,16 +69,19 @@ class CollectionsServices():
 
         logging.warning('CollectionsServices.search_post() - base_url: \'POST {}\''.format(base_url))
 
-        r = requests.post(
+        r = post(
             base_url,
             headers={
-                'Content-Type':'application/json'
+                'Content-Type': 'application/json'
             },
-            data=json.dumps(data)
+            data=dumps(
+                data,
+                default=default
+            )
         )
 
         if r and r.status_code in (200, 201):
-            return json.loads(r.text)
+            return loads(r.text)
 
         return None
 
@@ -79,9 +91,9 @@ class CollectionsServices():
 
         logging.warning('CollectionsServices.search_collections() - base_url: \'GET {}\''.format(base_url))
 
-        r = requests.get(base_url, headers={})
+        r = get(base_url, headers={})
 
         if r and r.status_code in (200, 201):
-            return json.loads(r.text)
+            return loads(r.text)
 
         raise NotFound("URL was not found. [ url: {0}, status_code: {1} ]".format(base_url, r.status_code))

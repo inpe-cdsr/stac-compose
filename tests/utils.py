@@ -23,6 +23,7 @@ class StacComposeTester(TestCase):
         self.app = stac_compose_app.test_client()
         self.__urn__ = None
         self.__headers__ = {}
+        self.maxDiff = None
 
     ######################################################################
     # GETTERS
