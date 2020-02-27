@@ -8,12 +8,17 @@ from stac_compose.providers.parsers import validate_providers, providers
 from stac_compose.log import logging
 
 
-def validate_date(s):
-    dates = s.split('/')
-    for date in dates:
-        if date.split('T')[0] and not datetime.strptime(date.split('T')[0], '%Y-%m-%d'):
+def validate_time(__time):
+    times = __time.split('/')
+
+    for time in times:
+        if time and not datetime.strptime(time, '%Y-%m-%dT%H:%M:%S'):
+            # returning None means that '__time' was not coerced, then the following message will be raised, for example:
+            # "field 'time' cannot be coerced: time data '2019-12-01' does not match format '%Y-%m-%dT%H:%M:%S'"
             return None
-    return s
+
+    # returning the original '__time' field means it was coerced (or, in this case, it is still a string)
+    return __time
 
 
 def validate_collections(collections):
@@ -38,7 +43,7 @@ def validate_bbox(box):
     return None
 
 
-convert_string_to_datetime = lambda date: datetime.strptime(date, '%Y-%m-%dT%H:%M:%S')
+# convert_string_to_datetime = lambda date: datetime.strptime(date, '%Y-%m-%dT%H:%M:%S')
 
 
 convert_string_to_int = lambda string: int(string)
@@ -56,7 +61,7 @@ def search_get():
         },
         'time': {
             'type': 'string', 'empty': False, 'required': True,
-            'coerce': validate_date
+            'coerce': validate_time
         },
         'limit': {
             'type': 'integer', 'empty': False, 'required': True,
@@ -81,6 +86,7 @@ def search_post():
                 'type': 'dict', 'empty': False, 'required': True,
                 'schema': {
                     'name': {'type': 'string', 'empty': False, 'required': True},
+                    'method': {'type': 'string', 'empty': False, 'required': True},
                     'collections': {'type': 'list', 'empty': False, 'required': True},
                     'query': {'type': 'dict', 'required': False}
                 }
@@ -96,14 +102,8 @@ def search_post():
             }
         },
         'time': {
-            'type': 'list', 'empty': False, 'required': True,
-            'minlength': 2, 'maxlength': 2,
-            'schema': {
-                'type': 'datetime',
-                'empty': False,
-                'required': True,
-                'coerce': convert_string_to_datetime
-            },
+            'type': 'string', 'empty': False, 'required': True,
+            'coerce': validate_time
         },
         'limit': {
             'type': 'number', 'empty': False, 'required': True,

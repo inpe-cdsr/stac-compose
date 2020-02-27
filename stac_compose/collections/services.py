@@ -9,13 +9,6 @@ from werkzeug.exceptions import NotFound
 from stac_compose.log import logging
 
 
-def default(obj):
-    # Source: https://stackoverflow.com/a/11875813/8447990
-    # if the object is a date or datetime, then get the iso format to put inside JSON
-    if isinstance(obj, (date, datetime)):
-        return obj.isoformat()
-
-
 class CollectionsServices():
 
     @classmethod
@@ -64,7 +57,7 @@ class CollectionsServices():
         return None
 
     @classmethod
-    def search_post(cls, url, data):
+    def post_stac_search(cls, url, data):
         base_url = '{}/stac/search'.format(url)
 
         logging.warning('CollectionsServices.search_post() - base_url: \'POST {}\''.format(base_url))
@@ -74,10 +67,7 @@ class CollectionsServices():
             headers={
                 'Content-Type': 'application/json'
             },
-            data=dumps(
-                data,
-                default=default
-            )
+            data=dumps(data)
         )
 
         if r and r.status_code in (200, 201):

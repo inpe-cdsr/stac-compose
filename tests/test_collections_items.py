@@ -7,13 +7,13 @@ from json import load
 from tests.utils import StacComposeTester
 
 
-URN_collections_items = '/stac-compose/collections/items/'
+URN = '/stac-compose/collections/items/'
 
 
 class TestStacComposeCollectionsItems(StacComposeTester):
 
     def setUp(self):
-        self.set_urn(URN_collections_items)
+        self.set_urn(URN)
 
     # Provider: INPE-CDSR
 
@@ -614,6 +614,7 @@ class TestStacComposeCollectionsItems(StacComposeTester):
             "providers": [
                 {
                     "name": "INPE-CDSR",
+                    "method": "POST",
                     "collections": [
                         {"name": "CBERS4_AWFI_L4_DN"},
                         {"name": "CBERS4A_WFI_L4_DN"},
@@ -628,7 +629,7 @@ class TestStacComposeCollectionsItems(StacComposeTester):
                 }
             ],
             "bbox": [-68.0273437, -25.0059726, -34.9365234, 0.3515602],
-            "time": ["2019-12-01T00:00:00", "2020-02-13T23:59:59"],
+            "time": "2019-12-01T00:00:00/2020-02-13T23:59:59",
             "limit": 1
         }
 
@@ -1516,11 +1517,10 @@ class TestStacComposeCollectionsItems(StacComposeTester):
         self.get(expected, query_string=query_string)
 
 
-
 class TestStacComposeCollectionsItemsError(StacComposeTester):
 
     def setUp(self):
-        self.set_urn(URN_collections_items)
+        self.set_urn(URN)
 
     def test__get__stac_compose_collections_items__400_bad_request__required_fields(self):
         test_cases = [

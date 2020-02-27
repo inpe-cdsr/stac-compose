@@ -80,7 +80,7 @@ class CollectionsItemsController(APIResource):
             if status is False:
                 raise BadRequest(dumps(data))  # 400 - Bad Request
 
-            features = CollectionsBusiness.search_post(**data)
+            features = CollectionsBusiness.post_search(**data)
 
             # logging.debug('\n\n CollectionsItemsController.post() - features: %s \n\n', features)
             # pp.pprint(features)
