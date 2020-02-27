@@ -647,13 +647,13 @@ class TestStacComposeCollectionsItems(StacComposeTester):
         expected = {
             "LANDAST8-SENTINEL2-AWS": {
                 "landsat-8-l1": {
-                    "type": "FeatureCollection",
                     "context": {
                         "page": 1,
                         "limit": 1,
-                        "matched": 748,
-                        "returned": 1
+                        "returned": 1,
+                        "matched": 748
                     },
+                    "type": "FeatureCollection",
                     "features": [
                         {
                             "type": "Feature",
@@ -669,24 +669,24 @@ class TestStacComposeCollectionsItems(StacComposeTester):
                                 "coordinates": [
                                     [
                                         [
-                                            -66.49304305702688,
-                                            -24.932756418193854
+                                            -66.49304286533801,
+                                            -24.932756673279687
                                         ],
                                         [
-                                            -64.57098632376038,
-                                            -25.28391152003526
+                                            -64.57098646164185,
+                                            -25.283911784783434
                                         ],
                                         [
-                                            -64.96363270562209,
-                                            -27.049545312089084
+                                            -64.96363326020521,
+                                            -27.0495452944208
                                         ],
                                         [
-                                            -66.88818548270888,
-                                            -26.700636378760883
+                                            -66.88818563067923,
+                                            -26.700636368822476
                                         ],
                                         [
-                                            -66.49304305702688,
-                                            -24.932756418193854
+                                            -66.49304286533801,
+                                            -24.932756673279687
                                         ]
                                     ]
                                 ]
@@ -699,81 +699,81 @@ class TestStacComposeCollectionsItems(StacComposeTester):
                                 "eo:off_nadir": 0,
                                 "eo:bands": [
                                     {
-                                        "name": "B1",
-                                        "common_name": "coastal",
-                                        "gsd": 30,
+                                        "full_width_half_max": 0.02,
                                         "center_wavelength": 0.44,
-                                        "full_width_half_max": 0.02
+                                        "name": "B1",
+                                        "gsd": 30,
+                                        "common_name": "coastal"
                                     },
                                     {
-                                        "name": "B2",
-                                        "common_name": "blue",
-                                        "gsd": 30,
+                                        "full_width_half_max": 0.06,
                                         "center_wavelength": 0.48,
-                                        "full_width_half_max": 0.06
+                                        "name": "B2",
+                                        "gsd": 30,
+                                        "common_name": "blue"
                                     },
                                     {
-                                        "name": "B3",
-                                        "common_name": "green",
-                                        "gsd": 30,
+                                        "full_width_half_max": 0.06,
                                         "center_wavelength": 0.56,
-                                        "full_width_half_max": 0.06
+                                        "name": "B3",
+                                        "gsd": 30,
+                                        "common_name": "green"
                                     },
                                     {
-                                        "name": "B4",
-                                        "common_name": "red",
-                                        "gsd": 30,
+                                        "full_width_half_max": 0.04,
                                         "center_wavelength": 0.65,
-                                        "full_width_half_max": 0.04
+                                        "name": "B4",
+                                        "gsd": 30,
+                                        "common_name": "red"
                                     },
                                     {
-                                        "name": "B5",
-                                        "common_name": "nir",
-                                        "gsd": 30,
+                                        "full_width_half_max": 0.03,
                                         "center_wavelength": 0.86,
-                                        "full_width_half_max": 0.03
+                                        "name": "B5",
+                                        "gsd": 30,
+                                        "common_name": "nir"
                                     },
                                     {
-                                        "name": "B6",
-                                        "common_name": "swir16",
-                                        "gsd": 30,
+                                        "full_width_half_max": 0.08,
                                         "center_wavelength": 1.6,
-                                        "full_width_half_max": 0.08
+                                        "name": "B6",
+                                        "gsd": 30,
+                                        "common_name": "swir16"
                                     },
                                     {
-                                        "name": "B7",
-                                        "common_name": "swir22",
-                                        "gsd": 30,
+                                        "full_width_half_max": 0.2,
                                         "center_wavelength": 2.2,
-                                        "full_width_half_max": 0.2
-                                    },
-                                    {
-                                        "name": "B8",
-                                        "common_name": "pan",
-                                        "gsd": 15,
-                                        "center_wavelength": 0.59,
-                                        "full_width_half_max": 0.18
-                                    },
-                                    {
-                                        "name": "B9",
-                                        "common_name": "cirrus",
+                                        "name": "B7",
                                         "gsd": 30,
+                                        "common_name": "swir22"
+                                    },
+                                    {
+                                        "full_width_half_max": 0.18,
+                                        "center_wavelength": 0.59,
+                                        "name": "B8",
+                                        "gsd": 15,
+                                        "common_name": "pan"
+                                    },
+                                    {
+                                        "full_width_half_max": 0.02,
                                         "center_wavelength": 1.37,
-                                        "full_width_half_max": 0.02
+                                        "name": "B9",
+                                        "gsd": 30,
+                                        "common_name": "cirrus"
                                     },
                                     {
-                                        "name": "B10",
-                                        "common_name": "lwir11",
-                                        "gsd": 100,
+                                        "full_width_half_max": 0.8,
                                         "center_wavelength": 10.9,
-                                        "full_width_half_max": 0.8
+                                        "name": "B10",
+                                        "gsd": 100,
+                                        "common_name": "lwir11"
                                     },
                                     {
-                                        "name": "B11",
-                                        "common_name": "lwir12",
-                                        "gsd": 100,
+                                        "full_width_half_max": 1,
                                         "center_wavelength": 12,
-                                        "full_width_half_max": 1
+                                        "name": "B11",
+                                        "gsd": 100,
+                                        "common_name": "lwir12"
                                     }
                                 ],
                                 "datetime": "2020-02-13T14:19:21.483266+00:00",
@@ -782,10 +782,10 @@ class TestStacComposeCollectionsItems(StacComposeTester):
                                 "eo:cloud_cover": 26,
                                 "eo:row": "078",
                                 "eo:column": "231",
-                                "landsat:product_id": "LC08_L1TP_231078_20200213_20200213_01_RT",
+                                "landsat:product_id": "LC08_L1TP_231078_20200213_20200225_01_T1",
                                 "landsat:scene_id": "LC82310782020044LGN00",
                                 "landsat:processing_level": "L1TP",
-                                "landsat:tier": "RT",
+                                "landsat:tier": "T1",
                                 "landsat:revision": "00",
                                 "eo:epsg": 32720
                             },
@@ -793,12 +793,12 @@ class TestStacComposeCollectionsItems(StacComposeTester):
                                 "index": {
                                     "type": "text/html",
                                     "title": "HTML index page",
-                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200213_01_RT/LC08_L1TP_231078_20200213_20200213_01_RT_MTL.txt"
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200225_01_T1/LC08_L1TP_231078_20200213_20200225_01_T1_MTL.txt"
                                 },
                                 "thumbnail": {
                                     "title": "Thumbnail image",
                                     "type": "image/jpeg",
-                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200213_01_RT/LC08_L1TP_231078_20200213_20200213_01_RT_thumb_large.jpg"
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200225_01_T1/LC08_L1TP_231078_20200213_20200225_01_T1_thumb_large.jpg"
                                 },
                                 "B1": {
                                     "type": "image/x.geotiff",
@@ -806,7 +806,7 @@ class TestStacComposeCollectionsItems(StacComposeTester):
                                         0
                                     ],
                                     "title": "Band 1 (coastal)",
-                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200213_01_RT/LC08_L1TP_231078_20200213_20200213_01_RT_B1.TIF"
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200225_01_T1/LC08_L1TP_231078_20200213_20200225_01_T1_B1.TIF"
                                 },
                                 "B2": {
                                     "type": "image/x.geotiff",
@@ -814,7 +814,7 @@ class TestStacComposeCollectionsItems(StacComposeTester):
                                         1
                                     ],
                                     "title": "Band 2 (blue)",
-                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200213_01_RT/LC08_L1TP_231078_20200213_20200213_01_RT_B2.TIF"
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200225_01_T1/LC08_L1TP_231078_20200213_20200225_01_T1_B2.TIF"
                                 },
                                 "B3": {
                                     "type": "image/x.geotiff",
@@ -822,7 +822,7 @@ class TestStacComposeCollectionsItems(StacComposeTester):
                                         2
                                     ],
                                     "title": "Band 3 (green)",
-                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200213_01_RT/LC08_L1TP_231078_20200213_20200213_01_RT_B3.TIF"
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200225_01_T1/LC08_L1TP_231078_20200213_20200225_01_T1_B3.TIF"
                                 },
                                 "B4": {
                                     "type": "image/x.geotiff",
@@ -830,7 +830,7 @@ class TestStacComposeCollectionsItems(StacComposeTester):
                                         3
                                     ],
                                     "title": "Band 4 (red)",
-                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200213_01_RT/LC08_L1TP_231078_20200213_20200213_01_RT_B4.TIF"
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200225_01_T1/LC08_L1TP_231078_20200213_20200225_01_T1_B4.TIF"
                                 },
                                 "B5": {
                                     "type": "image/x.geotiff",
@@ -838,7 +838,7 @@ class TestStacComposeCollectionsItems(StacComposeTester):
                                         4
                                     ],
                                     "title": "Band 5 (nir)",
-                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200213_01_RT/LC08_L1TP_231078_20200213_20200213_01_RT_B5.TIF"
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200225_01_T1/LC08_L1TP_231078_20200213_20200225_01_T1_B5.TIF"
                                 },
                                 "B6": {
                                     "type": "image/x.geotiff",
@@ -846,7 +846,7 @@ class TestStacComposeCollectionsItems(StacComposeTester):
                                         5
                                     ],
                                     "title": "Band 6 (swir16)",
-                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200213_01_RT/LC08_L1TP_231078_20200213_20200213_01_RT_B6.TIF"
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200225_01_T1/LC08_L1TP_231078_20200213_20200225_01_T1_B6.TIF"
                                 },
                                 "B7": {
                                     "type": "image/x.geotiff",
@@ -854,7 +854,7 @@ class TestStacComposeCollectionsItems(StacComposeTester):
                                         6
                                     ],
                                     "title": "Band 7 (swir22)",
-                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200213_01_RT/LC08_L1TP_231078_20200213_20200213_01_RT_B7.TIF"
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200225_01_T1/LC08_L1TP_231078_20200213_20200225_01_T1_B7.TIF"
                                 },
                                 "B8": {
                                     "type": "image/x.geotiff",
@@ -862,7 +862,7 @@ class TestStacComposeCollectionsItems(StacComposeTester):
                                         7
                                     ],
                                     "title": "Band 8 (pan)",
-                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200213_01_RT/LC08_L1TP_231078_20200213_20200213_01_RT_B8.TIF"
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200225_01_T1/LC08_L1TP_231078_20200213_20200225_01_T1_B8.TIF"
                                 },
                                 "B9": {
                                     "type": "image/x.geotiff",
@@ -870,7 +870,7 @@ class TestStacComposeCollectionsItems(StacComposeTester):
                                         8
                                     ],
                                     "title": "Band 9 (cirrus)",
-                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200213_01_RT/LC08_L1TP_231078_20200213_20200213_01_RT_B9.TIF"
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200225_01_T1/LC08_L1TP_231078_20200213_20200225_01_T1_B9.TIF"
                                 },
                                 "B10": {
                                     "type": "image/x.geotiff",
@@ -878,7 +878,7 @@ class TestStacComposeCollectionsItems(StacComposeTester):
                                         9
                                     ],
                                     "title": "Band 10 (lwir)",
-                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200213_01_RT/LC08_L1TP_231078_20200213_20200213_01_RT_B10.TIF"
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200225_01_T1/LC08_L1TP_231078_20200213_20200225_01_T1_B10.TIF"
                                 },
                                 "B11": {
                                     "type": "image/x.geotiff",
@@ -886,22 +886,22 @@ class TestStacComposeCollectionsItems(StacComposeTester):
                                         10
                                     ],
                                     "title": "Band 11 (lwir)",
-                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200213_01_RT/LC08_L1TP_231078_20200213_20200213_01_RT_B11.TIF"
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200225_01_T1/LC08_L1TP_231078_20200213_20200225_01_T1_B11.TIF"
                                 },
                                 "ANG": {
                                     "title": "Angle coefficients file",
                                     "type": "text/plain",
-                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200213_01_RT/LC08_L1TP_231078_20200213_20200213_01_RT_ANG.txt"
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200225_01_T1/LC08_L1TP_231078_20200213_20200225_01_T1_ANG.txt"
                                 },
                                 "MTL": {
                                     "title": "original metadata file",
                                     "type": "text/plain",
-                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200213_01_RT/LC08_L1TP_231078_20200213_20200213_01_RT_MTL.txt"
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200225_01_T1/LC08_L1TP_231078_20200213_20200225_01_T1_MTL.txt"
                                 },
                                 "BQA": {
                                     "title": "Band quality data",
                                     "type": "image/x.geotiff",
-                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200213_01_RT/LC08_L1TP_231078_20200213_20200213_01_RT_BQA.TIF"
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/078/LC08_L1TP_231078_20200213_20200225_01_T1/LC08_L1TP_231078_20200213_20200225_01_T1_BQA.TIF"
                                 }
                             },
                             "links": [
@@ -933,13 +933,13 @@ class TestStacComposeCollectionsItems(StacComposeTester):
                     ]
                 },
                 "sentinel-2-l1c": {
-                    "type": "FeatureCollection",
                     "context": {
                         "page": 1,
                         "limit": 1,
-                        "matched": 10675,
-                        "returned": 1
+                        "returned": 1,
+                        "matched": 10675
                     },
+                    "type": "FeatureCollection",
                     "features": [
                         {
                             "type": "Feature",
