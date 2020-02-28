@@ -285,19 +285,26 @@ class CollectionsBusiness():
     # POST method
 
     @classmethod
-    def stac_post_02(cls, url, collection, bbox, time=False, query=None, page=1, limit=100):
-        logging.info('CollectionsBusiness.stac_post_02()')
+    def post_stac_search(cls, providers_json, collection, bbox, time=False, query=None, page=1, limit=MAX_LIMIT):
+        """POST /stac/search"""
 
-        logging.info('CollectionsBusiness.stac_post_02() - url: %s', url)
-        logging.info('CollectionsBusiness.stac_post_02() - collection: %s', collection)
-        logging.info('CollectionsBusiness.stac_post_02() - bbox: %s', bbox)
-        logging.info('CollectionsBusiness.stac_post_02() - time: %s', time)
-        logging.info('CollectionsBusiness.stac_post_02() - query: %s', query)
-        logging.info('CollectionsBusiness.stac_post_02() - page: %s', page)
-        logging.info('CollectionsBusiness.stac_post_02() - limit: %s', limit)
+        logging.info('CollectionsBusiness.post_stac_search()\n')
+
+        logging.info('CollectionsBusiness.post_stac_search() - providers_json: %s', providers_json)
+        logging.info('CollectionsBusiness.post_stac_search() - collection: %s', collection)
+        logging.info('CollectionsBusiness.post_stac_search() - bbox: %s', bbox)
+        logging.info('CollectionsBusiness.post_stac_search() - time: %s', time)
+        logging.info('CollectionsBusiness.post_stac_search() - query: %s', query)
+        logging.info('CollectionsBusiness.post_stac_search() - page: %s', page)
+        logging.info('CollectionsBusiness.post_stac_search() - limit: %s', limit)
+
+        url = providers_json['url']
+        search_collection_as_property = providers_json['search_collection_as_property']
+
+        logging.info('CollectionsBusiness.post_stac_search() - url: %s', url)
+        logging.info('CollectionsBusiness.post_stac_search() - search_collection_as_property: %s\n', search_collection_as_property)
 
         data = {
-            "collections": [collection],
             'bbox': bbox,
             'time': time,
             'page': page,
@@ -307,25 +314,34 @@ class CollectionsBusiness():
         if query is not None:
             data['query'] = query
 
-        logging.info('CollectionsBusiness.stac_post_02() - data: %s', data)
+        # if STAC supports just to search collection as property, then add it inside query
+        if search_collection_as_property:
+            data['query']['collection'] = {
+                'eq': collection
+            }
+        # else it searchs as STAC standard
+        else:
+            data["collections"] = [collection]
+
+        logging.info('CollectionsBusiness.post_stac_search() - data: %s\n', data)
 
         response = CollectionsServices.post_stac_search(url, data)
 
         # if there is fields to rename, then this function does it
         response = rename_feature_collection(response)
 
-        # logging.debug('CollectionsBusiness.stac_post_02() - response: %s', response)
+        # logging.debug('CollectionsBusiness.post_stac_search() - response: %s', response)
 
         return response
 
     @classmethod
-    def search_by_pagination(cls, result_by_collection, url, method, collection_name, bbox, time, query, limit, limit_to_search):
+    def search_by_pagination(cls, result_by_collection, providers_json, method, collection_name, bbox, time, query, limit, limit_to_search):
         # if there is more results to get, I'm going to search them by pagination
         for page in range(2, int(limit/MAX_LIMIT) + 1):
             logging.info('CollectionsBusiness.search_by_pagination() - page: %s', page)
 
             if method == "POST":
-                __result = cls.stac_post_02(url, collection_name, bbox, time, query, page, limit_to_search)
+                __result = cls.post_stac_search(providers_json, collection_name, bbox, time, query, page, limit_to_search)
             else:
                 raise BadRequest('Invalid method: {}'.format(method))
             # logging.debug('CollectionsBusiness.search_by_pagination() - result: %s', result)
@@ -352,40 +368,40 @@ class CollectionsBusiness():
         return result_by_collection
 
     @classmethod
-    def post_search(cls, providers, bbox, time, limit=300):
-        logging.info('CollectionsBusiness.search_post()\n')
+    def post_search(cls, providers, bbox, time, limit=MAX_LIMIT):
+        logging.info('CollectionsBusiness.post_search()\n')
 
-        logging.info('CollectionsBusiness.search_post() - MAX_LIMIT: %s\n', MAX_LIMIT)
+        logging.info('CollectionsBusiness.post_search() - MAX_LIMIT: %s\n', MAX_LIMIT)
 
-        logging.info('CollectionsBusiness.search_post() - providers: %s', providers)
-        logging.info('CollectionsBusiness.search_post() - bbox: %s', bbox)
-        logging.info('CollectionsBusiness.search_post() - time: %s', time)
-        logging.info('CollectionsBusiness.search_post() - limit: %s\n', limit)
+        logging.info('CollectionsBusiness.post_search() - providers: %s', providers)
+        logging.info('CollectionsBusiness.post_search() - bbox: %s', bbox)
+        logging.info('CollectionsBusiness.post_search() - time: %s', time)
+        logging.info('CollectionsBusiness.post_search() - limit: %s\n', limit)
 
         result_dict = {}
 
         for provider in providers:
-            logging.info('CollectionsBusiness.search_post() - provider:')
+            logging.info('CollectionsBusiness.post_search() - provider:')
 
             # destructuring dictionary contents into variables
             provider_name, method, collections, query = destructuring_dict(provider, 'name', 'method', 'collections', 'query')
-            url = cls.providers_business.get_providers()[provider_name]['url']
+            providers_json = cls.providers_business.get_providers_json()[provider_name]
 
-            logging.info('CollectionsBusiness.search_post() -   provider_name: %s', provider_name)
-            logging.info('CollectionsBusiness.search_post() -   method: %s', method)
-            logging.info('CollectionsBusiness.search_post() -   collections: %s', collections)
-            logging.info('CollectionsBusiness.search_post() -   query: %s', query)
-            logging.info('CollectionsBusiness.search_post() -   url: %s\n', url)
+            logging.info('CollectionsBusiness.post_search() -   provider_name: %s', provider_name)
+            logging.info('CollectionsBusiness.post_search() -   method: %s', method)
+            logging.info('CollectionsBusiness.post_search() -   collections: %s', collections)
+            logging.info('CollectionsBusiness.post_search() -   query: %s', query)
+            logging.info('CollectionsBusiness.post_search() -   providers_json: %s\n', providers_json)
 
             # if there is not a provider inside the dict, then initialize it
             if provider_name not in result_dict:
                 result_dict[provider_name] = {}
 
             for collection in collections:
-                logging.info('CollectionsBusiness.search_post() - collection:')
+                logging.info('CollectionsBusiness.post_search() - collection:')
 
                 collection_name = collection['name']
-                logging.info('CollectionsBusiness.search_post() - collection_name: %s', collection_name)
+                logging.info('CollectionsBusiness.post_search() - collection_name: %s', collection_name)
 
                 # initialize collection
                 result_by_collection = None
@@ -399,27 +415,27 @@ class CollectionsBusiness():
 
                 # if I'm searching by the first, and only one, page [...]
                 if method == "POST":
-                    result = cls.stac_post_02(url, collection_name, bbox, time, query, 1, limit_to_search)
+                    result = cls.post_stac_search(providers_json, collection_name, bbox, time, query, 1, limit_to_search)
                 else:
                     raise BadRequest('Invalid method: {}'.format(method))
 
-                logging.debug('CollectionsBusiness.search_post() - result: %s', result)
+                logging.debug('CollectionsBusiness.post_search() - result: %s', result)
 
                 # [...] then I add it to the dict directly
                 result_by_collection = result
 
                 matched = int(result['context']['matched'])
-                logging.debug('CollectionsBusiness.search_post() - matched: %s', matched)
+                logging.debug('CollectionsBusiness.post_search() - matched: %s', matched)
 
                 # if I've already got all features, then I go out of the loop
                 if limit <= MAX_LIMIT or matched <= MAX_LIMIT:
-                    logging.debug('CollectionsBusiness.search_post() - just one result was found')
+                    logging.debug('CollectionsBusiness.post_search() - just one result was found')
                 # if there is more features to get, then I search by them
                 else:
-                    logging.debug('CollectionsBusiness.search_post() - more than one result was found')
+                    logging.debug('CollectionsBusiness.post_search() - more than one result was found')
 
                     result_by_collection = cls.search_by_pagination(
-                        result_by_collection, url, method, collection_name, bbox, time, query, limit, limit_to_search
+                        result_by_collection, providers_json, method, collection_name, bbox, time, query, limit, limit_to_search
                     )
 
                 # add the found collection to the result

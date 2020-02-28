@@ -69,8 +69,15 @@ class ProvidersBusiness():
                 "downloadable": data[key]['downloadable']
             }
 
+        self.__providers_json__ =  data
+
     def get_providers(self):
+        """get just the necessary providers information"""
         return self.__objs__
+
+    def get_providers_json(self):
+        """get all providers information inside providers.json file"""
+        return self.__providers_json__
 
     def get_providers_version(self):
         return self.__versions__

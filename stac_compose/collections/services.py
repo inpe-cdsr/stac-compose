@@ -58,6 +58,8 @@ class CollectionsServices():
 
     @classmethod
     def post_stac_search(cls, url, data):
+        """POST /stac/search"""
+
         base_url = '{}/stac/search'.format(url)
 
         logging.warning('CollectionsServices.search_post() - base_url: \'POST {}\''.format(base_url))
