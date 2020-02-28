@@ -123,37 +123,39 @@ class StacBusiness():
         return response
 
     @classmethod
-    def stac_search_by_pagination(cls, result, providers_json, method, collection_name, bbox, time, query, limit, limit_to_search):
+    def stac_search(cls, method, providers_json, collection, bbox, time=False, query=None, page=1, limit=MAX_LIMIT):
+        if method == "GET":
+            return cls.get_stac_search(providers_json, collection, bbox, time, query, 1, limit)
+        elif method == "POST":
+            return cls.post_stac_search(providers_json, collection, bbox, time, query, 1, limit)
+        else:
+            raise BadRequest('Invalid method: {}'.format(method))
+
+    @classmethod
+    def stac_search_by_pagination(cls, result, method, providers_json, collection_name, bbox, time, query, limit, limit_to_search):
         # if there is more results to get, I'm going to search them by pagination
         for page in range(2, int(limit/MAX_LIMIT) + 1):
-            logging.info('StacBusiness.search_by_pagination() - page: %s', page)
+            logging.info('StacBusiness.stac_search_by_pagination() - page: %s', page)
 
-            if method == "GET":
-                __result = cls.get_stac_search(providers_json, collection_name, bbox, time, query, page, limit_to_search)
-            elif method == "POST":
-                __result = cls.post_stac_search(providers_json, collection_name, bbox, time, query, page, limit_to_search)
-            else:
-                raise BadRequest('Invalid method: {}'.format(method))
-            # logging.debug('StacBusiness.search_by_pagination() - result: %s', result)
+            __result = cls.stac_search(method, providers_json, collection_name, bbox, time, query, page, limit_to_search)
+            # logging.debug('StacBusiness.stac_search_by_pagination() - __result: %s', __result)
 
             # if I'm on other page, then I increase the old result
             result['features'] += __result['features']
             result['context']['returned'] += __result['context']['returned']
 
-            # logging.debug('StacBusiness.search_by_pagination() - result: %s', result)
+            # logging.debug('StacBusiness.stac_search_by_pagination() - __result: %s', __result)
 
         # get matched variable based on 'result['context']['matched']'
         context = result['context']
         matched = int(context['matched'])
 
-        logging.info('StacBusiness.search_by_pagination() - matched: %s', matched)
-        logging.info('StacBusiness.search_by_pagination() - returned: %s', context['returned'])
+        logging.info('StacBusiness.stac_search_by_pagination() - matched: %s', matched)
+        logging.info('StacBusiness.stac_search_by_pagination() - returned: %s', context['returned'])
 
         # if something was found, then fill 'limit' key with the true limit
         if matched:
             context['limit'] = limit
-
-        # logging.debug('StacBusiness.search_by_pagination() - result: %s', result)
 
         return result
 
@@ -195,14 +197,8 @@ class StacBusiness():
 
                 limit_to_search = get_limit_to_search(limit)
 
-                # if I'm searching by the first, and only one, page
-                if method == "GET":
-                    result = cls.get_stac_search(providers_json, collection_name, bbox, time, query, 1, limit_to_search)
-                elif method == "POST":
-                    result = cls.post_stac_search(providers_json, collection_name, bbox, time, query, 1, limit_to_search)
-                else:
-                    raise BadRequest('Invalid method: {}'.format(method))
-
+                # first: I'm searching by the first page
+                result = cls.stac_search(method, providers_json, collection_name, bbox, time, query, 1, limit_to_search)
                 # logging.debug('StacBusiness.post_search() - result: %s', result)
 
                 matched = result['context']['matched']
@@ -217,7 +213,7 @@ class StacBusiness():
                     logging.debug('StacBusiness.post_search() - more than one result was found')
 
                     result = cls.stac_search_by_pagination(
-                        result, providers_json, method, collection_name, bbox, time, query, limit, limit_to_search
+                        result, method, providers_json, collection_name, bbox, time, query, limit, limit_to_search
                     )
 
                 # add the found collection to the result
