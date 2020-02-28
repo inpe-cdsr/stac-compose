@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 
 from json import dumps, loads
-from datetime import date, datetime
 from requests import get, post
-from requests.auth import HTTPBasicAuth
 from werkzeug.exceptions import NotFound
 
 from stac_compose.log import logging

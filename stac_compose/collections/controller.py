@@ -63,28 +63,3 @@ class CollectionsItemsController(APIResource):
         # pp.pprint(features)
 
         return features
-
-    def post(self):
-        logging.info('CollectionsItemsController.post()\n')
-
-        if request.is_json:
-            body = request.get_json()
-
-            logging.info('CollectionsItemsController.post() - body: %s', body)
-
-            data, status = validate(body, 'search_post')
-
-            logging.info('CollectionsItemsController.post() - data: %s', data)
-            logging.info('CollectionsItemsController.post() - status: %s', status)
-
-            if status is False:
-                raise BadRequest(dumps(data))  # 400 - Bad Request
-
-            features = CollectionsBusiness.post_search(**data)
-
-            # logging.debug('\n\n CollectionsItemsController.post() - features: %s \n\n', features)
-            # pp.pprint(features)
-
-            return features
-        else:
-            raise BadRequest("mimetype must indicate JSON data, in other words, mimetype must be equals to `application/json`")
