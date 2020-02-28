@@ -42,6 +42,15 @@ def destructuring_dict(d, *args):
         return result
 
 
+def get_limit_to_search(limit):
+    # if 'limit' is less than the maximum I can search, then I can use 'limit' to search my features just one time
+    if limit <= MAX_LIMIT:
+        return limit
+    # if 'limit' is greater than the maximum I can search, then I use the maximum number and I search by pages
+    else:
+        return MAX_LIMIT
+
+
 class CollectionsBusiness():
     providers_business = ProvidersBusiness()
 
@@ -305,19 +314,19 @@ class CollectionsBusiness():
         logging.info('CollectionsBusiness.post_stac_search() - search_collection_as_property: %s\n', search_collection_as_property)
 
         data = {
-            'bbox': bbox,
-            'time': time,
-            'page': page,
-            'limit': limit
+            "bbox": bbox,
+            "time": time,
+            "page": page,
+            "limit": limit
         }
 
         if query is not None:
-            data['query'] = query
+            data["query"] = query
 
         # if STAC supports just to search collection as property, then add it inside query
         if search_collection_as_property:
-            data['query']['collection'] = {
-                'eq': collection
+            data["query"]["collection"] = {
+                "eq": collection
             }
         # else it searchs as STAC standard
         else:
@@ -335,7 +344,7 @@ class CollectionsBusiness():
         return response
 
     @classmethod
-    def search_by_pagination(cls, result_by_collection, providers_json, method, collection_name, bbox, time, query, limit, limit_to_search):
+    def post_stac_search_by_pagination(cls, result_by_collection, providers_json, method, collection_name, bbox, time, query, limit, limit_to_search):
         # if there is more results to get, I'm going to search them by pagination
         for page in range(2, int(limit/MAX_LIMIT) + 1):
             logging.info('CollectionsBusiness.search_by_pagination() - page: %s', page)
@@ -406,12 +415,7 @@ class CollectionsBusiness():
                 # initialize collection
                 result_by_collection = None
 
-                # if 'limit' is less than the maximum I can search, then I can use 'limit' to search my features just one time
-                if limit <= MAX_LIMIT:
-                    limit_to_search = limit
-                # if 'limit' is greater than the maximum I can search, then I use the maximum number and I search by pages
-                else:
-                    limit_to_search = MAX_LIMIT
+                limit_to_search = get_limit_to_search(limit)
 
                 # if I'm searching by the first, and only one, page [...]
                 if method == "POST":
@@ -434,7 +438,7 @@ class CollectionsBusiness():
                 else:
                     logging.debug('CollectionsBusiness.post_search() - more than one result was found')
 
-                    result_by_collection = cls.search_by_pagination(
+                    result_by_collection = cls.post_stac_search_by_pagination(
                         result_by_collection, providers_json, method, collection_name, bbox, time, query, limit, limit_to_search
                     )
 

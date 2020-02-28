@@ -1257,7 +1257,7 @@ class TestStacComposeCollectionsItems(StacComposeTester):
                         "page": 1,
                         "limit": 1,
                         "returned": 1,
-                        "matched": 79
+                        "matched": 182
                     },
                     "type": "FeatureCollection",
                     "features": [
@@ -1534,7 +1534,7 @@ class TestStacComposeCollectionsItems(StacComposeTester):
                         {
                             "rel": "next",
                             "title": "Next page of results",
-                            "href": "https://sat-api.developmentseed.org/stac/search?datetime=2020-01-13T00%3A00%3A00%2F2020-02-13T23%3A59%3A00&intersects=%5Bobject%20Object%5D&query=%5Bobject%20Object%5D&page=2&limit=1"
+                            "href": "https://sat-api.developmentseed.org/stac/search?datetime=2019-12-01T00%3A00%3A00%2F2020-02-13T23%3A59%3A59&intersects=%5Bobject%20Object%5D&query=%5Bobject%20Object%5D&page=2&limit=1"
                         }
                     ]
                 },
@@ -1543,7 +1543,7 @@ class TestStacComposeCollectionsItems(StacComposeTester):
                         "page": 1,
                         "limit": 1,
                         "returned": 1,
-                        "matched": 1547
+                        "matched": 3724
                     },
                     "type": "FeatureCollection",
                     "features": [
@@ -1837,7 +1837,7 @@ class TestStacComposeCollectionsItems(StacComposeTester):
                         {
                             "rel": "next",
                             "title": "Next page of results",
-                            "href": "https://sat-api.developmentseed.org/stac/search?datetime=2020-01-13T00%3A00%3A00%2F2020-02-13T23%3A59%3A00&intersects=%5Bobject%20Object%5D&query=%5Bobject%20Object%5D&page=2&limit=1"
+                            "href": "https://sat-api.developmentseed.org/stac/search?datetime=2019-12-01T00%3A00%3A00%2F2020-02-13T23%3A59%3A59&intersects=%5Bobject%20Object%5D&query=%5Bobject%20Object%5D&page=2&limit=1"
                         }
                     ]
                 }
@@ -1862,7 +1862,7 @@ class TestStacComposeCollectionsItems(StacComposeTester):
                 }
             ],
             "bbox": [-68.0273437, -25.0059726, -34.9365234, 0.3515602],
-            "time": "2020-01-13T00:00:00/2020-02-13T23:59:00",
+            "time": "2019-12-01T00:00:00/2020-02-13T23:59:59",
             "limit": 1
         }
 
@@ -2136,7 +2136,253 @@ class TestStacComposeCollectionsItems(StacComposeTester):
         }
 
         self.get(expected, query_string=query_string)
+    '''
+    def test__post__stac_compose_collections_items__cbers4_aws_cbers4mux_cbers4awfi_limit_1_and_query(self):
+        """
+        POST http://localhost:8089/stac-compose/collections/items/
+        """
 
+        expected = {
+            "CBERS4-AWS": {
+                "CBERS4MUX": {
+                    "type": "FeatureCollection",
+                    "features": [
+                        {
+                            "id": "CBERS_4_MUX_20191201_158_099_L2",
+                            "type": "Feature",
+                            "geometry": {
+                                "type": "MultiPolygon",
+                                "coordinates": [
+                                    [
+                                        [
+                                            [
+                                                -45.103133,
+                                                0.457109
+                                            ],
+                                            [
+                                                -44.029154,
+                                                0.290961
+                                            ],
+                                            [
+                                                -43.794924,
+                                                1.354751
+                                            ],
+                                            [
+                                                -44.869022,
+                                                1.520895
+                                            ],
+                                            [
+                                                -45.103133,
+                                                0.457109
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            },
+                            "bbox": [
+                                -45.104787,
+                                0.281009,
+                                -43.791657,
+                                1.54059
+                            ],
+                            "collection": "CBERS4MUX",
+                            "properties": {
+                                "datetime": "2019-12-01T13:11:37Z",
+                                "eo:sun_azimuth": 136.589,
+                                "eo:sun_elevation": 58.0225,
+                                "eo:off_nadir": -0.0104568,
+                                "eo:epsg": 32745,
+                                "eo:instrument": "MUX",
+                                "cbers:data_type": "L2",
+                                "cbers:path": 158,
+                                "cbers:row": 99
+                            },
+                            "links": [
+                                {
+                                    "rel": "self",
+                                    "href": "https://cbers-stac-0-7.s3.amazonaws.com/CBERS4/MUX/158/099/CBERS_4_MUX_20191201_158_099_L2.json"
+                                },
+                                {
+                                    "rel": "parent",
+                                    "href": "https://cbers-stac-0-7.s3.amazonaws.com/CBERS4/MUX/158/099/catalog.json"
+                                },
+                                {
+                                    "rel": "collection",
+                                    "href": "https://cbers-stac-0-7.s3.amazonaws.com/CBERS4/MUX/collection.json"
+                                }
+                            ],
+                            "assets": {
+                                "thumbnail": {
+                                    "href": "https://s3.amazonaws.com/cbers-meta-pds/CBERS4/MUX/158/099/CBERS_4_MUX_20191201_158_099_L2/CBERS_4_MUX_20191201_158_099.jpg",
+                                    "type": "image/jpeg"
+                                },
+                                "metadata": {
+                                    "href": "s3://cbers-pds/CBERS4/MUX/158/099/CBERS_4_MUX_20191201_158_099_L2/CBERS_4_MUX_20191201_158_099_L2_BAND6.xml",
+                                    "title": "INPE original metadata",
+                                    "type": "text/xml"
+                                },
+                                "B5": {
+                                    "href": "s3://cbers-pds/CBERS4/MUX/158/099/CBERS_4_MUX_20191201_158_099_L2/CBERS_4_MUX_20191201_158_099_L2_BAND5.tif",
+                                    "type": "image/vnd.stac.geotiff; cloud-optimized=true",
+                                    "eo:bands": [
+                                        0
+                                    ]
+                                },
+                                "B6": {
+                                    "href": "s3://cbers-pds/CBERS4/MUX/158/099/CBERS_4_MUX_20191201_158_099_L2/CBERS_4_MUX_20191201_158_099_L2_BAND6.tif",
+                                    "type": "image/vnd.stac.geotiff; cloud-optimized=true",
+                                    "eo:bands": [
+                                        1
+                                    ]
+                                },
+                                "B7": {
+                                    "href": "s3://cbers-pds/CBERS4/MUX/158/099/CBERS_4_MUX_20191201_158_099_L2/CBERS_4_MUX_20191201_158_099_L2_BAND7.tif",
+                                    "type": "image/vnd.stac.geotiff; cloud-optimized=true",
+                                    "eo:bands": [
+                                        2
+                                    ]
+                                },
+                                "B8": {
+                                    "href": "s3://cbers-pds/CBERS4/MUX/158/099/CBERS_4_MUX_20191201_158_099_L2/CBERS_4_MUX_20191201_158_099_L2_BAND8.tif",
+                                    "type": "image/vnd.stac.geotiff; cloud-optimized=true",
+                                    "eo:bands": [
+                                        3
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                "CBERS4AWFI": {
+                    "type": "FeatureCollection",
+                    "features": [
+                        {
+                            "id": "CBERS_4_AWFI_20191201_158_099_L2",
+                            "type": "Feature",
+                            "geometry": {
+                                "type": "MultiPolygon",
+                                "coordinates": [
+                                    [
+                                        [
+                                            [
+                                                -49.121426,
+                                                -1.787801
+                                            ],
+                                            [
+                                                -41.230899,
+                                                -3.014614
+                                            ],
+                                            [
+                                                -39.73469,
+                                                3.768995
+                                            ],
+                                            [
+                                                -47.632002,
+                                                4.995838
+                                            ],
+                                            [
+                                                -49.121426,
+                                                -1.787801
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            },
+                            "bbox": [
+                                -49.131277,
+                                -3.052144,
+                                -39.713359,
+                                5.057464
+                            ],
+                            "collection": "CBERS4AWFI",
+                            "properties": {
+                                "datetime": "2019-12-01T13:11:36Z",
+                                "eo:sun_azimuth": 138.03,
+                                "eo:sun_elevation": 58.0073,
+                                "eo:off_nadir": -0.0104568,
+                                "eo:epsg": 32745,
+                                "eo:instrument": "AWFI",
+                                "cbers:data_type": "L2",
+                                "cbers:path": 158,
+                                "cbers:row": 99
+                            },
+                            "links": [
+                                {
+                                    "rel": "self",
+                                    "href": "https://cbers-stac-0-7.s3.amazonaws.com/CBERS4/AWFI/158/099/CBERS_4_AWFI_20191201_158_099_L2.json"
+                                },
+                                {
+                                    "rel": "parent",
+                                    "href": "https://cbers-stac-0-7.s3.amazonaws.com/CBERS4/AWFI/158/099/catalog.json"
+                                },
+                                {
+                                    "rel": "collection",
+                                    "href": "https://cbers-stac-0-7.s3.amazonaws.com/CBERS4/AWFI/collection.json"
+                                }
+                            ],
+                            "assets": {
+                                "thumbnail": {
+                                    "href": "https://s3.amazonaws.com/cbers-meta-pds/CBERS4/AWFI/158/099/CBERS_4_AWFI_20191201_158_099_L2/CBERS_4_AWFI_20191201_158_099.jpg",
+                                    "type": "image/jpeg"
+                                },
+                                "metadata": {
+                                    "href": "s3://cbers-pds/CBERS4/AWFI/158/099/CBERS_4_AWFI_20191201_158_099_L2/CBERS_4_AWFI_20191201_158_099_L2_BAND14.xml",
+                                    "title": "INPE original metadata",
+                                    "type": "text/xml"
+                                },
+                                "B13": {
+                                    "href": "s3://cbers-pds/CBERS4/AWFI/158/099/CBERS_4_AWFI_20191201_158_099_L2/CBERS_4_AWFI_20191201_158_099_L2_BAND13.tif",
+                                    "type": "image/vnd.stac.geotiff; cloud-optimized=true",
+                                    "eo:bands": [
+                                        0
+                                    ]
+                                },
+                                "B14": {
+                                    "href": "s3://cbers-pds/CBERS4/AWFI/158/099/CBERS_4_AWFI_20191201_158_099_L2/CBERS_4_AWFI_20191201_158_099_L2_BAND14.tif",
+                                    "type": "image/vnd.stac.geotiff; cloud-optimized=true",
+                                    "eo:bands": [
+                                        1
+                                    ]
+                                },
+                                "B15": {
+                                    "href": "s3://cbers-pds/CBERS4/AWFI/158/099/CBERS_4_AWFI_20191201_158_099_L2/CBERS_4_AWFI_20191201_158_099_L2_BAND15.tif",
+                                    "type": "image/vnd.stac.geotiff; cloud-optimized=true",
+                                    "eo:bands": [
+                                        2
+                                    ]
+                                },
+                                "B16": {
+                                    "href": "s3://cbers-pds/CBERS4/AWFI/158/099/CBERS_4_AWFI_20191201_158_099_L2/CBERS_4_AWFI_20191201_158_099_L2_BAND16.tif",
+                                    "type": "image/vnd.stac.geotiff; cloud-optimized=true",
+                                    "eo:bands": [
+                                        3
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+
+        body = {
+            "providers": [
+                {
+                    "name": "CBERS4-AWS",
+                    "method": "POST",
+                    "collections": [
+                        {"name": "CBERS4MUX"},
+                        {"name": "CBERS4AWFI"}
+                    ]
+                }
+            ],
+            "bbox": [-68.0273437, -25.0059726, -34.9365234, 0.3515602],
+            "time": "2019-12-01T00:00:00/2020-02-13T23:59:59",
+            "limit": 1
+        }
+
+        self.post(expected, body=body)
+    '''
 
 class TestStacComposeCollectionsItemsError(StacComposeTester):
 
