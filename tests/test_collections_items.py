@@ -968,6 +968,12 @@ class TestStacComposeCollectionsItems(StacComposeTester):
         expected = {
             "CBERS4-AWS": {
                 "CBERS4MUX": {
+                    'context': {
+                        'limit': 1,
+                        'matched': 1,
+                        'page': 1,
+                        'returned': 1
+                    },
                     "type": "FeatureCollection",
                     "features": [
                         {
@@ -1077,6 +1083,12 @@ class TestStacComposeCollectionsItems(StacComposeTester):
                     ]
                 },
                 "CBERS4AWFI": {
+                    'context': {
+                        'limit': 1,
+                        'matched': 1,
+                        'page': 1,
+                        'returned': 1
+                    },
                     "type": "FeatureCollection",
                     "features": [
                         {

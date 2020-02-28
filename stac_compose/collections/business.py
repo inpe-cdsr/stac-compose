@@ -106,26 +106,47 @@ class CollectionsBusiness():
             return []
 
     @classmethod
-    def stac_get_items(cls, url, collection, bbox, time=None, cloud_cover=None, limit=300):
-        logging.info('CollectionsBusiness.stac_get_items()')
+    def stac_get_items(cls, providers_json, collection, bbox, time=None, cloud_cover=None, limit=300):
+        logging.info('CollectionsBusiness.stac_get_items()\n')
+
+        logging.info('CollectionsBusiness.stac_get_items() - providers_json: %s', providers_json)
+        logging.info('CollectionsBusiness.stac_get_items() - collection: %s', collection)
+        logging.info('CollectionsBusiness.stac_get_items() - bbox: %s', bbox)
+        logging.info('CollectionsBusiness.stac_get_items() - time: %s', time)
+        logging.info('CollectionsBusiness.stac_get_items() - cloud_cover: %s', cloud_cover)
+        logging.info('CollectionsBusiness.stac_get_items() - limit: %s', limit)
+
+        url = providers_json['url']
 
         logging.info('CollectionsBusiness.stac_get_items() - url: %s', url)
-        logging.info('CollectionsBusiness.stac_get_items() - collection: %s', collection)
 
-        query = 'bbox={}'.format(bbox)
-        query += '&limit={}'.format(limit)
+        if isinstance(bbox, str):
+            query = 'bbox={}'.format(bbox)
+        elif isinstance(bbox, list):
+            bbox = ",".join(list(map(str, bbox)))
+            query = 'bbox={}'.format(bbox)
+        else:
+            raise BadRequest('`bbox` field is invalid: `{0}`, it should be a string or list, but its type is {1}.'.format(bbox, type(bbox)))
 
         if time:
             query += '&time={}'.format(time)
         if cloud_cover:
             query += '&eo:cloud_cover=0/{}'.format(cloud_cover)
 
+        query += '&limit={}'.format(limit)
+
         logging.info('CollectionsBusiness.stac_get_items() - query: %s', query)
 
         try:
             response = StacComposeServices.search_items(url, collection, query)
 
-            # logging.debug('CollectionsBusiness.stac_get_items() - response: %s', response)
+            # logging.debug('CollectionsBusiness.stac_get_items() - before post processing -  response: %s', response)
+
+            # post processing to rename fields and add field is it is necessary
+            response = add_context_field_in_the_feature_collection_if_it_does_not_exist(response, page=1, limit=limit)
+            response = rename_fields_from_feature_collection(response)
+
+            # logging.debug('CollectionsBusiness.stac_get_items() - after post processing - response: %s', response)
 
             return response
         except Exception as e:
@@ -161,6 +182,8 @@ class CollectionsBusiness():
             cs = [c.split(':')[1] for c in collections.split(',') if c.split(':')[0] == provider]
             method = cls.providers_business.get_providers_methods()[provider]
             filter_mult = cls.providers_business.get_filter_mult_collection()[provider]
+
+            providers_json = cls.providers_business.get_providers_json()[provider]
 
             logging.info('CollectionsBusiness.search() - url: %s', url)
             logging.info('CollectionsBusiness.search() - cs: %s', cs)
@@ -247,7 +270,7 @@ class CollectionsBusiness():
                     result_dict[provider] = result
                 else:
                     for collection in cs:
-                        result = cls.stac_get_items(url, collection, bbox, time=time, limit=limit)
+                        result = cls.stac_get_items(providers_json, collection, bbox, time=time, limit=limit)
 
                         # add the result to the corresponding collection
                         result_dict[provider][collection] = result

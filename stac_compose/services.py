@@ -13,12 +13,16 @@ class StacComposeServices():
     def search_items(cls, url, collection_id, query):
         base_url = '{}/collections/{}/items?{}'.format(url, collection_id, query)
 
-        logging.warning('CollectionsServices.search_items() - base_url: \'GET {}\''.format(base_url))
+        logging.warning('StacComposeServices.search_items() - base_url: \'GET {}\'\n'.format(base_url))
 
-        r = get(base_url, headers={})
+        response = get(base_url, headers={})
 
-        if r and r.status_code in (200, 201):
-            return loads(r.text)
+        logging.warning('StacComposeServices.search_items() - response.status_code: {}'.format(response.status_code))
+        # logging.warning('StacComposeServices.search_items() - response.text: {}'.format(response.text))
+        # logging.warning('StacComposeServices.search_items() - loads(response.text): {}\n'.format(loads(response.text)))
+
+        if response and response.status_code in (200, 201):
+            return loads(response.text)
 
         return None
 
@@ -26,7 +30,7 @@ class StacComposeServices():
     def search_items_post(cls, url, collection_id, data):
         base_url = '{}/collections/{}/items'.format(url, collection_id)
 
-        logging.warning('CollectionsServices.search_items_post() - base_url: \'POST {}\''.format(base_url))
+        logging.warning('StacComposeServices.search_items_post() - base_url: \'POST {}\''.format(base_url))
 
         r = post(
             base_url,
@@ -45,7 +49,7 @@ class StacComposeServices():
     def get_stac_search(cls, url, query):
         base_url = '{}/stac/search?{}'.format(url, query)
 
-        logging.warning('CollectionsServices.get_stac_search() - base_url: \'GET {}\''.format(base_url))
+        logging.warning('StacComposeServices.get_stac_search() - base_url: \'GET {}\''.format(base_url))
 
         r = get(base_url, headers={})
 
@@ -60,7 +64,7 @@ class StacComposeServices():
 
         base_url = '{}/stac/search'.format(url)
 
-        logging.warning('CollectionsServices.search_post() - base_url: \'POST {}\''.format(base_url))
+        logging.warning('StacComposeServices.search_post() - base_url: \'POST {}\''.format(base_url))
 
         r = post(
             base_url,
@@ -79,7 +83,7 @@ class StacComposeServices():
     def search_collections(cls, url):
         base_url = '{}/collections?limit=1000'.format(url)
 
-        logging.warning('CollectionsServices.search_collections() - base_url: \'GET {}\''.format(base_url))
+        logging.warning('StacComposeServices.search_collections() - base_url: \'GET {}\''.format(base_url))
 
         r = get(base_url, headers={})
 

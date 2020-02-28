@@ -960,7 +960,7 @@ class TestStacComposeStacSearch(StacComposeTester):
         self.post(expected, body=body)
 
     # Provider: CBERS4-AWS
-    '''
+
     def test__post__stac_compose_stac_search__cbers4_aws_cbers4mux_cbers4awfi_limit_1_and_query(self):
         """
         POST http://localhost:8089/stac-compose/stac/search/
@@ -969,6 +969,12 @@ class TestStacComposeStacSearch(StacComposeTester):
         expected = {
             "CBERS4-AWS": {
                 "CBERS4MUX": {
+                    'context': {
+                        'limit': 1,
+                        'matched': 1,
+                        'page': 1,
+                        'returned': 1
+                    },
                     "type": "FeatureCollection",
                     "features": [
                         {
@@ -1078,6 +1084,12 @@ class TestStacComposeStacSearch(StacComposeTester):
                     ]
                 },
                 "CBERS4AWFI": {
+                    'context': {
+                        'limit': 1,
+                        'matched': 1,
+                        'page': 1,
+                        'returned': 1
+                    },
                     "type": "FeatureCollection",
                     "features": [
                         {
@@ -1206,7 +1218,7 @@ class TestStacComposeStacSearch(StacComposeTester):
         }
 
         self.post(expected, body=body)
-    '''
+
 
 '''
 class TestStacComposeStacSearchError(StacComposeTester):

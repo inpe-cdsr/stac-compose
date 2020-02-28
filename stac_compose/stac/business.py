@@ -10,6 +10,8 @@ from stac_compose.services import StacComposeServices
 from stac_compose.providers.business import ProvidersBusiness
 from stac_compose.log import logging
 
+from stac_compose.collections.business import CollectionsBusiness
+
 
 pp = PrettyPrinter(indent=4)
 
@@ -125,9 +127,10 @@ class StacBusiness():
     @classmethod
     def stac_search(cls, method, providers_json, collection, bbox, time=False, query=None, page=1, limit=MAX_LIMIT):
         if method == "GET":
-            return cls.get_stac_search(providers_json, collection, bbox, time, query, 1, limit)
+            # return cls.get_stac_search(providers_json, collection, bbox, time, query=query, page=1, limit=limit)
+            return CollectionsBusiness.stac_get_items(providers_json, collection, bbox, time=time, limit=limit)
         elif method == "POST":
-            return cls.post_stac_search(providers_json, collection, bbox, time, query, 1, limit)
+            return cls.post_stac_search(providers_json, collection, bbox, time, query=query, page=1, limit=limit)
         else:
             raise BadRequest('Invalid method: {}'.format(method))
 
@@ -199,7 +202,7 @@ class StacBusiness():
 
                 # first: I'm searching by the first page
                 result = cls.stac_search(method, providers_json, collection_name, bbox, time, query, 1, limit_to_search)
-                # logging.debug('StacBusiness.post_search() - result: %s', result)
+                logging.debug('StacBusiness.post_search() - result: %s', result)
 
                 matched = result['context']['matched']
 
