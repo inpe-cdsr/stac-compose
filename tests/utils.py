@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""Unit-test for STAC Compose operations related to /stac-compose/providers/ endpoint."""
+"""Tester for STAC Compose operations"""
 
 from unittest import TestCase
 from json import loads, dumps

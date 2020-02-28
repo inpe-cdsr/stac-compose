@@ -14,7 +14,7 @@ pp = PrettyPrinter(indent=4)
 MAX_LIMIT = 1000
 
 
-def rename_feature_collection(feature_collection):
+def rename_fields_from_feature_collection(feature_collection):
     """This function renames feature collection keys to leave it according to STAC 9.0 and it is returned"""
 
     if 'meta' in feature_collection:
@@ -49,6 +49,32 @@ def get_limit_to_search(limit):
     # if 'limit' is greater than the maximum I can search, then I use the maximum number and I search by pages
     else:
         return MAX_LIMIT
+
+
+def add_context_field_in_the_feature_collection_if_it_does_not_exist(feature_collection, page=1, limit=MAX_LIMIT):
+    """add `context` field in the feature collection if it does not exist"""
+
+    if 'context' not in feature_collection:
+        # if there is not a `context` field in the feature collection, then I create a fake one
+        context = {
+            'matched': 0,
+            'returned': 0,
+            'page': page,
+            'limit': limit
+        }
+
+        if 'features' in feature_collection:
+            # create a fake `context` using the size of results returned as 'matched' and 'returned' fields
+            returned = len(feature_collection['features'])
+            context['matched'] = returned
+            context['returned'] = returned
+
+            feature_collection['context'] = context
+        else:
+            # create a fake `context` using the default one
+            feature_collection['context'] = context
+
+    return feature_collection
 
 
 class CollectionsBusiness():
@@ -131,7 +157,7 @@ class CollectionsBusiness():
         logging.info('CollectionsBusiness.stac_get() - query: %s', query)
 
         try:
-            response = CollectionsServices.search_get(url, query)
+            response = CollectionsServices.get_stac_search(url, query)
 
             # logging.info('CollectionsBusiness.stac_get() - response: %s', response)
 
@@ -231,7 +257,8 @@ class CollectionsBusiness():
                     # [...] then I add it to the dict directly
                     result_dict[provider][collection] = result
 
-                    result = rename_feature_collection(result)
+                    result = add_context_field_in_the_feature_collection_if_it_does_not_exist(result, page=1, limit=limit_to_search)
+                    result = rename_fields_from_feature_collection(result)
 
                     found = int(result['context']['matched'])
 
@@ -252,7 +279,8 @@ class CollectionsBusiness():
 
                             # logging.debug('CollectionsBusiness.search() - result: %s', result)
 
-                            result = rename_feature_collection(result)
+                            result = add_context_field_in_the_feature_collection_if_it_does_not_exist(result, page=page, limit=limit_to_search)
+                            result = rename_fields_from_feature_collection(result)
 
                             # if I'm on other page, then I increase the old result
                             result_dict[provider][collection]['features'] += result['features']
@@ -291,7 +319,61 @@ class CollectionsBusiness():
 
         return result_dict
 
-    # POST method
+    # post_search
+
+    @classmethod
+    def get_stac_search(cls, providers_json, collection, bbox, time, query=None, page=1, limit=MAX_LIMIT):
+        """GET /stac/search"""
+
+        logging.info('CollectionsBusiness.get_stac_search()\n')
+
+        logging.info('CollectionsBusiness.get_stac_search() - providers_json: %s', providers_json)
+        logging.info('CollectionsBusiness.get_stac_search() - collection: %s', collection)
+        logging.info('CollectionsBusiness.get_stac_search() - bbox: %s', bbox)
+        logging.info('CollectionsBusiness.get_stac_search() - time: %s', time)
+        logging.info('CollectionsBusiness.get_stac_search() - query: %s', query)
+        logging.info('CollectionsBusiness.post_stac_sget_stac_searchearch() - page: %s', page)
+        logging.info('CollectionsBusiness.get_stac_search() - limit: %s', limit)
+
+        url = providers_json['url']
+        search_collection_as_property = providers_json['search_collection_as_property']
+
+        logging.info('CollectionsBusiness.get_stac_search() - url: %s', url)
+        logging.info('CollectionsBusiness.get_stac_search() - search_collection_as_property: %s\n', search_collection_as_property)
+
+        parameters = []
+
+        if isinstance(bbox, str):
+            parameters.append('bbox={}'.format(bbox))
+        elif isinstance(bbox, list):
+            bbox = ",".join(list(map(str, bbox)))
+            parameters.append('bbox={}'.format(bbox))
+        else:
+            raise BadRequest('`bbox` field is invalid: `{0}`, it should be a string or list, but its type is {1}.'.format(bbox, type(bbox)))
+
+        parameters.append('collections={}'.format(collection))
+
+        parameters.append('time={}'.format(time))
+
+        # if cloud_cover:
+        #     query += '&eo:cloud_cover=0/{}'.format(cloud_cover)
+
+        parameters.append('page={}'.format(page))
+        parameters.append('limit={}'.format(limit))
+
+        parameters = "&".join(parameters)
+
+        logging.info('CollectionsBusiness.get_stac_search() - parameters: %s', parameters)
+
+        response = CollectionsServices.get_stac_search(url, parameters)
+
+        # post processing to add field and rename other ones if it is necessary
+        response = add_context_field_in_the_feature_collection_if_it_does_not_exist(response, page=page, limit=limit)
+        response = rename_fields_from_feature_collection(response)
+
+        # logging.info('CollectionsBusiness.get_stac_search() - response: %s', response)
+
+        return response
 
     @classmethod
     def post_stac_search(cls, providers_json, collection, bbox, time=False, query=None, page=1, limit=MAX_LIMIT):
@@ -336,33 +418,36 @@ class CollectionsBusiness():
 
         response = CollectionsServices.post_stac_search(url, data)
 
-        # if there is fields to rename, then this function does it
-        response = rename_feature_collection(response)
+        # post processing to rename fields and add field is it is necessary
+        response = add_context_field_in_the_feature_collection_if_it_does_not_exist(response, page=page, limit=limit)
+        response = rename_fields_from_feature_collection(response)
 
         # logging.debug('CollectionsBusiness.post_stac_search() - response: %s', response)
 
         return response
 
     @classmethod
-    def post_stac_search_by_pagination(cls, result_by_collection, providers_json, method, collection_name, bbox, time, query, limit, limit_to_search):
+    def stac_search_by_pagination(cls, result, providers_json, method, collection_name, bbox, time, query, limit, limit_to_search):
         # if there is more results to get, I'm going to search them by pagination
         for page in range(2, int(limit/MAX_LIMIT) + 1):
             logging.info('CollectionsBusiness.search_by_pagination() - page: %s', page)
 
-            if method == "POST":
+            if method == "GET":
+                __result = cls.get_stac_search(providers_json, collection_name, bbox, time, query, page, limit_to_search)
+            elif method == "POST":
                 __result = cls.post_stac_search(providers_json, collection_name, bbox, time, query, page, limit_to_search)
             else:
                 raise BadRequest('Invalid method: {}'.format(method))
             # logging.debug('CollectionsBusiness.search_by_pagination() - result: %s', result)
 
             # if I'm on other page, then I increase the old result
-            result_by_collection['features'] += __result['features']
-            result_by_collection['context']['returned'] += __result['context']['returned']
+            result['features'] += __result['features']
+            result['context']['returned'] += __result['context']['returned']
 
-            # logging.debug('CollectionsBusiness.search_by_pagination() - result_by_collection: %s', result_by_collection)
+            # logging.debug('CollectionsBusiness.search_by_pagination() - result: %s', result)
 
-        # get matched variable based on 'result_by_collection['context']['matched']'
-        context = result_by_collection['context']
+        # get matched variable based on 'result['context']['matched']'
+        context = result['context']
         matched = int(context['matched'])
 
         logging.info('CollectionsBusiness.search_by_pagination() - matched: %s', matched)
@@ -372,9 +457,9 @@ class CollectionsBusiness():
         if matched:
             context['limit'] = limit
 
-        # logging.debug('CollectionsBusiness.search_by_pagination() - result_by_collection: %s', result_by_collection)
+        # logging.debug('CollectionsBusiness.search_by_pagination() - result: %s', result)
 
-        return result_by_collection
+        return result
 
     @classmethod
     def post_search(cls, providers, bbox, time, limit=MAX_LIMIT):
@@ -412,23 +497,20 @@ class CollectionsBusiness():
                 collection_name = collection['name']
                 logging.info('CollectionsBusiness.post_search() - collection_name: %s', collection_name)
 
-                # initialize collection
-                result_by_collection = None
-
                 limit_to_search = get_limit_to_search(limit)
 
-                # if I'm searching by the first, and only one, page [...]
-                if method == "POST":
+                # if I'm searching by the first, and only one, page
+                if method == "GET":
+                    result = cls.get_stac_search(providers_json, collection_name, bbox, time, query, 1, limit_to_search)
+                elif method == "POST":
                     result = cls.post_stac_search(providers_json, collection_name, bbox, time, query, 1, limit_to_search)
                 else:
                     raise BadRequest('Invalid method: {}'.format(method))
 
-                logging.debug('CollectionsBusiness.post_search() - result: %s', result)
+                # logging.debug('CollectionsBusiness.post_search() - result: %s', result)
 
-                # [...] then I add it to the dict directly
-                result_by_collection = result
+                matched = result['context']['matched']
 
-                matched = int(result['context']['matched'])
                 logging.debug('CollectionsBusiness.post_search() - matched: %s', matched)
 
                 # if I've already got all features, then I go out of the loop
@@ -438,11 +520,11 @@ class CollectionsBusiness():
                 else:
                     logging.debug('CollectionsBusiness.post_search() - more than one result was found')
 
-                    result_by_collection = cls.post_stac_search_by_pagination(
-                        result_by_collection, providers_json, method, collection_name, bbox, time, query, limit, limit_to_search
+                    result = cls.stac_search_by_pagination(
+                        result, providers_json, method, collection_name, bbox, time, query, limit, limit_to_search
                     )
 
                 # add the found collection to the result
-                result_dict[provider_name][collection_name] = result_by_collection
+                result_dict[provider_name][collection_name] = result
 
         return result_dict

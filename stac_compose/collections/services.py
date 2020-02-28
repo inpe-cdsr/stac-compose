@@ -44,10 +44,10 @@ class CollectionsServices():
         return None
 
     @classmethod
-    def search_get(cls, url, query):
+    def get_stac_search(cls, url, query):
         base_url = '{}/stac/search?{}'.format(url, query)
 
-        logging.warning('CollectionsServices.search_get() - base_url: \'GET {}\''.format(base_url))
+        logging.warning('CollectionsServices.get_stac_search() - base_url: \'GET {}\''.format(base_url))
 
         r = get(base_url, headers={})
 

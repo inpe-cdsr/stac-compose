@@ -2369,7 +2369,7 @@ class TestStacComposeCollectionsItems(StacComposeTester):
             "providers": [
                 {
                     "name": "CBERS4-AWS",
-                    "method": "POST",
+                    "method": "GET",
                     "collections": [
                         {"name": "CBERS4MUX"},
                         {"name": "CBERS4AWFI"}
