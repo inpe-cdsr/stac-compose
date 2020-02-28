@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-'''
+
 from json import dumps, loads
 from requests import get, post
 from werkzeug.exceptions import NotFound
@@ -7,7 +7,7 @@ from werkzeug.exceptions import NotFound
 from stac_compose.log import logging
 
 
-class CollectionsServices():
+class StacComposeServices():
 
     @classmethod
     def search_items(cls, url, collection_id, query):
@@ -87,4 +87,3 @@ class CollectionsServices():
             return loads(r.text)
 
         raise NotFound("URL was not found. [ url: {0}, status_code: {1} ]".format(base_url, r.status_code))
-'''

@@ -4,77 +4,14 @@
 from pprint import PrettyPrinter
 from werkzeug.exceptions import BadRequest
 
-from stac_compose.stac.services import StacServices
+from stac_compose.common import MAX_LIMIT, rename_fields_from_feature_collection, destructuring_dict, \
+                                get_limit_to_search, add_context_field_in_the_feature_collection_if_it_does_not_exist
+from stac_compose.services import StacComposeServices
 from stac_compose.providers.business import ProvidersBusiness
 from stac_compose.log import logging
 
 
 pp = PrettyPrinter(indent=4)
-
-MAX_LIMIT = 1000
-
-
-def rename_fields_from_feature_collection(feature_collection):
-    """This function renames feature collection keys to leave it according to STAC 9.0 and it is returned"""
-
-    if 'meta' in feature_collection:
-        # rename 'meta' key to 'context'
-        feature_collection['context'] = feature_collection.pop('meta')
-
-    if 'found' in feature_collection['context']:
-        # rename 'found' key to 'matched'
-        feature_collection['context']['matched'] = feature_collection['context'].pop('found')
-
-    return feature_collection
-
-
-def destructuring_dict(d, *args):
-    """
-    Destructuring a dictionary (i.e. d) into variables
-
-    d (dict): dictionary to destructure
-    *args (list): list of arguments to remove from d
-    """
-    result = [d[arg] if arg in d else None for arg in args]
-    if len(result) == 1:
-        return result[0]
-    else:
-        return result
-
-
-def get_limit_to_search(limit):
-    # if 'limit' is less than the maximum I can search, then I can use 'limit' to search my features just one time
-    if limit <= MAX_LIMIT:
-        return limit
-    # if 'limit' is greater than the maximum I can search, then I use the maximum number and I search by pages
-    else:
-        return MAX_LIMIT
-
-
-def add_context_field_in_the_feature_collection_if_it_does_not_exist(feature_collection, page=1, limit=MAX_LIMIT):
-    """add `context` field in the feature collection if it does not exist"""
-
-    if 'context' not in feature_collection:
-        # if there is not a `context` field in the feature collection, then I create a fake one
-        context = {
-            'matched': 0,
-            'returned': 0,
-            'page': page,
-            'limit': limit
-        }
-
-        if 'features' in feature_collection:
-            # create a fake `context` using the size of results returned as 'matched' and 'returned' fields
-            returned = len(feature_collection['features'])
-            context['matched'] = returned
-            context['returned'] = returned
-
-            feature_collection['context'] = context
-        else:
-            # create a fake `context` using the default one
-            feature_collection['context'] = context
-
-    return feature_collection
 
 
 class StacBusiness():
@@ -124,7 +61,7 @@ class StacBusiness():
 
         logging.info('StacBusiness.get_stac_search() - parameters: %s', parameters)
 
-        response = StacServices.get_stac_search(url, parameters)
+        response = StacComposeServices.get_stac_search(url, parameters)
 
         # post processing to add field and rename other ones if it is necessary
         response = add_context_field_in_the_feature_collection_if_it_does_not_exist(response, page=page, limit=limit)
@@ -175,7 +112,7 @@ class StacBusiness():
 
         logging.info('StacBusiness.post_stac_search() - data: %s\n', data)
 
-        response = StacServices.post_stac_search(url, data)
+        response = StacComposeServices.post_stac_search(url, data)
 
         # post processing to rename fields and add field is it is necessary
         response = add_context_field_in_the_feature_collection_if_it_does_not_exist(response, page=page, limit=limit)

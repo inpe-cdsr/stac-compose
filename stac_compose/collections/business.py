@@ -4,54 +4,14 @@
 from pprint import PrettyPrinter
 from werkzeug.exceptions import BadRequest
 
-from stac_compose.collections.services import CollectionsServices
+from stac_compose.common import MAX_LIMIT, rename_fields_from_feature_collection, \
+                                add_context_field_in_the_feature_collection_if_it_does_not_exist
+from stac_compose.services import StacComposeServices
 from stac_compose.providers.business import ProvidersBusiness
 from stac_compose.log import logging
 
 
 pp = PrettyPrinter(indent=4)
-
-MAX_LIMIT = 1000
-
-
-def rename_fields_from_feature_collection(feature_collection):
-    """This function renames feature collection keys to leave it according to STAC 9.0 and it is returned"""
-
-    if 'meta' in feature_collection:
-        # rename 'meta' key to 'context'
-        feature_collection['context'] = feature_collection.pop('meta')
-
-    if 'found' in feature_collection['context']:
-        # rename 'found' key to 'matched'
-        feature_collection['context']['matched'] = feature_collection['context'].pop('found')
-
-    return feature_collection
-
-
-def add_context_field_in_the_feature_collection_if_it_does_not_exist(feature_collection, page=1, limit=MAX_LIMIT):
-    """add `context` field in the feature collection if it does not exist"""
-
-    if 'context' not in feature_collection:
-        # if there is not a `context` field in the feature collection, then I create a fake one
-        context = {
-            'matched': 0,
-            'returned': 0,
-            'page': page,
-            'limit': limit
-        }
-
-        if 'features' in feature_collection:
-            # create a fake `context` using the size of results returned as 'matched' and 'returned' fields
-            returned = len(feature_collection['features'])
-            context['matched'] = returned
-            context['returned'] = returned
-
-            feature_collection['context'] = context
-        else:
-            # create a fake `context` using the default one
-            feature_collection['context'] = context
-
-    return feature_collection
 
 
 class CollectionsBusiness():
@@ -62,7 +22,7 @@ class CollectionsBusiness():
         result_by_provider = {}
 
         for p in providers.split(','):
-            response = CollectionsServices.search_collections(cls.providers_business.get_providers()[p]['url'])
+            response = StacComposeServices.search_collections(cls.providers_business.get_providers()[p]['url'])
 
             if response.get('collections'):
                 result_by_provider[p] = [c['id'] for c in response['collections']]
@@ -107,7 +67,7 @@ class CollectionsBusiness():
         logging.info('CollectionsBusiness.stac_post() - data: %s', data)
 
         try:
-            response = CollectionsServices.post_stac_search(url, data)
+            response = StacComposeServices.post_stac_search(url, data)
 
             # logging.debug('CollectionsBusiness.sta_post() - response: %s', response)
 
@@ -134,7 +94,7 @@ class CollectionsBusiness():
         logging.info('CollectionsBusiness.stac_get() - query: %s', query)
 
         try:
-            response = CollectionsServices.get_stac_search(url, query)
+            response = StacComposeServices.get_stac_search(url, query)
 
             # logging.info('CollectionsBusiness.stac_get() - response: %s', response)
 
@@ -163,7 +123,7 @@ class CollectionsBusiness():
         logging.info('CollectionsBusiness.stac_get_items() - query: %s', query)
 
         try:
-            response = CollectionsServices.search_items(url, collection, query)
+            response = StacComposeServices.search_items(url, collection, query)
 
             # logging.debug('CollectionsBusiness.stac_get_items() - response: %s', response)
 

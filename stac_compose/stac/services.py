@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+'''
 from json import dumps, loads
 from requests import get, post
 
@@ -43,3 +43,4 @@ class StacServices():
             return loads(r.text)
 
         return None
+'''
