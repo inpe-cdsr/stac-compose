@@ -10,16 +10,20 @@ from stac_compose.log import logging
 class StacComposeServices():
 
     @classmethod
-    def search_items(cls, url, collection_id, query):
+    def get_collections_collection_id_items(cls, url, collection_id, query):
+        """GET /collections/{collection_id}/items"""
+
+        logging.warning('StacComposeServices.get_collections_collection_id_items()\n')
+
         base_url = '{}/collections/{}/items?{}'.format(url, collection_id, query)
 
-        logging.warning('StacComposeServices.search_items() - base_url: \'GET {}\'\n'.format(base_url))
+        logging.warning('StacComposeServices.get_collections_collection_id_items() - base_url: \'GET {}\'\n'.format(base_url))
 
         response = get(base_url, headers={})
 
-        logging.warning('StacComposeServices.search_items() - response.status_code: {}'.format(response.status_code))
-        # logging.warning('StacComposeServices.search_items() - response.text: {}'.format(response.text))
-        # logging.warning('StacComposeServices.search_items() - loads(response.text): {}\n'.format(loads(response.text)))
+        logging.warning('StacComposeServices.get_collections_collection_id_items() - response.status_code: {}'.format(response.status_code))
+        # logging.warning('StacComposeServices.get_collections_collection_id_items() - response.text: {}'.format(response.text))
+        # logging.warning('StacComposeServices.get_collections_collection_id_items() - loads(response.text): {}\n'.format(loads(response.text)))
 
         if response and response.status_code in (200, 201):
             return loads(response.text)
@@ -27,10 +31,14 @@ class StacComposeServices():
         return None
 
     @classmethod
-    def search_items_post(cls, url, collection_id, data):
+    def post_collections_collection_id_items(cls, url, collection_id, data):
+        """POST /collections/{collection_id}/items"""
+
+        logging.warning('StacComposeServices.post_collections_collection_id_items()\n')
+
         base_url = '{}/collections/{}/items'.format(url, collection_id)
 
-        logging.warning('StacComposeServices.search_items_post() - base_url: \'POST {}\''.format(base_url))
+        logging.warning('StacComposeServices.post_collections_collection_id_items() - base_url: \'POST {}\''.format(base_url))
 
         r = post(
             base_url,

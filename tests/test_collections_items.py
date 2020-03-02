@@ -114,7 +114,8 @@ class TestStacComposeCollectionsItems(StacComposeTester):
                         "page": 1,
                         "limit": 1,
                         "matched": 391,
-                        "returned": 1
+                        "returned": 1,
+                        'meta': None
                     }
                 },
                 "CBERS4A_WFI_L4_DN": {
@@ -207,7 +208,8 @@ class TestStacComposeCollectionsItems(StacComposeTester):
                         "page": 1,
                         "limit": 1,
                         "matched": 9,
-                        "returned": 1
+                        "returned": 1,
+                        'meta': None
                     }
                 },
                 "CBERS4A_WPM_L2_DN": {
@@ -303,7 +305,8 @@ class TestStacComposeCollectionsItems(StacComposeTester):
                         "page": 1,
                         "limit": 1,
                         "matched": 176,
-                        "returned": 1
+                        "returned": 1,
+                        'meta': None
                     }
                 }
             }

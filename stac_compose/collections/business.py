@@ -5,7 +5,7 @@ from pprint import PrettyPrinter
 from werkzeug.exceptions import BadRequest
 
 from stac_compose.common import MAX_LIMIT, rename_fields_from_feature_collection, \
-                                add_context_field_in_the_feature_collection_if_it_does_not_exist
+                                get_limit_to_search, add_context_field_in_the_feature_collection_if_it_does_not_exist
 from stac_compose.services import StacComposeServices
 from stac_compose.providers.business import ProvidersBusiness
 from stac_compose.log import logging
@@ -138,7 +138,7 @@ class CollectionsBusiness():
         logging.info('CollectionsBusiness.stac_get_items() - query: %s', query)
 
         try:
-            response = StacComposeServices.search_items(url, collection, query)
+            response = StacComposeServices.get_collections_collection_id_items(url, collection, query)
 
             # logging.debug('CollectionsBusiness.stac_get_items() - before post processing -  response: %s', response)
 
@@ -181,14 +181,12 @@ class CollectionsBusiness():
             url = cls.providers_business.get_providers()[provider]['url']
             cs = [c.split(':')[1] for c in collections.split(',') if c.split(':')[0] == provider]
             method = cls.providers_business.get_providers_methods()[provider]
-            filter_mult = cls.providers_business.get_filter_mult_collection()[provider]
 
             providers_json = cls.providers_business.get_providers_json()[provider]
 
             logging.info('CollectionsBusiness.search() - url: %s', url)
             logging.info('CollectionsBusiness.search() - cs: %s', cs)
             logging.info('CollectionsBusiness.search() - method: %s', method)
-            logging.info('CollectionsBusiness.search() - filter_mult: %s', filter_mult)
 
             # if there is not a provider inside the dict, then initialize it
             if provider not in result_dict:
@@ -263,17 +261,11 @@ class CollectionsBusiness():
                         logging.debug('\n\nCollectionsBusiness.search() - the end\n\n')
 
             elif method == 'GET':
-                if filter_mult:
-                    # TODO: fixing this line to return separate by collection and not just by provider (like the other ones)
-                    result = cls.stac_get(url, cs, bbox, time=time, limit=limit)
+                for collection in cs:
+                    result = cls.stac_get_items(providers_json, collection, bbox, time=time, limit=limit)
 
-                    result_dict[provider] = result
-                else:
-                    for collection in cs:
-                        result = cls.stac_get_items(providers_json, collection, bbox, time=time, limit=limit)
-
-                        # add the result to the corresponding collection
-                        result_dict[provider][collection] = result
+                    # add the result to the corresponding collection
+                    result_dict[provider][collection] = result
             else:
                 raise BadRequest('Unexpected provider: {}'.format(provider))
 

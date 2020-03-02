@@ -80,7 +80,7 @@ class StacComposeTester(TestCase):
         # get the JSON in dict form
         data = loads(response.data)
 
-        # print('\nStacComposeTester.get() - data: ', data)
+        # print('\nStacComposeTester.get() - \n\ndata: {}\n\n'.format(data))
 
         self.assertEqual(expected_data, data)
 
