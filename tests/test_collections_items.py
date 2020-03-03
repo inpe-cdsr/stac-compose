@@ -321,15 +321,15 @@ class TestStacComposeCollectionsItems(StacComposeTester):
 
         self.get(expected, query_string=query_string)
 
-    # Provider: LANDAST8-SENTINEL2-AWS
+    # Provider: LANDSAT8-SENTINEL2-AWS
 
     def test__get__stac_compose_collections_items__landsat8_sentinel2_aws_landsat_8_l1_and_sentinel_2_l1c_limit_1(self):
         """
-        http://localhost:8089/stac-compose/collections/items?collections=LANDAST8-SENTINEL2-AWS:landsat-8-l1,LANDAST8-SENTINEL2-AWS:sentinel-2-l1c&bbox=-68.0273437,-25.0059726,-34.9365234,0.3515602&time=2020-01-13T00:00:00/2020-02-13T23:59:00&limit=1
+        http://localhost:8089/stac-compose/collections/items?collections=LANDSAT8-SENTINEL2-AWS:landsat-8-l1,LANDSAT8-SENTINEL2-AWS:sentinel-2-l1c&bbox=-68.0273437,-25.0059726,-34.9365234,0.3515602&time=2020-01-13T00:00:00/2020-02-13T23:59:00&limit=1
         """
 
         expected = {
-            "LANDAST8-SENTINEL2-AWS": {
+            "LANDSAT8-SENTINEL2-AWS": {
                 "landsat-8-l1": {
                     "context": {
                         "page": 1,
@@ -923,7 +923,7 @@ class TestStacComposeCollectionsItems(StacComposeTester):
         }
 
         query_string = {
-            'collections': 'LANDAST8-SENTINEL2-AWS:landsat-8-l1,LANDAST8-SENTINEL2-AWS:sentinel-2-l1c',
+            'collections': 'LANDSAT8-SENTINEL2-AWS:landsat-8-l1,LANDSAT8-SENTINEL2-AWS:sentinel-2-l1c',
             'bbox': '-68.0273437,-25.0059726,-34.9365234,0.3515602',
             'time': '2020-01-13T00:00:00/2020-02-13T23:59:00',
             'limit': 1
@@ -935,7 +935,7 @@ class TestStacComposeCollectionsItems(StacComposeTester):
     # this test is commented, because it is slow
     def test__get__stac_compose_collections_items__landsat8_sentinel2_aws_sentinel_2_l1c_limit_2000(self):
         """
-        http://localhost:8089/stac-compose/collections/items?collections=LANDAST8-SENTINEL2-AWS:sentinel-2-l1c&bbox=-68.0273437,-25.0059726,-34.9365234,0.3515602&time=2020-01-13T00:00:00/2020-02-13T23:59:00&limit=2000
+        http://localhost:8089/stac-compose/collections/items?collections=LANDSAT8-SENTINEL2-AWS:sentinel-2-l1c&bbox=-68.0273437,-25.0059726,-34.9365234,0.3515602&time=2020-01-13T00:00:00/2020-02-13T23:59:00&limit=2000
         """
 
         with open('tests/json/collections_items_landsat8_sentinel2_aws_sentinel_2_l1c_limit_2000.json') as json_file:
@@ -943,7 +943,7 @@ class TestStacComposeCollectionsItems(StacComposeTester):
             expected = load(json_file)
 
             query_string = {
-                'collections': 'LANDAST8-SENTINEL2-AWS:sentinel-2-l1c',
+                'collections': 'LANDSAT8-SENTINEL2-AWS:sentinel-2-l1c',
                 'bbox': '-68.0273437,-25.0059726,-34.9365234,0.3515602',
                 'time': '2020-01-13T00:00:00/2020-02-13T23:59:00',
                 'limit': 2000
@@ -951,11 +951,11 @@ class TestStacComposeCollectionsItems(StacComposeTester):
 
             data = self.get(expected, query_string=query_string)
 
-            self.assertIn('LANDAST8-SENTINEL2-AWS', data)
-            self.assertIn('sentinel-2-l1c', data['LANDAST8-SENTINEL2-AWS'])
-            self.assertIn('meta', data['LANDAST8-SENTINEL2-AWS']['sentinel-2-l1c'])
+            self.assertIn('LANDSAT8-SENTINEL2-AWS', data)
+            self.assertIn('sentinel-2-l1c', data['LANDSAT8-SENTINEL2-AWS'])
+            self.assertIn('meta', data['LANDSAT8-SENTINEL2-AWS']['sentinel-2-l1c'])
 
-            context = data['LANDAST8-SENTINEL2-AWS']['sentinel-2-l1c']['meta']
+            context = data['LANDSAT8-SENTINEL2-AWS']['sentinel-2-l1c']['meta']
 
             self.assertEqual(1, context['page'])
             self.assertEqual(2000, context['limit'])
@@ -965,7 +965,7 @@ class TestStacComposeCollectionsItems(StacComposeTester):
 
     def test__get__stac_compose_collections_items__cbers4_aws_cbers4mux_cbers4awfi_limit_1(self):
         """
-        http://localhost:8089/stac-compose/collections/items?collections=LANDAST8-SENTINEL2-AWS:landsat-8-l1,LANDAST8-SENTINEL2-AWS:sentinel-2-l1c&bbox=-68.0273437,-25.0059726,-34.9365234,0.3515602&time=2020-01-13T00:00:00/2020-02-13T23:59:00&limit=1
+        http://localhost:8089/stac-compose/collections/items?collections=LANDSAT8-SENTINEL2-AWS:landsat-8-l1,LANDSAT8-SENTINEL2-AWS:sentinel-2-l1c&bbox=-68.0273437,-25.0059726,-34.9365234,0.3515602&time=2020-01-13T00:00:00/2020-02-13T23:59:00&limit=1
         """
 
         expected = {

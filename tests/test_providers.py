@@ -20,7 +20,7 @@ class TestStacComposeProviders(StacComposeTester):
                     "require_credentials": 1,
                     "downloadable": 1
                 },
-                "LANDAST8-SENTINEL2-AWS": {
+                "LANDSAT8-SENTINEL2-AWS": {
                     "url": "https://sat-api.developmentseed.org",
                     "require_credentials": 0,
                     "downloadable": 0

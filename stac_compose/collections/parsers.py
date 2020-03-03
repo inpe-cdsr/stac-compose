@@ -49,6 +49,14 @@ def validate_bbox(box):
 convert_string_to_int = lambda string: int(string)
 
 
+def controller_validation():
+    return {
+        'providers': {
+            'type': 'string', 'empty': False, 'required': True
+        }
+    }
+
+
 def search_get():
     return {
         'collections': {

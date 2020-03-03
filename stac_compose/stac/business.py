@@ -119,6 +119,10 @@ class StacBusiness():
 
             # if STAC supports just to search collection as property, then add it inside query
             if search_collection_as_property:
+                # if `data` does not have `query` field, then initialize it
+                if "query" not in data:
+                    data["query"] = {}
+
                 data["query"]["collection"] = {
                     "eq": collections
                 }
@@ -133,7 +137,7 @@ class StacBusiness():
 
         response = StacComposeServices.post_stac_search(url, data)
 
-        logging.info('StacBusiness.post_stac_search() - \n\n(1) response: %s\n\n', response)
+        # logging.debug('StacBusiness.post_stac_search() - \n\n(1) response: %s\n\n', response)
 
         # post processing to rename fields and add field is it is necessary
         response = add_context_field_in_the_feature_collection_if_it_does_not_exist(response, page=page, limit=limit)
@@ -256,7 +260,7 @@ class StacBusiness():
 
                     # first: I'm searching by the first page
                     result = cls.stac_search(method, providers_json, collection_name, bbox, time, query, 1, limit_to_search)
-                    logging.info('StacBusiness.post_search() - result: %s', result)
+                    # logging.info('StacBusiness.post_search() - result: %s', result)
 
                     matched = result['context']['matched']
 
@@ -276,6 +280,6 @@ class StacBusiness():
                     # add the found collection to the result
                     result_dict[provider_name][collection_name] = result
 
-        logging.info('StacBusiness.post_search() - result_dict: %s', result_dict)
+        # logging.debug('StacBusiness.post_search() - result_dict: %s', result_dict)
 
         return result_dict

@@ -41,16 +41,16 @@ class TestStacComposeCollections(StacComposeTester):
         self.get(expected, query_string={'providers': 'INPE-CDSR'})
 
     def test__get__stac_compose_collections__landsat8_sentinel2_aws(self):
-        """http://localhost:8089/stac-compose/collections/?providers=LANDAST8-SENTINEL2-AWS"""
+        """http://localhost:8089/stac-compose/collections/?providers=LANDSAT8-SENTINEL2-AWS"""
 
         expected = {
-            "LANDAST8-SENTINEL2-AWS": [
+            "LANDSAT8-SENTINEL2-AWS": [
                 "landsat-8-l1",
                 "sentinel-2-l1c"
             ]
         }
 
-        self.get(expected, query_string={'providers': 'LANDAST8-SENTINEL2-AWS'})
+        self.get(expected, query_string={'providers': 'LANDSAT8-SENTINEL2-AWS'})
 
     def test__get__stac_compose_collections__cbers4_aws(self):
         """http://localhost:8089/stac-compose/collections/?providers=CBERS4-AWS"""
@@ -67,7 +67,7 @@ class TestStacComposeCollections(StacComposeTester):
         self.get(expected, query_string={'providers': 'CBERS4-AWS'})
 
     def test__get__stac_compose_collections__inpe_cdsr_and_landsat8_sentinel2_aws_and_cbers4_aws(self):
-        """http://localhost:8089/stac-compose/collections/?providers=INPE-CDSR,LANDAST8-SENTINEL2-AWS,CBERS4-AWS"""
+        """http://localhost:8089/stac-compose/collections/?providers=INPE-CDSR,LANDSAT8-SENTINEL2-AWS,CBERS4-AWS"""
 
         expected = {
             "INPE-CDSR": [
@@ -87,7 +87,7 @@ class TestStacComposeCollections(StacComposeTester):
                 "LANDSAT5_TM_L2_DN",
                 "LANDSAT5_TM_L4_DN"
             ],
-            "LANDAST8-SENTINEL2-AWS": [
+            "LANDSAT8-SENTINEL2-AWS": [
                 "landsat-8-l1",
                 "sentinel-2-l1c"
             ],
@@ -99,7 +99,7 @@ class TestStacComposeCollections(StacComposeTester):
             ]
         }
 
-        self.get(expected, query_string={'providers': 'INPE-CDSR,LANDAST8-SENTINEL2-AWS,CBERS4-AWS'})
+        self.get(expected, query_string={'providers': 'INPE-CDSR,LANDSAT8-SENTINEL2-AWS,CBERS4-AWS'})
 
 
 class TestStacComposeCollectionsError(StacComposeTester):

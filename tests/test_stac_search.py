@@ -18,9 +18,7 @@ class TestStacComposeStacSearch(StacComposeTester):
     # Provider: INPE-CDSR
 
     def test__post__stac_compose_stac_search__inpe_cdsr_cbers4_awfi_l4_dn_and_cbers4a_wfi_l4_dn_and_cbers4a_wpm_l2_dn_limit_1_and_query(self):
-        """
-        POST http://localhost:8089/stac-compose/stac/search/
-        """
+        """POST http://localhost:8089/stac-compose/stac/search/"""
 
         expected = {
             "INPE-CDSR": {
@@ -334,7 +332,42 @@ class TestStacComposeStacSearch(StacComposeTester):
 
         self.post(expected, body=body)
 
-    # Provider: LANDAST8-SENTINEL2-AWS
+    def test__post__stac_compose_stac_search__inpe_cdsr_cbers_awfi_l4_sr_collection_does_not_have_items(self):
+        """POST http://localhost:8089/stac-compose/stac/search/"""
+
+        expected = {
+            "INPE-CDSR": {
+                "CBERS4_AWFI_L4_SR": {
+                    "type": "FeatureCollection",
+                    "features": [],
+                    "context": {
+                        "page": 1,
+                        "limit": 1,
+                        "matched": 0,
+                        "returned": 0
+                    }
+                }
+            }
+        }
+
+        body = {
+            "providers": [
+                {
+                    "name": "INPE-CDSR",
+                    "method": "POST",
+                    "collections": [
+                        {"name": "CBERS4_AWFI_L4_SR"}
+                    ]
+                }
+            ],
+            "bbox": [-68.0273437, -25.0059726, -34.9365234, 0.3515602],
+            "time": "2019-12-01T00:00:00/2020-02-13T23:59:59",
+            "limit": 1
+        }
+
+        self.post(expected, body=body)
+
+    # Provider: LANDSAT8-SENTINEL2-AWS
 
     def test__post__stac_compose_stac_search__landsat8_sentinel2_aws_landsat_8_l1_and_sentinel_2_l1c_limit_1_and_query(self):
         """
@@ -342,7 +375,7 @@ class TestStacComposeStacSearch(StacComposeTester):
         """
 
         expected = {
-            "LANDAST8-SENTINEL2-AWS": {
+            "LANDSAT8-SENTINEL2-AWS": {
                 "landsat-8-l1": {
                     "context": {
                         "page": 1,
@@ -938,7 +971,7 @@ class TestStacComposeStacSearch(StacComposeTester):
         body = {
             "providers": [
                 {
-                    "name": "LANDAST8-SENTINEL2-AWS",
+                    "name": "LANDSAT8-SENTINEL2-AWS",
                     "method": "POST",
                     "collections": [
                         {"name": "landsat-8-l1"},
@@ -1219,7 +1252,7 @@ class TestStacComposeStacSearch(StacComposeTester):
 
         self.post(expected, body=body)
 
-    # Providers: INPE-CDSR, LANDAST8-SENTINEL2-AWS and CBERS4-AWS
+    # Providers: INPE-CDSR, LANDSAT8-SENTINEL2-AWS and CBERS4-AWS
 
     def test__post__stac_compose_stac_search__inpe_cdsr_landsat8_sentinel2_aws_cbers4_aws_limit_1_and_query(self):
         """
@@ -1511,7 +1544,7 @@ class TestStacComposeStacSearch(StacComposeTester):
                     }
                 }
             },
-            "LANDAST8-SENTINEL2-AWS": {
+            "LANDSAT8-SENTINEL2-AWS": {
                 "landsat-8-l1": {
                     "context": {
                         "page": 1,
@@ -2354,7 +2387,7 @@ class TestStacComposeStacSearch(StacComposeTester):
                     }
                 },
                 {
-                    "name": "LANDAST8-SENTINEL2-AWS",
+                    "name": "LANDSAT8-SENTINEL2-AWS",
                     "method": "POST",
                     "collections": [
                         {"name": "landsat-8-l1"},

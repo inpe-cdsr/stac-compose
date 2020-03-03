@@ -10,7 +10,7 @@
     "downloadable": 1,
     "ignore_provider_validation": 1
   },
-  "LANDAST8-SENTINEL2-AWS": {
+  "LANDSAT8-SENTINEL2-AWS": {
     "url": "https://sat-api.developmentseed.org",
     "type":"stac",
     "version": "0.6.0",

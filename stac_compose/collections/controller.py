@@ -28,7 +28,7 @@ class CollectionsController(APIResource):
 
         logging.info('CollectionsController.get() - args: %s', args)
 
-        data, status = validate(args, 'providers')
+        data, status = validate(args, 'controller_validation')
 
         logging.info('CollectionsController.get() - data: %s', data)
         logging.info('CollectionsController.get() - status: %s', status)
