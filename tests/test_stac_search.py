@@ -370,9 +370,7 @@ class TestStacComposeStacSearch(StacComposeTester):
     # Provider: LANDSAT8-SENTINEL2-AWS
 
     def test__post__stac_compose_stac_search__landsat8_sentinel2_aws_landsat_8_l1_and_sentinel_2_l1c_limit_1_and_query(self):
-        """
-        POST http://localhost:8089/stac-compose/stac/search/
-        """
+        """POST http://localhost:8089/stac-compose/stac/search/"""
 
         expected = {
             "LANDSAT8-SENTINEL2-AWS": {
@@ -995,9 +993,7 @@ class TestStacComposeStacSearch(StacComposeTester):
     # Provider: CBERS4-AWS
 
     def test__post__stac_compose_stac_search__cbers4_aws_cbers4mux_cbers4awfi_limit_1_and_query(self):
-        """
-        POST http://localhost:8089/stac-compose/stac/search/
-        """
+        """POST http://localhost:8089/stac-compose/stac/search/"""
 
         expected = {
             "CBERS4-AWS": {
@@ -1255,9 +1251,7 @@ class TestStacComposeStacSearch(StacComposeTester):
     # Providers: INPE-CDSR, LANDSAT8-SENTINEL2-AWS and CBERS4-AWS
 
     def test__post__stac_compose_stac_search__inpe_cdsr_landsat8_sentinel2_aws_cbers4_aws_limit_1_and_query(self):
-        """
-        POST http://localhost:8089/stac-compose/stac/search/
-        """
+        """POST http://localhost:8089/stac-compose/stac/search/"""
 
         expected = {
             "INPE-CDSR": {
@@ -2416,64 +2410,62 @@ class TestStacComposeStacSearch(StacComposeTester):
 
         self.post(expected, body=body)
 
-'''
+
 class TestStacComposeStacSearchError(StacComposeTester):
 
     def setUp(self):
         self.set_urn(URN)
 
-    def test__get__stac_compose_collections_items__400_bad_request__required_fields(self):
-        test_cases = [
-            {
-                'url': 'http://localhost:8089/stac-compose/collections/items/?bbox=-68.0273437,-25.0059726,-34.9365234,0.3515602&time=2019-12-01T00:00:00/2020-02-13T23:59:00&limit=1',
-                'expected': {
-                    'code': 400,
-                    'message': '{"collections": ["required field"]}'
+    def test__post__stac_compose_stac_search__cbers4_aws_cbers4mux__limit_1000__timeout(self):
+        """POST http://localhost:8089/stac-compose/stac/search/"""
+
+        limit = 1000
+
+        expected = {
+            "CBERS4-AWS": {
+                "CBERS4MUX": {
+                    'context': {
+                        'limit': limit,
+                        'matched': 0,
+                        'page': 1,
+                        'returned': 0,
+                        'meta': {
+                            'error': '504 Gateway Timeout: {\'message\': \'Endpoint request timed out\'}'
+                        }
+                    },
+                    "type": "FeatureCollection",
+                    "features": []
                 },
-                'query_string': {
-                    'bbox': '-68.0273437,-25.0059726,-34.9365234,0.3515602',
-                    'time': '2019-12-01T00:00:00/2020-02-13T23:59:00',
-                    'limit': 1
-                }
-            },
-            {
-                'url': 'http://localhost:8089/stac-compose/collections/items/?collections=INPE-CDSR:CBERS4_AWFI_L4_DN,INPE-CDSR:CBERS4A_WFI_L4_DN,INPE-CDSR:CBERS4A_WPM_L2_DN&time=2019-12-01T00:00:00/2020-02-13T23:59:00&limit=1',
-                'expected': {
-                    'code': 400,
-                    'message': '{"bbox": ["required field"]}'
-                },
-                'query_string': {
-                    'collections': 'INPE-CDSR:CBERS4_AWFI_L4_DN,INPE-CDSR:CBERS4A_WFI_L4_DN,INPE-CDSR:CBERS4A_WPM_L2_DN',
-                    'time': '2019-12-01T00:00:00/2020-02-13T23:59:00',
-                    'limit': 1
-                }
-            },
-            {
-                'url': 'http://localhost:8089/stac-compose/collections/items/?collections=INPE-CDSR:CBERS4_AWFI_L4_DN,INPE-CDSR:CBERS4A_WFI_L4_DN,INPE-CDSR:CBERS4A_WPM_L2_DN&bbox=-68.0273437,-25.0059726,-34.9365234,0.3515602&limit=1',
-                'expected': {
-                    'code': 400,
-                    'message': '{"time": ["required field"]}'
-                },
-                'query_string': {
-                    'collections': 'INPE-CDSR:CBERS4_AWFI_L4_DN,INPE-CDSR:CBERS4A_WFI_L4_DN,INPE-CDSR:CBERS4A_WPM_L2_DN',
-                    'bbox': '-68.0273437,-25.0059726,-34.9365234,0.3515602',
-                    'limit': 1
-                }
-            },
-            {
-                'url': 'http://localhost:8089/stac-compose/collections/items/?collections=INPE-CDSR:CBERS4_AWFI_L4_DN,INPE-CDSR:CBERS4A_WFI_L4_DN,INPE-CDSR:CBERS4A_WPM_L2_DN&bbox=-68.0273437,-25.0059726,-34.9365234,0.3515602&time=2019-12-01T00:00:00/2020-02-13T23:59:00',
-                'expected': {
-                    'code': 400,
-                    'message': '{"limit": ["required field"]}'
-                },
-                'query_string': {
-                    'collections': 'INPE-CDSR:CBERS4_AWFI_L4_DN,INPE-CDSR:CBERS4A_WFI_L4_DN,INPE-CDSR:CBERS4A_WPM_L2_DN',
-                    'bbox': '-68.0273437,-25.0059726,-34.9365234,0.3515602',
-                    'time': '2019-12-01T00:00:00/2020-02-13T23:59:00'
+                "CBERS4AWFI": {
+                    'context': {
+                        'limit': limit,
+                        'matched': 0,
+                        'page': 1,
+                        'returned': 0,
+                        'meta': {
+                            'error': '504 Gateway Timeout: {\'message\': \'Endpoint request timed out\'}'
+                        }
+                    },
+                    "type": "FeatureCollection",
+                    "features": []
                 }
             }
-        ]
+        }
 
-        for test_case in test_cases:
-            self.get(test_case['expected'], query_string=test_case['query_string'], expected_status_code=400)
-'''
+        body = {
+            "providers": [
+                {
+                    "name": "CBERS4-AWS",
+                    "method": "GET",
+                    "collections": [
+                        {"name": "CBERS4MUX"},
+                        {"name": "CBERS4AWFI"}
+                    ]
+                }
+            ],
+            "bbox": [-68.0273437, -25.0059726, -34.9365234, 0.3515602],
+            "time": "2019-12-01T00:00:00/2020-02-13T23:59:59",
+            "limit": limit
+        }
+
+        self.post(expected, body=body)

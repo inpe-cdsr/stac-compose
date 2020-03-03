@@ -2,9 +2,9 @@
 #!/usr/bin/env python3
 
 from pprint import PrettyPrinter
-from werkzeug.exceptions import BadRequest
+from werkzeug.exceptions import HTTPException, BadRequest
 
-from stac_compose.common import MAX_LIMIT, rename_fields_from_feature_collection, \
+from stac_compose.common import MAX_LIMIT, rename_fields_from_feature_collection, create_new_feature_collection, \
                                 get_limit_to_search, add_context_field_in_the_feature_collection_if_it_does_not_exist
 from stac_compose.services import StacComposeServices
 from stac_compose.providers.business import ProvidersBusiness
@@ -140,7 +140,7 @@ class CollectionsBusiness():
         try:
             response = StacComposeServices.get_collections_collection_id_items(url, collection, query)
 
-            # logging.debug('CollectionsBusiness.stac_get_items() - before post processing -  response: %s', response)
+            logging.debug('CollectionsBusiness.stac_get_items() - before post processing -  response: %s', response)
 
             # post processing to rename fields and add field is it is necessary
             response = add_context_field_in_the_feature_collection_if_it_does_not_exist(response, page=1, limit=limit)
@@ -149,8 +149,9 @@ class CollectionsBusiness():
             # logging.debug('CollectionsBusiness.stac_get_items() - after post processing - response: %s', response)
 
             return response
-        except Exception as e:
-            return None
+        except HTTPException as error:
+            logging.debug('CollectionsBusiness.stac_get_items() - HTTPException.error: %s', error)
+            return create_new_feature_collection(limit=limit, error=error)
 
     @classmethod
     def search_get(cls, collections, bbox, cloud_cover=False, time=False, limit=300, query=None):

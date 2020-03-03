@@ -2,7 +2,7 @@
 
 from json import dumps, loads
 from requests import get, post
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import NotFound, InternalServerError, GatewayTimeout
 
 from stac_compose.log import logging
 
@@ -21,14 +21,19 @@ class StacComposeServices():
 
         response = get(base_url, headers={})
 
-        logging.warning('StacComposeServices.get_collections_collection_id_items() - response.status_code: {}'.format(response.status_code))
+        status_code = response.status_code
+
+        logging.warning('StacComposeServices.get_collections_collection_id_items() - response.status_code: {}'.format(status_code))
         # logging.warning('StacComposeServices.get_collections_collection_id_items() - response.text: {}'.format(response.text))
         # logging.warning('StacComposeServices.get_collections_collection_id_items() - loads(response.text): {}\n'.format(loads(response.text)))
 
-        if response and response.status_code in (200, 201):
+        if response and status_code in (200, 201):
             return loads(response.text)
 
-        return None
+        if status_code == 504:
+            raise GatewayTimeout(loads(response.text))
+
+        raise InternalServerError(response.text)
 
     @classmethod
     def post_collections_collection_id_items(cls, url, collection_id, data):

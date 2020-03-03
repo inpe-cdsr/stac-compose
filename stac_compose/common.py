@@ -65,3 +65,24 @@ def add_context_field_in_the_feature_collection_if_it_does_not_exist(feature_col
             feature_collection['context'] = context
 
     return feature_collection
+
+
+def create_new_feature_collection(limit=0, matched= 0, page=1, returned=0, features=[], error=None):
+    feature_collection = {
+        'context': {
+            'limit': limit,
+            'matched': matched,
+            'page': page,
+            'returned': returned
+        },
+        "type": "FeatureCollection",
+        "features": features
+    }
+
+    # if error is not None, then I add the error to the context
+    if error is not None:
+        feature_collection['context']['meta'] = {
+            'error': str(error)
+        }
+
+    return feature_collection

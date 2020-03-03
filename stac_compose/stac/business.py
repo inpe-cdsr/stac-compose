@@ -149,6 +149,11 @@ class StacBusiness():
 
     @classmethod
     def stac_search(cls, method, providers_json, collections, bbox, time=False, query=None, page=1, limit=MAX_LIMIT):
+        logging.info('StacBusiness.stac_search()\n')
+
+        logging.info('StacBusiness.stac_search() - method: %s', method)
+        logging.info('StacBusiness.stac_search() - collections: %s\n', collections)
+
         if method == "GET":
             # return cls.get_stac_search(providers_json, collections, bbox, time, query=query, page=1, limit=limit)
             return CollectionsBusiness.stac_get_items(providers_json, collections, bbox, time=time, limit=limit)
@@ -252,6 +257,7 @@ class StacBusiness():
             else:
                 logging.info('StacBusiness.post_search() - filter_mult_collection == False\n')
                 logging.info('StacBusiness.post_search() - collections:')
+
                 for collection in collections:
                     collection_name = collection['name']
                     logging.info('StacBusiness.post_search() -     collection_name: %s', collection_name)
