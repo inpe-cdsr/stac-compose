@@ -140,7 +140,7 @@ class CollectionsBusiness():
         try:
             response = StacComposeServices.get_collections_collection_id_items(url, collection, query)
 
-            logging.debug('CollectionsBusiness.stac_get_items() - before post processing -  response: %s', response)
+            # logging.debug('CollectionsBusiness.stac_get_items() - before post processing -  response: %s', response)
 
             # post processing to rename fields and add field is it is necessary
             response = add_context_field_in_the_feature_collection_if_it_does_not_exist(response, page=1, limit=limit)
@@ -221,14 +221,14 @@ class CollectionsBusiness():
 
                     found = int(result['context']['matched'])
 
-                    logging.debug('CollectionsBusiness.search() - matched: %s', found)
+                    logging.debug('CollectionsBusiness.search() - context: %s', result['context'])
 
                     # if I've already got all features, then I go out of the loop
                     if limit <= MAX_LIMIT or found <= MAX_LIMIT:
-                        logging.debug('CollectionsBusiness.search() - just one result was found')
+                        logging.debug('CollectionsBusiness.search() - just one request was did')
                         continue
                     else:
-                        logging.debug('CollectionsBusiness.search() - more than one result was found')
+                        logging.debug('CollectionsBusiness.search() - more requests are required')
 
                         # if there is more results to get, I'm going to search them by pagination
                         for page in range(2, int(limit/MAX_LIMIT) + 1):
@@ -251,8 +251,7 @@ class CollectionsBusiness():
                         context = result_dict[provider][collection]['context']
                         matched = int(context['matched'])
 
-                        logging.info('CollectionsBusiness.search() - matched: %s', matched)
-                        logging.info('CollectionsBusiness.search() - returned: %s', context['returned'])
+                        logging.info('CollectionsBusiness.search() - context: %s', context)
 
                         # if something was found, then fill 'limit' key with the true limit
                         if matched:

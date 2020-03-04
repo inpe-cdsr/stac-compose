@@ -2453,7 +2453,7 @@ class TestStacComposeStacSearchError(StacComposeTester):
 
     # Provider: CBERS4-AWS
 
-    def test__post__stac_compose_stac_search__cbers4_aws_cbers4mux__limit_1000__timeout(self):
+    def test__post__stac_compose_stac_search__cbers4_aws_cbers4mux_and_inpe_cdsr_cbers4_awfi_l4_dn__limit_1000__timeout(self):
         """POST http://localhost:8089/stac-compose/stac/search/"""
 
         limit = 1000
@@ -2506,6 +2506,45 @@ class TestStacComposeStacSearchError(StacComposeTester):
         }
 
         self.post(expected, body=body)
+
+    # this test is commented, because it is slow
+    def test__post__stac_compose_stac_search__cbers4_aws_cbers4mux_cbers4awfi_and_inpe_cdsr_cbers4_awfi_l4_dn__limit_1000__timeout(self):
+        """POST http://localhost:8089/stac-compose/stac/search/"""
+
+        body = {
+            "providers": [
+                {
+                    "name": "CBERS4-AWS",
+                    "method": "GET",
+                    "collections": [
+                        {"name": "CBERS4MUX"},
+                        {"name": "CBERS4AWFI"}
+                    ]
+                },
+                {
+                    "name": "INPE-CDSR",
+                    "method": "POST",
+                    "collections": [
+                        {"name": "CBERS4_AWFI_L4_DN"}
+                    ],
+                    "query": {
+                        "cloud_cover": {
+                            "gte": 0,
+                            "lte": 10
+                        }
+                    }
+                }
+            ],
+            "bbox": [-68.0273437, -25.0059726, -34.9365234, 0.3515602],
+            "time": "2019-12-01T00:00:00/2020-02-13T23:59:59",
+            "limit": 1000
+        }
+
+        with open('tests/json/stac_search__cbers4_aws_cbers4mux_cbers4awfi_and_inpe_cdsr_cbers4_awfi_l4_dn__limit_1000__timeout.json') as json_file:
+            # this is a big 'expected', then I load it from a file
+            expected = load(json_file)
+
+            self.post(expected, body=body)
 
     # Other
 

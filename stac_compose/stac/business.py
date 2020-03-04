@@ -181,8 +181,7 @@ class StacBusiness():
         context = result['context']
         matched = int(context['matched'])
 
-        logging.info('StacBusiness.stac_search_by_pagination() - matched: %s', matched)
-        logging.info('StacBusiness.stac_search_by_pagination() - returned: %s', context['returned'])
+        logging.info('StacBusiness.stac_search_by_pagination() - context: %s', context)
 
         # if something was found, then fill 'limit' key with the true limit
         if matched:
@@ -282,14 +281,14 @@ class StacBusiness():
 
                     matched = result['context']['matched']
 
-                    logging.info('StacBusiness.post_search() - matched: %s', matched)
+                    logging.info('StacBusiness.post_search() - context: %s', result['context'])
 
                     # if I've already got all features, then I go out of the loop
                     if limit <= MAX_LIMIT or matched <= MAX_LIMIT:
-                        logging.info('StacBusiness.post_search() - just one result was found')
+                        logging.info('StacBusiness.post_search() - just one request was did')
                     # if there is more features to get, then I search by them
                     else:
-                        logging.info('StacBusiness.post_search() - more than one result was found')
+                        logging.info('StacBusiness.post_search() - more requests are required')
 
                         result = cls.stac_search_by_pagination(
                             result, method, provider_json, collection_name, bbox, time, query, limit, limit_to_search
