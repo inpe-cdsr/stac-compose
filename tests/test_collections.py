@@ -112,7 +112,8 @@ class TestStacComposeCollectionsError(StacComposeTester):
 
         expected = {
             'code': 400,
-            'message': '{"providers": ["required field"]}'
+            'description': '{"providers": ["required field"]}',
+            'name': 'Bad Request'
         }
 
         self.get(expected, expected_status_code=400)

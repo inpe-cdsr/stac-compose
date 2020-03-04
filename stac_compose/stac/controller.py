@@ -8,10 +8,11 @@ from pprint import PrettyPrinter
 
 from bdc_core.utils.flask import APIResource
 
+from stac_compose.decorator import catch_generic_exceptions
+from stac_compose.log import logging
 from stac_compose.stac import ns
 from stac_compose.stac.business import StacBusiness
 from stac_compose.stac.parsers import validate
-from stac_compose.log import logging
 
 
 api = ns
@@ -23,6 +24,7 @@ pp = PrettyPrinter(indent=4)
 class StacController(APIResource):
     """StacController"""
 
+    @catch_generic_exceptions
     def get(self):
         args = request.args.to_dict(flat=True)
 
@@ -44,6 +46,7 @@ class StacController(APIResource):
 class StacSearchController(APIResource):
     """StacSearchController"""
 
+    @catch_generic_exceptions
     def post(self):
         logging.info('StacBusiness.post()\n')
 

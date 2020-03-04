@@ -21,12 +21,12 @@ class StacBusiness():
     providers_business = ProvidersBusiness()
 
     @classmethod
-    def get_stac_search(cls, providers_json, collection, bbox, time, query=None, page=1, limit=MAX_LIMIT):
+    def get_stac_search(cls, provider_json, collection, bbox, time, query=None, page=1, limit=MAX_LIMIT):
         """GET /stac/search"""
 
         logging.info('StacBusiness.get_stac_search()\n')
 
-        logging.info('StacBusiness.get_stac_search() - providers_json: %s', providers_json)
+        logging.info('StacBusiness.get_stac_search() - provider_json: %s', provider_json)
         logging.info('StacBusiness.get_stac_search() - collection: %s', collection)
         logging.info('StacBusiness.get_stac_search() - bbox: %s', bbox)
         logging.info('StacBusiness.get_stac_search() - time: %s', time)
@@ -34,8 +34,8 @@ class StacBusiness():
         logging.info('StacBusiness.post_stac_sget_stac_searchearch() - page: %s', page)
         logging.info('StacBusiness.get_stac_search() - limit: %s', limit)
 
-        url = providers_json['url']
-        search_collection_as_property = providers_json['search_collection_as_property']
+        url = provider_json['url']
+        search_collection_as_property = provider_json['search_collection_as_property']
 
         logging.info('StacBusiness.get_stac_search() - url: %s', url)
         logging.info('StacBusiness.get_stac_search() - search_collection_as_property: %s\n', search_collection_as_property)
@@ -75,12 +75,12 @@ class StacBusiness():
         return response
 
     @classmethod
-    def post_stac_search(cls, providers_json, collections, bbox, time=False, query=None, page=1, limit=MAX_LIMIT):
+    def post_stac_search(cls, provider_json, collections, bbox, time=False, query=None, page=1, limit=MAX_LIMIT):
         """POST /stac/search"""
 
         logging.info('StacBusiness.post_stac_search()\n')
 
-        logging.info('StacBusiness.post_stac_search() - providers_json: %s', providers_json)
+        logging.info('StacBusiness.post_stac_search() - provider_json: %s', provider_json)
         logging.info('StacBusiness.post_stac_search() - collections: %s', collections)
         logging.info('StacBusiness.post_stac_search() - type(collections): %s', type(collections))
         logging.info('StacBusiness.post_stac_search() - bbox: %s', bbox)
@@ -89,8 +89,8 @@ class StacBusiness():
         logging.info('StacBusiness.post_stac_search() - page: %s', page)
         logging.info('StacBusiness.post_stac_search() - limit: %s', limit)
 
-        url = providers_json['url']
-        search_collection_as_property = providers_json['search_collection_as_property']
+        url = provider_json['url']
+        search_collection_as_property = provider_json['search_collection_as_property']
 
         logging.info('StacBusiness.post_stac_search() - url: %s', url)
         logging.info('StacBusiness.post_stac_search() - search_collection_as_property: %s\n', search_collection_as_property)
@@ -148,27 +148,27 @@ class StacBusiness():
         return response
 
     @classmethod
-    def stac_search(cls, method, providers_json, collections, bbox, time=False, query=None, page=1, limit=MAX_LIMIT):
+    def stac_search(cls, method, provider_json, collections, bbox, time=False, query=None, page=1, limit=MAX_LIMIT):
         logging.info('StacBusiness.stac_search()\n')
 
         logging.info('StacBusiness.stac_search() - method: %s', method)
         logging.info('StacBusiness.stac_search() - collections: %s\n', collections)
 
         if method == "GET":
-            # return cls.get_stac_search(providers_json, collections, bbox, time, query=query, page=1, limit=limit)
-            return CollectionsBusiness.stac_get_items(providers_json, collections, bbox, time=time, limit=limit)
+            # return cls.get_stac_search(provider_json, collections, bbox, time, query=query, page=1, limit=limit)
+            return CollectionsBusiness.stac_get_items(provider_json, collections, bbox, time=time, limit=limit)
         elif method == "POST":
-            return cls.post_stac_search(providers_json, collections, bbox, time, query=query, page=1, limit=limit)
+            return cls.post_stac_search(provider_json, collections, bbox, time, query=query, page=1, limit=limit)
         else:
             raise BadRequest('Invalid method: {}'.format(method))
 
     @classmethod
-    def stac_search_by_pagination(cls, result, method, providers_json, collection_name, bbox, time, query, limit, limit_to_search):
+    def stac_search_by_pagination(cls, result, method, provider_json, collection_name, bbox, time, query, limit, limit_to_search):
         # if there is more results to get, I'm going to search them by pagination
         for page in range(2, int(limit/MAX_LIMIT) + 1):
             logging.info('StacBusiness.stac_search_by_pagination() - page: %s', page)
 
-            __result = cls.stac_search(method, providers_json, collection_name, bbox, time, query, page, limit_to_search)
+            __result = cls.stac_search(method, provider_json, collection_name, bbox, time, query, page, limit_to_search)
             # logging.info('StacBusiness.stac_search_by_pagination() - __result: %s', __result)
 
             # if I'm on other page, then I increase the old result
@@ -201,42 +201,54 @@ class StacBusiness():
         logging.info('StacBusiness.post_search() - time: %s', time)
         logging.info('StacBusiness.post_search() - limit: %s\n', limit)
 
+        providers_json = cls.providers_business.get_providers_json()
+
+        logging.info('StacBusiness.post_search() - providers_json: %s\n', providers_json)
+
         result_dict = {}
+
+        # check if there is a provider that does not exist before requesting features
+        for provider in providers:
+            if provider['name'] not in providers_json:
+                raise BadRequest('Provider `{}` does not exist.'.format(provider['name']))
 
         for provider in providers:
             logging.info('StacBusiness.post_search() - provider:')
 
             # destructuring dictionary contents into variables
             provider_name, method, collections, query = destructuring_dict(provider, 'name', 'method', 'collections', 'query')
-            providers_json = cls.providers_business.get_providers_json()[provider_name]
+            provider_json = providers_json[provider_name]
 
             logging.info('StacBusiness.post_search() -   provider_name: %s', provider_name)
             logging.info('StacBusiness.post_search() -   method: %s', method)
             logging.info('StacBusiness.post_search() -   collections: %s', collections)
             logging.info('StacBusiness.post_search() -   query: %s', query)
-            logging.info('StacBusiness.post_search() -   providers_json: %s\n', providers_json)
+            logging.info('StacBusiness.post_search() -   provider_json: %s\n', provider_json)
 
             # if there is not a provider inside the dict, then initialize it
             if provider_name not in result_dict:
                 result_dict[provider_name] = {}
 
-            if providers_json['filter_mult_collection']:
+            if provider_json['filter_mult_collection']:
                 logging.info('StacBusiness.post_search() - filter_mult_collection == True\n')
 
                 limit_to_search = get_limit_to_search(limit)
 
-                feature_collection = cls.stac_search(method, providers_json, collections, bbox, time, query, 1, limit_to_search)
+                feature_collection = cls.stac_search(method, provider_json, collections, bbox, time, query, 1, limit_to_search)
                 # logging.info('StacBusiness.post_search() - feature_collection: %s', feature_collection)
 
                 logging.info('StacBusiness.post_search() - matched: %s', feature_collection['context']['matched'])
 
+                # remove `meta` key from dict
                 metadata_related_to_collections = feature_collection['context'].pop('meta')
 
                 logging.info('StacBusiness.post_search() - metadata_related_to_collections: %s', metadata_related_to_collections)
 
+                # remove `features` key from dict
                 features = feature_collection.pop('features')
 
                 logging.info('StacBusiness.post_search() - collections:')
+
                 for collection in collections:
                     collection_name = collection['name']
                     logging.info('StacBusiness.post_search() -     collection_name: %s', collection_name)
@@ -265,7 +277,7 @@ class StacBusiness():
                     limit_to_search = get_limit_to_search(limit)
 
                     # first: I'm searching by the first page
-                    result = cls.stac_search(method, providers_json, collection_name, bbox, time, query, 1, limit_to_search)
+                    result = cls.stac_search(method, provider_json, collection_name, bbox, time, query, 1, limit_to_search)
                     # logging.info('StacBusiness.post_search() - result: %s', result)
 
                     matched = result['context']['matched']
@@ -280,7 +292,7 @@ class StacBusiness():
                         logging.info('StacBusiness.post_search() - more than one result was found')
 
                         result = cls.stac_search_by_pagination(
-                            result, method, providers_json, collection_name, bbox, time, query, limit, limit_to_search
+                            result, method, provider_json, collection_name, bbox, time, query, limit, limit_to_search
                         )
 
                     # add the found collection to the result

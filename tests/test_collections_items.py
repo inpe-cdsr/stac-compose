@@ -1224,7 +1224,8 @@ class TestStacComposeCollectionsItemsError(StacComposeTester):
                 'url': 'http://localhost:8089/stac-compose/collections/items/?bbox=-68.0273437,-25.0059726,-34.9365234,0.3515602&time=2019-12-01T00:00:00/2020-02-13T23:59:00&limit=1',
                 'expected': {
                     'code': 400,
-                    'message': '{"collections": ["required field"]}'
+                    'description': '{"collections": ["required field"]}',
+                    'name': 'Bad Request'
                 },
                 'query_string': {
                     'bbox': '-68.0273437,-25.0059726,-34.9365234,0.3515602',
@@ -1236,7 +1237,8 @@ class TestStacComposeCollectionsItemsError(StacComposeTester):
                 'url': 'http://localhost:8089/stac-compose/collections/items/?collections=INPE-CDSR:CBERS4_AWFI_L4_DN,INPE-CDSR:CBERS4A_WFI_L4_DN,INPE-CDSR:CBERS4A_WPM_L2_DN&time=2019-12-01T00:00:00/2020-02-13T23:59:00&limit=1',
                 'expected': {
                     'code': 400,
-                    'message': '{"bbox": ["required field"]}'
+                    'description': '{"bbox": ["required field"]}',
+                    'name': 'Bad Request'
                 },
                 'query_string': {
                     'collections': 'INPE-CDSR:CBERS4_AWFI_L4_DN,INPE-CDSR:CBERS4A_WFI_L4_DN,INPE-CDSR:CBERS4A_WPM_L2_DN',
@@ -1248,7 +1250,8 @@ class TestStacComposeCollectionsItemsError(StacComposeTester):
                 'url': 'http://localhost:8089/stac-compose/collections/items/?collections=INPE-CDSR:CBERS4_AWFI_L4_DN,INPE-CDSR:CBERS4A_WFI_L4_DN,INPE-CDSR:CBERS4A_WPM_L2_DN&bbox=-68.0273437,-25.0059726,-34.9365234,0.3515602&limit=1',
                 'expected': {
                     'code': 400,
-                    'message': '{"time": ["required field"]}'
+                    'description': '{"time": ["required field"]}',
+                    'name': 'Bad Request'
                 },
                 'query_string': {
                     'collections': 'INPE-CDSR:CBERS4_AWFI_L4_DN,INPE-CDSR:CBERS4A_WFI_L4_DN,INPE-CDSR:CBERS4A_WPM_L2_DN',
@@ -1260,7 +1263,8 @@ class TestStacComposeCollectionsItemsError(StacComposeTester):
                 'url': 'http://localhost:8089/stac-compose/collections/items/?collections=INPE-CDSR:CBERS4_AWFI_L4_DN,INPE-CDSR:CBERS4A_WFI_L4_DN,INPE-CDSR:CBERS4A_WPM_L2_DN&bbox=-68.0273437,-25.0059726,-34.9365234,0.3515602&time=2019-12-01T00:00:00/2020-02-13T23:59:00',
                 'expected': {
                     'code': 400,
-                    'message': '{"limit": ["required field"]}'
+                    'description': '{"limit": ["required field"]}',
+                    'name': 'Bad Request'
                 },
                 'query_string': {
                     'collections': 'INPE-CDSR:CBERS4_AWFI_L4_DN,INPE-CDSR:CBERS4A_WFI_L4_DN,INPE-CDSR:CBERS4A_WPM_L2_DN',
@@ -1271,4 +1275,8 @@ class TestStacComposeCollectionsItemsError(StacComposeTester):
         ]
 
         for test_case in test_cases:
-            self.get(test_case['expected'], query_string=test_case['query_string'], expected_status_code=400)
+            self.get(
+                test_case['expected'],
+                query_string=test_case['query_string'],
+                expected_status_code=test_case['expected']['code']
+            )

@@ -2,6 +2,7 @@
 
 from bdc_core.utils.flask import APIResource
 
+from stac_compose.decorator import catch_generic_exceptions
 from stac_compose.providers import ns
 from stac_compose.providers.business import ProvidersBusiness
 # from stac_compose.providers.parsers import validate
@@ -16,6 +17,7 @@ class ProviderController(APIResource):
 
     providers_business = ProvidersBusiness()
 
+    @catch_generic_exceptions
     def get(self):
         """List of STAC providers"""
 

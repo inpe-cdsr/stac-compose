@@ -17,7 +17,7 @@ class TestStacComposeStacSearch(StacComposeTester):
 
     # Provider: INPE-CDSR
 
-    def test__post__stac_compose_stac_search__inpe_cdsr_cbers4_awfi_l4_dn_and_cbers4a_wfi_l4_dn_and_cbers4a_wpm_l2_dn_limit_1_and_query(self):
+    def test__post__stac_compose_stac_search__inpe_cdsr_cbers4_awfi_l4_dn_and_cbers4a_wfi_l4_dn_and_cbers4a_wpm_l2_dn__limit_1_and_query(self):
         """POST http://localhost:8089/stac-compose/stac/search/"""
 
         expected = {
@@ -332,7 +332,7 @@ class TestStacComposeStacSearch(StacComposeTester):
 
         self.post(expected, body=body)
 
-    def test__post__stac_compose_stac_search__inpe_cdsr_cbers_awfi_l4_sr_collection_does_not_have_items(self):
+    def test__post__stac_compose_stac_search__inpe_cdsr_cbers_awfi_l4_sr__collection_does_not_have_items(self):
         """POST http://localhost:8089/stac-compose/stac/search/"""
 
         expected = {
@@ -367,9 +367,44 @@ class TestStacComposeStacSearch(StacComposeTester):
 
         self.post(expected, body=body)
 
+    def test__post__stac_compose_stac_search__inpe_cdsr_cbers_xyz_l4_sr__collection_does_not_exist(self):
+        """POST http://localhost:8089/stac-compose/stac/search/"""
+
+        expected = {
+            "INPE-CDSR": {
+                "CBERS4_XYZ_L4_SR": {
+                    "type": "FeatureCollection",
+                    "features": [],
+                    "context": {
+                        "page": 1,
+                        "limit": 1,
+                        "matched": 0,
+                        "returned": 0
+                    }
+                }
+            }
+        }
+
+        body = {
+            "providers": [
+                {
+                    "name": "INPE-CDSR",
+                    "method": "POST",
+                    "collections": [
+                        {"name": "CBERS4_XYZ_L4_SR"}
+                    ]
+                }
+            ],
+            "bbox": [-68.0273437, -25.0059726, -34.9365234, 0.3515602],
+            "time": "2019-12-01T00:00:00/2020-02-13T23:59:59",
+            "limit": 1
+        }
+
+        self.post(expected, body=body)
+
     # Provider: LANDSAT8-SENTINEL2-AWS
 
-    def test__post__stac_compose_stac_search__landsat8_sentinel2_aws_landsat_8_l1_and_sentinel_2_l1c_limit_1_and_query(self):
+    def test__post__stac_compose_stac_search__landsat8_sentinel2_aws_landsat_8_l1_and_sentinel_2_l1c__limit_1_and_query(self):
         """POST http://localhost:8089/stac-compose/stac/search/"""
 
         expected = {
@@ -992,7 +1027,7 @@ class TestStacComposeStacSearch(StacComposeTester):
 
     # Provider: CBERS4-AWS
 
-    def test__post__stac_compose_stac_search__cbers4_aws_cbers4mux_cbers4awfi_limit_1_and_query(self):
+    def test__post__stac_compose_stac_search__cbers4_aws_cbers4mux_cbers4awfi__limit_1_and_query(self):
         """POST http://localhost:8089/stac-compose/stac/search/"""
 
         expected = {
@@ -1250,7 +1285,7 @@ class TestStacComposeStacSearch(StacComposeTester):
 
     # Providers: INPE-CDSR, LANDSAT8-SENTINEL2-AWS and CBERS4-AWS
 
-    def test__post__stac_compose_stac_search__inpe_cdsr_landsat8_sentinel2_aws_cbers4_aws_limit_1_and_query(self):
+    def test__post__stac_compose_stac_search__inpe_cdsr_landsat8_sentinel2_aws_cbers4_aws__limit_1_and_query(self):
         """POST http://localhost:8089/stac-compose/stac/search/"""
 
         expected = {
@@ -2416,6 +2451,8 @@ class TestStacComposeStacSearchError(StacComposeTester):
     def setUp(self):
         self.set_urn(URN)
 
+    # Provider: CBERS4-AWS
+
     def test__post__stac_compose_stac_search__cbers4_aws_cbers4mux__limit_1000__timeout(self):
         """POST http://localhost:8089/stac-compose/stac/search/"""
 
@@ -2469,3 +2506,31 @@ class TestStacComposeStacSearchError(StacComposeTester):
         }
 
         self.post(expected, body=body)
+
+    # Other
+
+    def test__post__stac_compose_stac_search__abc_cdsr__400_bad_request__provider_does_not_exist(self):
+        """POST http://localhost:8089/stac-compose/stac/search/"""
+
+        expected = {
+            'code': 400,
+            'description': 'Provider `ABC-CDSR` does not exist.',
+            'name': 'Bad Request'
+        }
+
+        body = {
+            "providers": [
+                {
+                    "name": "ABC-CDSR",
+                    "method": "POST",
+                    "collections": [
+                        {"name": "CBERS4_XYZ_L4_SR"}
+                    ]
+                }
+            ],
+            "bbox": [-68.0273437, -25.0059726, -34.9365234, 0.3515602],
+            "time": "2019-12-01T00:00:00/2020-02-13T23:59:59",
+            "limit": 1
+        }
+
+        self.post(expected, body=body, expected_status_code=400)
