@@ -419,272 +419,272 @@ class TestStacComposeStacSearch(StacComposeTester):
                     "type": "FeatureCollection",
                     "features": [
                         {
-                        "type": "Feature",
-                        "id": "LC82310752020044",
-                        "bbox": [
-                            -65.80241,
-                            -22.72686,
-                            -63.57209,
-                            -20.61604
-                        ],
-                        "geometry": {
-                            "type": "Polygon",
-                            "coordinates": [
-                                [
+                            "type": "Feature",
+                            "id": "LC82310752020044",
+                            "bbox": [
+                                -65.80241,
+                                -22.72686,
+                                -63.57209,
+                                -20.61604
+                            ],
+                            "geometry": {
+                                "type": "Polygon",
+                                "coordinates": [
                                     [
-                                    -65.40865393847542,
-                                    -20.61689411370787
-                                    ],
-                                    [
-                                    -63.57377080824341,
-                                    -20.975459850589534
-                                    ],
-                                    [
-                                    -63.96353615798685,
-                                    -22.724812021720155
-                                    ],
-                                    [
-                                    -65.80029281035198,
-                                    -22.36713054158154
-                                    ],
-                                    [
-                                    -65.40865393847542,
-                                    -20.61689411370787
+                                        [
+                                        -65.40865393847542,
+                                        -20.61689411370787
+                                        ],
+                                        [
+                                        -63.57377080824341,
+                                        -20.975459850589534
+                                        ],
+                                        [
+                                        -63.96353615798685,
+                                        -22.724812021720155
+                                        ],
+                                        [
+                                        -65.80029281035198,
+                                        -22.36713054158154
+                                        ],
+                                        [
+                                        -65.40865393847542,
+                                        -20.61689411370787
+                                        ]
                                     ]
                                 ]
-                            ]
-                        },
-                        "properties": {
-                            "collection": "landsat-8-l1",
-                            "eo:gsd": 15,
-                            "eo:platform": "landsat-8",
-                            "eo:instrument": "OLI_TIRS",
-                            "eo:off_nadir": 0,
-                            "eo:bands": [
-                                {
-                                    "full_width_half_max": 0.02,
-                                    "center_wavelength": 0.44,
-                                    "name": "B1",
-                                    "gsd": 30,
-                                    "common_name": "coastal"
+                            },
+                            "properties": {
+                                "collection": "landsat-8-l1",
+                                "eo:gsd": 15,
+                                "eo:platform": "landsat-8",
+                                "eo:instrument": "OLI_TIRS",
+                                "eo:off_nadir": 0,
+                                "eo:bands": [
+                                    {
+                                        "full_width_half_max": 0.02,
+                                        "center_wavelength": 0.44,
+                                        "name": "B1",
+                                        "gsd": 30,
+                                        "common_name": "coastal"
+                                    },
+                                    {
+                                        "full_width_half_max": 0.06,
+                                        "center_wavelength": 0.48,
+                                        "name": "B2",
+                                        "gsd": 30,
+                                        "common_name": "blue"
+                                    },
+                                    {
+                                        "full_width_half_max": 0.06,
+                                        "center_wavelength": 0.56,
+                                        "name": "B3",
+                                        "gsd": 30,
+                                        "common_name": "green"
+                                    },
+                                    {
+                                        "full_width_half_max": 0.04,
+                                        "center_wavelength": 0.65,
+                                        "name": "B4",
+                                        "gsd": 30,
+                                        "common_name": "red"
+                                    },
+                                    {
+                                        "full_width_half_max": 0.03,
+                                        "center_wavelength": 0.86,
+                                        "name": "B5",
+                                        "gsd": 30,
+                                        "common_name": "nir"
+                                    },
+                                    {
+                                        "full_width_half_max": 0.08,
+                                        "center_wavelength": 1.6,
+                                        "name": "B6",
+                                        "gsd": 30,
+                                        "common_name": "swir16"
+                                    },
+                                    {
+                                        "full_width_half_max": 0.2,
+                                        "center_wavelength": 2.2,
+                                        "name": "B7",
+                                        "gsd": 30,
+                                        "common_name": "swir22"
+                                    },
+                                    {
+                                        "full_width_half_max": 0.18,
+                                        "center_wavelength": 0.59,
+                                        "name": "B8",
+                                        "gsd": 15,
+                                        "common_name": "pan"
+                                    },
+                                    {
+                                        "full_width_half_max": 0.02,
+                                        "center_wavelength": 1.37,
+                                        "name": "B9",
+                                        "gsd": 30,
+                                        "common_name": "cirrus"
+                                    },
+                                    {
+                                        "full_width_half_max": 0.8,
+                                        "center_wavelength": 10.9,
+                                        "name": "B10",
+                                        "gsd": 100,
+                                        "common_name": "lwir11"
+                                    },
+                                    {
+                                        "full_width_half_max": 1,
+                                        "center_wavelength": 12,
+                                        "name": "B11",
+                                        "gsd": 100,
+                                        "common_name": "lwir12"
+                                    }
+                                ],
+                                "datetime": "2020-02-13T14:18:09.661889+00:00",
+                                "eo:sun_azimuth": 81.21412609,
+                                "eo:sun_elevation": 56.91053723,
+                                "eo:cloud_cover": 7,
+                                "eo:row": "075",
+                                "eo:column": "231",
+                                "landsat:product_id": "LC08_L1TP_231075_20200213_20200225_01_T1",
+                                "landsat:scene_id": "LC82310752020044LGN00",
+                                "landsat:processing_level": "L1TP",
+                                "landsat:tier": "T1",
+                                "landsat:revision": "00",
+                                "eo:epsg": 32720
+                            },
+                            "assets": {
+                                "index": {
+                                    "type": "text/html",
+                                    "title": "HTML index page",
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/075/LC08_L1TP_231075_20200213_20200225_01_T1/LC08_L1TP_231075_20200213_20200225_01_T1_MTL.txt"
                                 },
-                                {
-                                    "full_width_half_max": 0.06,
-                                    "center_wavelength": 0.48,
-                                    "name": "B2",
-                                    "gsd": 30,
-                                    "common_name": "blue"
+                                "thumbnail": {
+                                    "title": "Thumbnail image",
+                                    "type": "image/jpeg",
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/075/LC08_L1TP_231075_20200213_20200225_01_T1/LC08_L1TP_231075_20200213_20200225_01_T1_thumb_large.jpg"
                                 },
-                                {
-                                    "full_width_half_max": 0.06,
-                                    "center_wavelength": 0.56,
-                                    "name": "B3",
-                                    "gsd": 30,
-                                    "common_name": "green"
+                                "B1": {
+                                    "type": "image/x.geotiff",
+                                    "eo:bands": [
+                                        0
+                                    ],
+                                    "title": "Band 1 (coastal)",
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/075/LC08_L1TP_231075_20200213_20200225_01_T1/LC08_L1TP_231075_20200213_20200225_01_T1_B1.TIF"
                                 },
-                                {
-                                    "full_width_half_max": 0.04,
-                                    "center_wavelength": 0.65,
-                                    "name": "B4",
-                                    "gsd": 30,
-                                    "common_name": "red"
+                                "B2": {
+                                    "type": "image/x.geotiff",
+                                    "eo:bands": [
+                                        1
+                                    ],
+                                    "title": "Band 2 (blue)",
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/075/LC08_L1TP_231075_20200213_20200225_01_T1/LC08_L1TP_231075_20200213_20200225_01_T1_B2.TIF"
                                 },
-                                {
-                                    "full_width_half_max": 0.03,
-                                    "center_wavelength": 0.86,
-                                    "name": "B5",
-                                    "gsd": 30,
-                                    "common_name": "nir"
+                                "B3": {
+                                    "type": "image/x.geotiff",
+                                    "eo:bands": [
+                                        2
+                                    ],
+                                    "title": "Band 3 (green)",
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/075/LC08_L1TP_231075_20200213_20200225_01_T1/LC08_L1TP_231075_20200213_20200225_01_T1_B3.TIF"
                                 },
-                                {
-                                    "full_width_half_max": 0.08,
-                                    "center_wavelength": 1.6,
-                                    "name": "B6",
-                                    "gsd": 30,
-                                    "common_name": "swir16"
+                                "B4": {
+                                    "type": "image/x.geotiff",
+                                    "eo:bands": [
+                                        3
+                                    ],
+                                    "title": "Band 4 (red)",
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/075/LC08_L1TP_231075_20200213_20200225_01_T1/LC08_L1TP_231075_20200213_20200225_01_T1_B4.TIF"
                                 },
-                                {
-                                    "full_width_half_max": 0.2,
-                                    "center_wavelength": 2.2,
-                                    "name": "B7",
-                                    "gsd": 30,
-                                    "common_name": "swir22"
+                                "B5": {
+                                    "type": "image/x.geotiff",
+                                    "eo:bands": [
+                                        4
+                                    ],
+                                    "title": "Band 5 (nir)",
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/075/LC08_L1TP_231075_20200213_20200225_01_T1/LC08_L1TP_231075_20200213_20200225_01_T1_B5.TIF"
                                 },
-                                {
-                                    "full_width_half_max": 0.18,
-                                    "center_wavelength": 0.59,
-                                    "name": "B8",
-                                    "gsd": 15,
-                                    "common_name": "pan"
+                                "B6": {
+                                    "type": "image/x.geotiff",
+                                    "eo:bands": [
+                                        5
+                                    ],
+                                    "title": "Band 6 (swir16)",
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/075/LC08_L1TP_231075_20200213_20200225_01_T1/LC08_L1TP_231075_20200213_20200225_01_T1_B6.TIF"
                                 },
-                                {
-                                    "full_width_half_max": 0.02,
-                                    "center_wavelength": 1.37,
-                                    "name": "B9",
-                                    "gsd": 30,
-                                    "common_name": "cirrus"
+                                "B7": {
+                                    "type": "image/x.geotiff",
+                                    "eo:bands": [
+                                        6
+                                    ],
+                                    "title": "Band 7 (swir22)",
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/075/LC08_L1TP_231075_20200213_20200225_01_T1/LC08_L1TP_231075_20200213_20200225_01_T1_B7.TIF"
                                 },
-                                {
-                                    "full_width_half_max": 0.8,
-                                    "center_wavelength": 10.9,
-                                    "name": "B10",
-                                    "gsd": 100,
-                                    "common_name": "lwir11"
+                                "B8": {
+                                    "type": "image/x.geotiff",
+                                    "eo:bands": [
+                                        7
+                                    ],
+                                    "title": "Band 8 (pan)",
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/075/LC08_L1TP_231075_20200213_20200225_01_T1/LC08_L1TP_231075_20200213_20200225_01_T1_B8.TIF"
                                 },
-                                {
-                                    "full_width_half_max": 1,
-                                    "center_wavelength": 12,
-                                    "name": "B11",
-                                    "gsd": 100,
-                                    "common_name": "lwir12"
+                                "B9": {
+                                    "type": "image/x.geotiff",
+                                    "eo:bands": [
+                                        8
+                                    ],
+                                    "title": "Band 9 (cirrus)",
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/075/LC08_L1TP_231075_20200213_20200225_01_T1/LC08_L1TP_231075_20200213_20200225_01_T1_B9.TIF"
+                                },
+                                "B10": {
+                                    "type": "image/x.geotiff",
+                                    "eo:bands": [
+                                        9
+                                    ],
+                                    "title": "Band 10 (lwir)",
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/075/LC08_L1TP_231075_20200213_20200225_01_T1/LC08_L1TP_231075_20200213_20200225_01_T1_B10.TIF"
+                                },
+                                "B11": {
+                                    "type": "image/x.geotiff",
+                                    "eo:bands": [
+                                        10
+                                    ],
+                                    "title": "Band 11 (lwir)",
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/075/LC08_L1TP_231075_20200213_20200225_01_T1/LC08_L1TP_231075_20200213_20200225_01_T1_B11.TIF"
+                                },
+                                "ANG": {
+                                    "title": "Angle coefficients file",
+                                    "type": "text/plain",
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/075/LC08_L1TP_231075_20200213_20200225_01_T1/LC08_L1TP_231075_20200213_20200225_01_T1_ANG.txt"
+                                },
+                                "MTL": {
+                                    "title": "original metadata file",
+                                    "type": "text/plain",
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/075/LC08_L1TP_231075_20200213_20200225_01_T1/LC08_L1TP_231075_20200213_20200225_01_T1_MTL.txt"
+                                },
+                                "BQA": {
+                                    "title": "Band quality data",
+                                    "type": "image/x.geotiff",
+                                    "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/075/LC08_L1TP_231075_20200213_20200225_01_T1/LC08_L1TP_231075_20200213_20200225_01_T1_BQA.TIF"
                                 }
-                            ],
-                            "datetime": "2020-02-13T14:18:09.661889+00:00",
-                            "eo:sun_azimuth": 81.21412609,
-                            "eo:sun_elevation": 56.91053723,
-                            "eo:cloud_cover": 7,
-                            "eo:row": "075",
-                            "eo:column": "231",
-                            "landsat:product_id": "LC08_L1TP_231075_20200213_20200225_01_T1",
-                            "landsat:scene_id": "LC82310752020044LGN00",
-                            "landsat:processing_level": "L1TP",
-                            "landsat:tier": "T1",
-                            "landsat:revision": "00",
-                            "eo:epsg": 32720
-                        },
-                        "assets": {
-                            "index": {
-                                "type": "text/html",
-                                "title": "HTML index page",
-                                "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/075/LC08_L1TP_231075_20200213_20200225_01_T1/LC08_L1TP_231075_20200213_20200225_01_T1_MTL.txt"
                             },
-                            "thumbnail": {
-                                "title": "Thumbnail image",
-                                "type": "image/jpeg",
-                                "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/075/LC08_L1TP_231075_20200213_20200225_01_T1/LC08_L1TP_231075_20200213_20200225_01_T1_thumb_large.jpg"
-                            },
-                            "B1": {
-                                "type": "image/x.geotiff",
-                                "eo:bands": [
-                                    0
-                                ],
-                                "title": "Band 1 (coastal)",
-                                "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/075/LC08_L1TP_231075_20200213_20200225_01_T1/LC08_L1TP_231075_20200213_20200225_01_T1_B1.TIF"
-                            },
-                            "B2": {
-                                "type": "image/x.geotiff",
-                                "eo:bands": [
-                                    1
-                                ],
-                                "title": "Band 2 (blue)",
-                                "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/075/LC08_L1TP_231075_20200213_20200225_01_T1/LC08_L1TP_231075_20200213_20200225_01_T1_B2.TIF"
-                            },
-                            "B3": {
-                                "type": "image/x.geotiff",
-                                "eo:bands": [
-                                    2
-                                ],
-                                "title": "Band 3 (green)",
-                                "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/075/LC08_L1TP_231075_20200213_20200225_01_T1/LC08_L1TP_231075_20200213_20200225_01_T1_B3.TIF"
-                            },
-                            "B4": {
-                                "type": "image/x.geotiff",
-                                "eo:bands": [
-                                    3
-                                ],
-                                "title": "Band 4 (red)",
-                                "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/075/LC08_L1TP_231075_20200213_20200225_01_T1/LC08_L1TP_231075_20200213_20200225_01_T1_B4.TIF"
-                            },
-                            "B5": {
-                                "type": "image/x.geotiff",
-                                "eo:bands": [
-                                    4
-                                ],
-                                "title": "Band 5 (nir)",
-                                "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/075/LC08_L1TP_231075_20200213_20200225_01_T1/LC08_L1TP_231075_20200213_20200225_01_T1_B5.TIF"
-                            },
-                            "B6": {
-                                "type": "image/x.geotiff",
-                                "eo:bands": [
-                                    5
-                                ],
-                                "title": "Band 6 (swir16)",
-                                "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/075/LC08_L1TP_231075_20200213_20200225_01_T1/LC08_L1TP_231075_20200213_20200225_01_T1_B6.TIF"
-                            },
-                            "B7": {
-                                "type": "image/x.geotiff",
-                                "eo:bands": [
-                                    6
-                                ],
-                                "title": "Band 7 (swir22)",
-                                "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/075/LC08_L1TP_231075_20200213_20200225_01_T1/LC08_L1TP_231075_20200213_20200225_01_T1_B7.TIF"
-                            },
-                            "B8": {
-                                "type": "image/x.geotiff",
-                                "eo:bands": [
-                                    7
-                                ],
-                                "title": "Band 8 (pan)",
-                                "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/075/LC08_L1TP_231075_20200213_20200225_01_T1/LC08_L1TP_231075_20200213_20200225_01_T1_B8.TIF"
-                            },
-                            "B9": {
-                                "type": "image/x.geotiff",
-                                "eo:bands": [
-                                    8
-                                ],
-                                "title": "Band 9 (cirrus)",
-                                "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/075/LC08_L1TP_231075_20200213_20200225_01_T1/LC08_L1TP_231075_20200213_20200225_01_T1_B9.TIF"
-                            },
-                            "B10": {
-                                "type": "image/x.geotiff",
-                                "eo:bands": [
-                                    9
-                                ],
-                                "title": "Band 10 (lwir)",
-                                "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/075/LC08_L1TP_231075_20200213_20200225_01_T1/LC08_L1TP_231075_20200213_20200225_01_T1_B10.TIF"
-                            },
-                            "B11": {
-                                "type": "image/x.geotiff",
-                                "eo:bands": [
-                                    10
-                                ],
-                                "title": "Band 11 (lwir)",
-                                "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/075/LC08_L1TP_231075_20200213_20200225_01_T1/LC08_L1TP_231075_20200213_20200225_01_T1_B11.TIF"
-                            },
-                            "ANG": {
-                                "title": "Angle coefficients file",
-                                "type": "text/plain",
-                                "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/075/LC08_L1TP_231075_20200213_20200225_01_T1/LC08_L1TP_231075_20200213_20200225_01_T1_ANG.txt"
-                            },
-                            "MTL": {
-                                "title": "original metadata file",
-                                "type": "text/plain",
-                                "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/075/LC08_L1TP_231075_20200213_20200225_01_T1/LC08_L1TP_231075_20200213_20200225_01_T1_MTL.txt"
-                            },
-                            "BQA": {
-                                "title": "Band quality data",
-                                "type": "image/x.geotiff",
-                                "href": "https://landsat-pds.s3.amazonaws.com/c1/L8/231/075/LC08_L1TP_231075_20200213_20200225_01_T1/LC08_L1TP_231075_20200213_20200225_01_T1_BQA.TIF"
-                            }
-                        },
-                        "links": [
-                            {
-                                "rel": "self",
-                                "href": "https://sat-api.developmentseed.org/collections/landsat-8-l1/items/LC82310752020044"
-                            },
-                            {
-                                "rel": "parent",
-                                "href": "https://sat-api.developmentseed.org/collections/landsat-8-l1"
-                            },
-                            {
-                                "rel": "collection",
-                                "href": "https://sat-api.developmentseed.org/collections/landsat-8-l1"
-                            },
-                            {
-                                "rel": "root",
-                                "href": "https://sat-api.developmentseed.org/stac"
-                            }
-                        ]
+                            "links": [
+                                {
+                                    "rel": "self",
+                                    "href": "https://sat-api.developmentseed.org/collections/landsat-8-l1/items/LC82310752020044"
+                                },
+                                {
+                                    "rel": "parent",
+                                    "href": "https://sat-api.developmentseed.org/collections/landsat-8-l1"
+                                },
+                                {
+                                    "rel": "collection",
+                                    "href": "https://sat-api.developmentseed.org/collections/landsat-8-l1"
+                                },
+                                {
+                                    "rel": "root",
+                                    "href": "https://sat-api.developmentseed.org/stac"
+                                }
+                            ]
                         }
                     ],
                     "links": [
