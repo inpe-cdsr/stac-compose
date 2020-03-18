@@ -25,16 +25,14 @@ class TestStacComposeCollections(StacComposeTester):
                 "CBERS4A_WFI_L2_DN",
                 "CBERS4A_WFI_L4_DN",
                 "CBERS4A_WPM_L2_DN",
+                'CBERS4_AWFI_L2_DN',
                 "CBERS4_AWFI_L4_DN",
                 "CBERS4_AWFI_L4_SR",
                 "CBERS4_MUX_L2_DN",
                 "CBERS4_MUX_L4_DN",
                 "CBERS4_MUX_L4_SR",
-                "CBERS4_PAN10M_L2_DN",
                 "CBERS4_PAN10M_L4_DN",
-                "CBERS4_PAN5M_L4_DN",
-                "LANDSAT5_TM_L2_DN",
-                "LANDSAT5_TM_L4_DN"
+                "CBERS4_PAN5M_L4_DN"
             ]
         }
 
@@ -76,16 +74,14 @@ class TestStacComposeCollections(StacComposeTester):
                 "CBERS4A_WFI_L2_DN",
                 "CBERS4A_WFI_L4_DN",
                 "CBERS4A_WPM_L2_DN",
+                'CBERS4_AWFI_L2_DN',
                 "CBERS4_AWFI_L4_DN",
                 "CBERS4_AWFI_L4_SR",
                 "CBERS4_MUX_L2_DN",
                 "CBERS4_MUX_L4_DN",
                 "CBERS4_MUX_L4_SR",
-                "CBERS4_PAN10M_L2_DN",
                 "CBERS4_PAN10M_L4_DN",
-                "CBERS4_PAN5M_L4_DN",
-                "LANDSAT5_TM_L2_DN",
-                "LANDSAT5_TM_L4_DN"
+                "CBERS4_PAN5M_L4_DN"
             ],
             "LANDSAT8-SENTINEL2-AWS": [
                 "landsat-8-l1",
