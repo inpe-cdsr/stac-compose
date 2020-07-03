@@ -68,7 +68,7 @@ class StacComposeTester(TestCase):
     def __get(self, query_string=''):
         return self.app.get(self.get_urn(), query_string=query_string, headers=self.__headers__)
 
-    def get(self, expected_data={}, query_string={}, expected_status_code=200, expected_content_type='application/json'):
+    def get(self, expected={}, query_string={}, expected_status_code=200, expected_content_type='application/json'):
         response = self.__get(query_string)
 
         # print('\nStacComposeTester.get() - self.get_urn(): ', self.get_urn())
@@ -78,13 +78,13 @@ class StacComposeTester(TestCase):
         self.assertIn(expected_content_type, response.content_type)
 
         # get the JSON in dict form
-        data = loads(response.data)
+        result = loads(response.data)
 
-        # print('\nStacComposeTester.get() - \n\ndata: {}\n\n'.format(data))
+        # print('\nStacComposeTester.get() - \n\nresult: {}\n\n'.format(result))
 
-        self.assertEqual(expected_data, data)
+        self.assertEqual(expected, result)
 
-        return data
+        return result
 
     def _post(self, body):
         # get the available default headers and add more one to POST method
@@ -94,7 +94,7 @@ class StacComposeTester(TestCase):
 
         return self.app.post(self.get_urn(), data=dumps(body), headers=headers)
 
-    def post(self, expected_data={}, body={}, expected_status_code=200, expected_content_type='application/json'):
+    def post(self, expected={}, body={}, expected_status_code=200, expected_content_type='application/json'):
         response = self._post(body)
 
         # print('\nStacComposeTester.post() - self.get_urn(): ', self.get_urn())
@@ -104,13 +104,13 @@ class StacComposeTester(TestCase):
         self.assertIn(expected_content_type, response.content_type)
 
         # get the JSON in dict form
-        data = loads(response.data)
+        result = loads(response.data)
 
-        # print('\nStacComposeTester.post() - data: ', data)
+        # print('\nStacComposeTester.post() - \n\nresult: {}\n\n'.format(result))
 
-        self.assertEqual(expected_data, data)
+        self.assertEqual(expected, result)
 
-        return data
+        return result
 
     def put(self, body):
         response = self.app.put(self.get_urn(), data=dumps(body), headers=self.__headers__)

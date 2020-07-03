@@ -19,28 +19,6 @@ api = ns
 
 pp = PrettyPrinter(indent=4)
 
-'''
-@api.route('/')
-class StacController(APIResource):
-    """StacController"""
-
-    @catch_generic_exceptions
-    def get(self):
-        args = request.args.to_dict(flat=True)
-
-        logging.info('CollectionsController.get() - args: %s', args)
-
-        data, status = validate(args, 'providers')
-
-        logging.info('CollectionsController.get() - data: %s', data)
-        logging.info('CollectionsController.get() - status: %s', status)
-
-        if status is False:
-            raise BadRequest(dumps(data))  # 400 - Bad Request
-
-        # List of STAC collections by providers
-        return CollectionsBusiness.get_collections_by_providers(args['providers'])
-'''
 
 @api.route('/search/')
 class StacSearchController(APIResource):
@@ -48,7 +26,7 @@ class StacSearchController(APIResource):
 
     @catch_generic_exceptions
     def post(self):
-        logging.info('StacBusiness.post()\n')
+        logging.info('StacBusiness.post()')
 
         if request.is_json:
             body = request.get_json()

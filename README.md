@@ -58,12 +58,7 @@ Running the tests:
 ```
 $ pyenv activate inpe-cdsr-stac-compose
 $ set -a && source environment.dev.env && set +a
-
-$ pytest
-or
-$ pytest -s -vv
-or
-$ python -m pytest tests
+$ python manage.py test
 ```
 
 

@@ -19,19 +19,24 @@ class CollectionsBusiness():
 
     @classmethod
     def get_collections_by_providers(cls, providers):
+        logging.info('CollectionsBusiness.get_collections_by_providers()')
+
         result_by_provider = {}
 
         for p in providers.split(','):
-            response = StacComposeServices.search_collections(cls.providers_business.get_providers()[p]['url'])
+            response = StacComposeServices.search_collections(
+                cls.providers_business.get_providers()[p]['url']
+            )
 
             if response.get('collections'):
                 result_by_provider[p] = [c['id'] for c in response['collections']]
             else:
-                if p == 'BDC_STAC':
-                    result_by_provider[p] = ["{}:SCENE".format(c['title']) for c in response['links'] if c['rel'] == 'child']
-                    result_by_provider[p] += ["{}:MERGED".format(c['title']) for c in response['links'] if c['rel'] == 'child']
-                else:
-                    result_by_provider[p] = [c['title'] for c in response['links'] if c['rel'] == 'child']
+                result_by_provider[p] = [c['title'] for c in response['links'] if c['rel'] == 'child']
+
+        logging.info(
+            'CollectionsBusiness.get_collections_by_providers() - result_by_provider: %s',
+            result_by_provider
+        )
 
         return result_by_provider
 

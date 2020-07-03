@@ -26,6 +26,8 @@ class CollectionsController(APIResource):
 
     @catch_generic_exceptions
     def get(self):
+        logging.info('CollectionsController.get()')
+
         args = request.args.to_dict(flat=True)
 
         logging.info('CollectionsController.get() - args: %s', args)
