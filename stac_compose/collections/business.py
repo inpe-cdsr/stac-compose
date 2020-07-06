@@ -6,6 +6,7 @@ from werkzeug.exceptions import HTTPException, BadRequest
 
 from stac_compose.common import MAX_LIMIT, rename_fields_from_feature_collection, create_new_feature_collection, \
                                 get_limit_to_search, add_context_field_in_the_feature_collection_if_it_does_not_exist
+from stac_compose.exception import StacComposeException
 from stac_compose.services import StacComposeServices
 from stac_compose.providers.business import ProvidersBusiness
 from stac_compose.log import logging
@@ -21,24 +22,47 @@ class CollectionsBusiness():
     def get_collections_by_providers(cls, providers):
         logging.info('CollectionsBusiness.get_collections_by_providers()')
 
-        result_by_provider = {}
+        logging.info('CollectionsBusiness.get_collections_by_providers() - providers: %s', providers)
 
-        for p in providers.split(','):
+        collections_by_provider = {
+            "providers": []
+        }
+
+        for provider in providers:
             response = StacComposeServices.search_collections(
-                cls.providers_business.get_providers()[p]['url']
+                cls.providers_business.get_providers()[provider]['url']
             )
 
-            if response.get('collections'):
-                result_by_provider[p] = [c['id'] for c in response['collections']]
+            # logging.debug(
+            #     'CollectionsBusiness.get_collections_by_providers() - response: %s',
+            #     response
+            # )
+
+            # if there is a `meta` or `links` keys in the response, I can remove them
+            if 'meta' in response:
+                del response['meta']
+
+            if 'links' in response:
+                del response['links']
+
+            if 'collections' in response:
+                # add the provider name to the response
+                response['title'] = provider
+
+                # add the collections by provider `p` to the list
+                collections_by_provider["providers"].append(response)
+
             else:
-                result_by_provider[p] = [c['title'] for c in response['links'] if c['rel'] == 'child']
+                logging.info('CollectionsBusiness.get_collections_by_providers() - provider: %s', provider)
 
-        logging.info(
-            'CollectionsBusiness.get_collections_by_providers() - result_by_provider: %s',
-            result_by_provider
-        )
+                raise StacComposeException('Invalid provider: `{}`'.format(provider))
 
-        return result_by_provider
+        # logging.debug(
+        #     'CollectionsBusiness.get_collections_by_providers() - collections_by_provider: %s',
+        #     collections_by_provider
+        # )
+
+        return collections_by_provider
 
     @classmethod
     def stac_post(cls, url, collection, bbox, time=False, cloud_cover=None, page=1, limit=100):

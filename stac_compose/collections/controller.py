@@ -41,7 +41,7 @@ class CollectionsController(APIResource):
             raise BadRequest(dumps(data))  # 400 - Bad Request
 
         # List of STAC collections by providers
-        return CollectionsBusiness.get_collections_by_providers(args['providers'])
+        return CollectionsBusiness.get_collections_by_providers(args['providers'].split(','))
 
 
 @api.route('/items/')
