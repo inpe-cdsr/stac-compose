@@ -971,7 +971,7 @@ class TestStacComposeCollectionsItems(StacComposeTester):
         self.get(expected, query_string=query_string)
 
     '''
-    # this test is commented, because it is slow
+    # this test case is commented, because it is slow
     def test__get__stac_compose_collections_items__landsat8_sentinel2_aws_sentinel_2_l1c_limit_2000(self):
         """
         http://localhost:8089/stac-compose/collections/items?collections=LANDSAT8-SENTINEL2-AWS:sentinel-2-l1c&bbox=-68.0273437,-25.0059726,-34.9365234,0.3515602&time=2020-01-13T00:00:00/2020-02-13T23:59:00&limit=2000
