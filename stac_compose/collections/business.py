@@ -6,7 +6,6 @@ from werkzeug.exceptions import HTTPException, BadRequest
 
 from stac_compose.common import MAX_LIMIT, rename_fields_from_feature_collection, create_new_feature_collection, \
                                 get_limit_to_search, add_context_field_in_the_feature_collection_if_it_does_not_exist
-from stac_compose.exception import StacComposeException
 from stac_compose.services import StacComposeServices
 from stac_compose.providers.business import ProvidersBusiness
 from stac_compose.log import logging
@@ -28,9 +27,17 @@ class CollectionsBusiness():
             "providers": []
         }
 
+        available_providers = cls.providers_business.get_providers()
+
+        logging.info('CollectionsBusiness.get_collections_by_providers() - available_providers: %s', available_providers)
+
         for provider in providers:
+
+            if provider not in available_providers:
+                raise BadRequest('Provider `{}` is not available.'.format(provider))
+
             response = StacComposeServices.search_collections(
-                cls.providers_business.get_providers()[provider]['url']
+                available_providers[provider]['url']
             )
 
             # logging.debug(
@@ -55,7 +62,7 @@ class CollectionsBusiness():
             else:
                 logging.info('CollectionsBusiness.get_collections_by_providers() - provider: %s', provider)
 
-                raise StacComposeException('Invalid provider: `{}`'.format(provider))
+                raise BadRequest('Invalid provider: `{}`'.format(provider))
 
         # logging.debug(
         #     'CollectionsBusiness.get_collections_by_providers() - collections_by_provider: %s',

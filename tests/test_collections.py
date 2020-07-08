@@ -2897,3 +2897,14 @@ class TestStacComposeCollectionsError(StacComposeTester):
         }
 
         self.get(expected, expected_status_code=400)
+
+    def test__get__stac_compose_collections__400_bad_request__invalid_provider_is_not_available(self):
+        """http://localhost:8089/stac-compose/collections/?providers=INVALID-PROVIDER"""
+
+        expected = {
+            'code': 400,
+            'description': 'Provider `INVALID-PROVIDER` is not available.',
+            'name': 'Bad Request'
+        }
+
+        self.get(expected, query_string={'providers': 'INVALID-PROVIDER'}, expected_status_code=400)
