@@ -21,7 +21,7 @@ class TestStacComposeCollections(StacComposeTester):
         expected = {
             "providers": [
                 {
-                    "title": "INPE-CDSR",
+                    "id": "INPE-CDSR",
                     "collections": [
                         {
                             "stac_version": "0.7",
@@ -582,7 +582,7 @@ class TestStacComposeCollections(StacComposeTester):
         expected = {
             "providers": [
                 {
-                    "title": "LANDSAT8-SENTINEL2-AWS",
+                    "id": "LANDSAT8-SENTINEL2-AWS",
                     "collections": [
                         {
                             "id": "landsat-8-l1",
@@ -1133,7 +1133,7 @@ class TestStacComposeCollections(StacComposeTester):
         expected = {
             "providers": [
                 {
-                    "title": "CBERS4-AWS",
+                    "id": "CBERS4-AWS",
                     "collections": [
                         {
                             "stac_version": "0.7.0",
@@ -1464,7 +1464,7 @@ class TestStacComposeCollections(StacComposeTester):
         expected = {
             "providers": [
                 {
-                    "title": "INPE-CDSR",
+                    "id": "INPE-CDSR",
                     "collections": [
                         {
                             "stac_version": "0.7",
@@ -2015,7 +2015,7 @@ class TestStacComposeCollections(StacComposeTester):
                     ]
                 },
                 {
-                    "title": "LANDSAT8-SENTINEL2-AWS",
+                    "id": "LANDSAT8-SENTINEL2-AWS",
                     "collections": [
                         {
                             "id": "landsat-8-l1",
@@ -2556,7 +2556,7 @@ class TestStacComposeCollections(StacComposeTester):
                     ]
                 },
                 {
-                    "title": "CBERS4-AWS",
+                    "id": "CBERS4-AWS",
                     "collections": [
                         {
                             "stac_version": "0.7.0",

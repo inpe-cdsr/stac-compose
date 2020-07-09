@@ -54,7 +54,7 @@ class CollectionsBusiness():
 
             if 'collections' in response:
                 # add the provider name to the response
-                response['title'] = provider
+                response['id'] = provider
 
                 # add the collections by provider `p` to the list
                 collections_by_provider["providers"].append(response)

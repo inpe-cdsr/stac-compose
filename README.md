@@ -53,11 +53,10 @@ $ set -a && source environment.dev.env && set +a
 $ python manage.py run
 ```
 
-Running the tests:
+Running the test cases:
 
 ```
 $ pyenv activate inpe-cdsr-stac-compose
-$ set -a && source environment.dev.env && set +a
 $ python manage.py test
 ```
 
