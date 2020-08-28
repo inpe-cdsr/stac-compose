@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 
-MAX_LIMIT = 1000
+MAX_LIMIT = 3000
 
 
 def rename_fields_from_feature_collection(feature_collection):
